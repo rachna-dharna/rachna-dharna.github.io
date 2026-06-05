@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phonics Lesson — Revive Tutoring</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f5f5f0; color: #1a1a1a; padding: 1.5rem; }
+h1 { font-size: 20px; font-weight: 500; color: #2E4057; margin-bottom: 4px; }
+.subtitle { font-size: 13px; color: #888; margin-bottom: 1.25rem; }
+.top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px; }
+.progress-bar-wrap { background: #e0e0d8; border-radius: 999px; height: 12px; margin-bottom: 4px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: #1D9E75; border-radius: 999px; transition: width 0.4s; }
+.score-label { font-size: 13px; color: #666; margin-bottom: 1.25rem; }
+.reset-btn { padding: 6px 16px; font-size: 13px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; color: #555; }
+.reset-btn:hover { background: #f0f0ea; }
+.tab-row { display: flex; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.tab { padding: 8px 16px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; color: #666; }
+.tab.active { border-color: #1D9E75; color: #0F6E56; background: #E1F5EE; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.instructions { background: #eeeee8; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #555; margin-bottom: 1rem; line-height: 1.6; }
+.alphabet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+.letter-card { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 12px 8px; text-align: center; user-select: none; }
+.letter-card.correct { border-color: #1D9E75; background: #E1F5EE; }
+.letter-card.incorrect { border-color: #D85A30; background: #FAECE7; }
+.letter-big { font-size: 28px; font-weight: 500; line-height: 1; }
+.letter-emoji { font-size: 26px; margin: 4px 0; }
+.letter-word { font-size: 11px; color: #888; }
+.letter-sound { font-size: 12px; color: #0F6E56; font-weight: 500; margin-bottom: 6px; }
+.btn-row { display: flex; gap: 6px; margin-top: 6px; justify-content: center; }
+.btn { padding: 4px 10px; font-size: 12px; border: 1px solid #ccc; border-radius: 6px; background: #fff; cursor: pointer; color: #333; }
+.btn:hover { background: #f5f5f0; }
+.btn.right-btn { border-color: #1D9E75; color: #0F6E56; }
+.btn.wrong-btn { border-color: #D85A30; color: #993C1D; }
+.blend-item { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 10px; }
+.blend-item.correct { border-color: #1D9E75; }
+.blend-item.incorrect { border-color: #D85A30; }
+.blend-prompt { font-size: 14px; color: #555; margin-bottom: 6px; }
+.blend-sounds { font-size: 22px; font-weight: 500; color: #185FA5; letter-spacing: 4px; margin-bottom: 8px; }
+.blend-answer { font-size: 14px; color: #555; display: none; margin-bottom: 8px; }
+.blend-answer.show { display: block; }
+.blend-answer span { font-size: 18px; font-weight: 500; color: #1D9E75; }
+.prize-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+.prize-overlay.show { display: flex; }
+.prize-box { background: #fff; border-radius: 16px; padding: 2rem; max-width: 400px; width: 90%; text-align: center; }
+.prize-title { font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+.prize-sub { font-size: 14px; color: #666; margin-bottom: 1.25rem; }
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
+.video-link { background: #f5f5f0; border-radius: 8px; padding: 10px 8px; text-decoration: none; color: #1a1a1a; font-size: 12px; border: 1px solid #e0e0d8; display: block; line-height: 1.4; }
+.video-link:hover { border-color: #aaa; }
+.video-icon { font-size: 18px; margin-bottom: 4px; }
+.close-btn { padding: 8px 24px; font-size: 14px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; }
+.close-btn:hover { background: #f5f5f0; }
+</style>
+</head>
+<body>
+
+<div class="top-row">
+  <div>
+    <h1>Phonics Lesson</h1>
+    <div class="subtitle">Revive Tutoring</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↺ Reset lesson</button>
+</div>
+
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog" style="width:0%"></div></div>
+<div class="score-label" id="score-label">Score: 0 correct — let's go!</div>
+
+<div class="tab-row">
+  <button class="tab active" id="tab-btn-alpha" onclick="showTab('alpha', this)">Alphabet sounds</button>
+  <button class="tab" id="tab-btn-oral" onclick="showTab('oral', this)">Oral blending</button>
+  <button class="tab" id="tab-btn-print" onclick="showTab('print', this)">Print blending</button>
+</div>
+
+<div class="tab-content active" id="tab-alpha">
+  <div class="instructions">Say the letter name, the sound it makes, and the picture word. Click "got it!" or "try again" after the student answers.</div>
+  <div class="alphabet-grid" id="alpha-grid"></div>
+</div>
+
+<div class="tab-content" id="tab-oral">
+  <div class="instructions">Say each sound slowly out loud. Ask the student to blend them into a word. No letters shown — this is all listening! Click "reveal" to show the answer, then mark right or wrong.</div>
+  <div id="oral-items"></div>
+</div>
+
+<div class="tab-content" id="tab-print">
+  <div class="instructions">Show the student the printed letters. Say each sound together, then blend them into one word without stopping. Click "reveal" to show the answer.</div>
+  <div id="print-items"></div>
+</div>
+
+<div class="prize-overlay" id="prize-modal">
+  <div class="prize-box">
+    <div class="prize-title">Amazing work! 🎉</div>
+    <div class="prize-sub">You got 5 right! Pick a video to watch!</div>
+    <div class="video-grid" id="video-grid"></div>
+    <button class="close-btn" onclick="closePrize()">Keep going!</button>
+  </div>
+</div>
+
+<script>
+const letters = [
+  {l:'A',e:'🍎',w:'apple',s:'/a/'},
+  {l:'B',e:'🐝',w:'bee',s:'/b/'},
+  {l:'C',e:'🐱',w:'cat',s:'/k/'},
+  {l:'D',e:'🐶',w:'dog',s:'/d/'},
+  {l:'E',e:'🥚',w:'egg',s:'/e/'},
+  {l:'F',e:'🐟',w:'fish',s:'/f/'},
+  {l:'G',e:'🍇',w:'grapes',s:'/g/'},
+  {l:'H',e:'🏠',w:'house',s:'/h/'},
+  {l:'I',e:'🍦',w:'ice cream',s:'/i/'},
+  {l:'J',e:'🫙',w:'jar',s:'/j/'},
+  {l:'K',e:'🪁',w:'kite',s:'/k/'},
+  {l:'L',e:'🦁',w:'lion',s:'/l/'},
+  {l:'M',e:'🌙',w:'moon',s:'/m/'},
+  {l:'N',e:'🪺',w:'nest',s:'/n/'},
+  {l:'O',e:'🐙',w:'octopus',s:'/o/'},
+  {l:'P',e:'🐧',w:'penguin',s:'/p/'},
+  {l:'Q',e:'👸',w:'queen',s:'/kw/'},
+  {l:'R',e:'🌈',w:'rainbow',s:'/r/'},
+  {l:'S',e:'☀️',w:'sun',s:'/s/'},
+  {l:'T',e:'🐢',w:'turtle',s:'/t/'},
+  {l:'U',e:'☂️',w:'umbrella',s:'/u/'},
+  {l:'V',e:'🌋',w:'volcano',s:'/v/'},
+  {l:'W',e:'🐋',w:'whale',s:'/w/'},
+  {l:'X',e:'🎻',w:'xylophone',s:'/ks/'},
+  {l:'Y',e:'🧶',w:'yarn',s:'/y/'},
+  {l:'Z',e:'🦓',w:'zebra',s:'/z/'},
+];
+
+const oralBlends = [
+  {display:'i — t',word:'it'},
+  {display:'a — t',word:'at'},
+  {display:'a — m',word:'am'},
+  {display:'u — p',word:'up'},
+  {display:'i — n',word:'in'},
+  {display:'s — a — t',word:'sat'},
+  {display:'m — a — p',word:'map'},
+  {display:'h — o — t',word:'hot'},
+  {display:'b — i — g',word:'big'},
+  {display:'f — u — n',word:'fun'},
+  {display:'r — u — n',word:'run'},
+  {display:'s — i — t',word:'sit'},
+  {display:'d — o — g',word:'dog'},
+  {display:'p — i — g',word:'pig'},
+  {display:'n — e — t',word:'net'},
+  {display:'b — e — d',word:'bed'},
+  {display:'c — u — p',word:'cup'},
+  {display:'l — e — g',word:'leg'},
+  {display:'t — o — p',word:'top'},
+  {display:'h — a — t',word:'hat'},
+];
+
+const printBlends = [
+  {letters:'b - e - d',word:'bed'},
+  {letters:'s - a - t',word:'sat'},
+  {letters:'h - o - p',word:'hop'},
+  {letters:'m - a - p',word:'map'},
+  {letters:'f - u - n',word:'fun'},
+  {letters:'s - i - t',word:'sit'},
+  {letters:'d - i - g',word:'dig'},
+  {letters:'r - u - n',word:'run'},
+  {letters:'p - i - g',word:'pig'},
+  {letters:'n - e - t',word:'net'},
+  {letters:'c - a - t',word:'cat'},
+  {letters:'b - u - g',word:'bug'},
+  {letters:'h - i - t',word:'hit'},
+  {letters:'l - o - g',word:'log'},
+  {letters:'t - u - b',word:'tub'},
+  {letters:'p - e - n',word:'pen'},
+  {letters:'r - e - d',word:'red'},
+  {letters:'w - i - g',word:'wig'},
+  {letters:'j - a - m',word:'jam'},
+  {letters:'s - u - n',word:'sun'},
+];
+
+const videos = [
+  {
+    "title": "Alphablocks \u2014 Red Level Full Episodes",
+    "url": "https://www.youtube.com/watch?v=7BHNPlCRrRo"
+  },
+  {
+    "title": "Alphablocks \u2014 Season 2 Full Episode",
+    "url": "https://www.youtube.com/watch?v=IdIP3BGx11M"
+  },
+  {
+    "title": "Jack Hartmann \u2014 Stretchy the Word Snake",
+    "url": "https://www.youtube.com/watch?v=xIBjAWkPzNA"
+  },
+  {
+    "title": "Jack Hartmann \u2014 CVC Words Short A",
+    "url": "https://www.youtube.com/watch?v=oDVAhDyHZaA"
+  },
+  {
+    "title": "Jack Hartmann \u2014 CVC Words Short I",
+    "url": "https://www.youtube.com/watch?v=13clYehVJHo"
+  },
+  {
+    "title": "Jack Hartmann \u2014 Blendable Letter Sounds",
+    "url": "https://www.youtube.com/watch?v=K8Dh_cubb-4"
+  },
+  {
+    "title": "Jack Hartmann \u2014 Let's Make Words",
+    "url": "https://www.youtube.com/watch?v=RyRwuV0SPzA"
+  },
+  {
+    "title": "Super Simple ABCs Phonics Songs",
+    "url": "https://www.youtube.com/watch?v=EVTB8xIHWU0"
+  }
+];
+
+let totalScore = 0;
+let lastPrizeMilestone = 0;
+
+function addScore(n) {
+  totalScore += n;
+  const pct = Math.min(100, Math.round((totalScore / 60) * 100));
+  document.getElementById('prog').style.width = pct + '%';
+  const msg = totalScore < 10 ? 'keep going!' : totalScore < 25 ? 'great work!' : 'superstar!';
+  document.getElementById('score-label').textContent = 'Score: ' + totalScore + ' correct — ' + msg;
+  const milestone = Math.floor(totalScore / 5);
+  if (milestone > lastPrizeMilestone) {
+    lastPrizeMilestone = milestone;
+    showPrize();
+  }
+}
+
+function showPrize() {
+  const grid = document.getElementById('video-grid');
+  const pick = [...videos].sort(() => Math.random() - 0.5).slice(0, 4);
+  grid.innerHTML = pick.map(v => `<a class="video-link" href="${v.url}" target="_blank"><div class="video-icon">▶</div>${v.title}</a>`).join('');
+  document.getElementById('prize-modal').classList.add('show');
+}
+
+function closePrize() {
+  document.getElementById('prize-modal').classList.remove('show');
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function buildAlpha() {
+  const grid = document.getElementById('alpha-grid');
+  grid.innerHTML = '';
+  letters.forEach((l, i) => {
+    const card = document.createElement('div');
+    card.className = 'letter-card';
+    card.id = 'lc' + i;
+    card.innerHTML = `
+      <div class="letter-big">${l.l}</div>
+      <div class="letter-emoji">${l.e}</div>
+      <div class="letter-word">${l.w}</div>
+      <div class="letter-sound">${l.s}</div>
+      <div class="btn-row">
+        <button class="btn right-btn" onclick="markLetter(${i},true)">got it!</button>
+        <button class="btn wrong-btn" onclick="markLetter(${i},false)">try again</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function markLetter(i, correct) {
+  const card = document.getElementById('lc' + i);
+  card.classList.remove('correct','incorrect');
+  card.classList.add(correct ? 'correct' : 'incorrect');
+  if (correct) addScore(1);
+}
+
+function buildBlendItems(items, containerId, showLetters) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'blend-item';
+    div.id = containerId + i;
+    const display = showLetters ? item.letters : item.display;
+    div.innerHTML = `
+      <div class="blend-prompt">${showLetters ? 'Look at these letters and blend them into a word:' : 'Listen to these sounds and blend them into a word:'}</div>
+      <div class="blend-sounds">${display}</div>
+      <div class="blend-answer" id="ans-${containerId}${i}">The word is: <span>${item.word}</span></div>
+      <div class="btn-row">
+        <button class="btn" onclick="revealBlend('${containerId}',${i})">reveal</button>
+        <button class="btn right-btn" onclick="markBlend('${containerId}',${i},true)">got it!</button>
+        <button class="btn wrong-btn" onclick="markBlend('${containerId}',${i},false)">try again</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function revealBlend(cid, i) {
+  document.getElementById('ans-' + cid + i).classList.add('show');
+}
+
+function markBlend(cid, i, correct) {
+  const card = document.getElementById(cid + i);
+  card.classList.remove('correct','incorrect');
+  card.classList.add(correct ? 'correct' : 'incorrect');
+  if (correct) addScore(1);
+}
+
+function resetAll() {
+  totalScore = 0;
+  lastPrizeMilestone = 0;
+  document.getElementById('prog').style.width = '0%';
+  document.getElementById('score-label').textContent = 'Score: 0 correct — let\'s go!';
+  buildAlpha();
+  buildBlendItems(oralBlends, 'oral-items', false);
+  buildBlendItems(printBlends, 'print-items', true);
+}
+
+buildAlpha();
+buildBlendItems(oralBlends, 'oral-items', false);
+buildBlendItems(printBlends, 'print-items', true);
+</script>
+</body>
+</html>

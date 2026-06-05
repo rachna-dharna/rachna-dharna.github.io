@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Six Syllable Types — Revive Tutoring</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', system-ui, sans-serif; background: #f0f4ff; color: #1a1a1a; min-height: 100vh; }
+.header { background: #2E4057; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+.header-title { font-size: 20px; font-weight: 800; color: white; }
+.header-sub { font-size: 12px; color: rgba(255,255,255,0.6); }
+.reset-btn { padding: 6px 14px; font-size: 12px; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: transparent; cursor: pointer; color: white; }
+.score-bar { background: #fff; padding: 10px 20px; border-bottom: 1px solid #e0e8f0; display: flex; align-items: center; gap: 12px; }
+.score-bar-bg { flex: 1; background: #e0e8f0; border-radius: 999px; height: 12px; overflow: hidden; }
+.score-bar-fill { height: 100%; background: linear-gradient(90deg, #1D9E75, #0F6E56); border-radius: 999px; transition: width 0.4s; }
+.score-label { font-size: 13px; font-weight: 700; color: #555; white-space: nowrap; }
+.prize-label { font-size: 12px; color: #888; white-space: nowrap; }
+
+/* SYLLABLE TYPE TABS */
+.syllable-tabs { display: flex; overflow-x: auto; background: #fff; border-bottom: 2px solid #e0e8f0; padding: 0 8px; }
+.syllable-tab { padding: 12px 16px; font-size: 13px; font-weight: 700; border: none; background: transparent; cursor: pointer; color: #888; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+.syllable-tab.active { color: #2E4057; border-bottom-color: #2E4057; }
+.syllable-tab:hover { color: #2E4057; }
+
+/* GRADE TABS */
+.grade-tabs { display: flex; gap: 8px; padding: 14px 20px 0; }
+.grade-tab { padding: 8px 20px; font-size: 13px; font-weight: 700; border: 2px solid #e0e8f0; border-radius: 20px; background: #fff; cursor: pointer; color: #888; transition: all 0.2s; }
+.grade-tab.active { border-color: #1D9E75; background: #E1F5EE; color: #0F6E56; }
+
+.content { padding: 16px 20px; max-width: 860px; margin: 0 auto; }
+.syllable-panel { display: none; }
+.syllable-panel.active { display: block; }
+.grade-panel { display: none; }
+.grade-panel.active { display: block; }
+
+/* RULE CARD */
+.rule-card { border-radius: 14px; padding: 16px 20px; margin-bottom: 16px; border: 2px solid; }
+.rule-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+.rule-body { font-size: 14px; line-height: 1.7; }
+.rule-examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.rule-example { padding: 6px 14px; border-radius: 20px; font-size: 15px; font-weight: 700; }
+
+/* ACTIVITY SECTION */
+.activity-title { font-size: 15px; font-weight: 800; color: #2E4057; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #e0e8f0; }
+.word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.word-card { background: #fff; border: 2px solid #e0e8f0; border-radius: 12px; padding: 14px 8px; text-align: center; cursor: default; transition: border-color 0.2s; }
+.word-card.correct { border-color: #1D9E75; background: #E1F5EE; }
+.word-card.incorrect { border-color: #E24B4A; background: #FCEBEB; }
+.word-big { font-size: 22px; font-weight: 800; color: #185FA5; margin-bottom: 4px; }
+.word-type { font-size: 11px; color: #888; margin-bottom: 8px; }
+.card-btns { display: flex; gap: 4px; justify-content: center; }
+.card-btn { padding: 4px 10px; font-size: 12px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-family: inherit; }
+.card-btn.yes { border-color: #1D9E75; color: #0F6E56; }
+.card-btn.yes:hover { background: #E1F5EE; }
+.card-btn.no { border-color: #E24B4A; color: #A32D2D; }
+.card-btn.no:hover { background: #FCEBEB; }
+
+/* SORT ACTIVITY */
+.sort-intro { font-size: 14px; color: #555; margin-bottom: 12px; line-height: 1.6; }
+.sort-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.sort-word { background: #fff; border: 2px solid #e0e8f0; border-radius: 10px; padding: 10px 8px; text-align: center; font-size: 18px; font-weight: 800; color: #185FA5; cursor: pointer; transition: all 0.2s; }
+.sort-word:hover { border-color: #185FA5; }
+.sort-word.sorted-yes { border-color: #1D9E75; background: #E1F5EE; color: #0F6E56; }
+.sort-word.sorted-no { border-color: #E24B4A; background: #FCEBEB; color: #A32D2D; }
+.sort-bins { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.sort-bin { border: 2px dashed #ccc; border-radius: 12px; padding: 12px; min-height: 80px; }
+.sort-bin-title { font-size: 13px; font-weight: 700; color: #555; margin-bottom: 8px; text-align: center; }
+.sort-bin.bin-yes { border-color: #1D9E75; }
+.sort-bin.bin-no { border-color: #E24B4A; }
+
+/* BLEND ACTIVITY */
+.blend-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.blend-card { background: #fff; border: 2px solid #e0e8f0; border-radius: 12px; padding: 14px 18px; transition: border-color 0.2s; }
+.blend-card.correct { border-color: #1D9E75; background: #f0faf6; }
+.blend-card.incorrect { border-color: #E24B4A; }
+.blend-prompt { font-size: 13px; color: #888; margin-bottom: 6px; }
+.blend-sounds { font-size: 26px; font-weight: 800; color: #185FA5; letter-spacing: 4px; margin-bottom: 8px; }
+.blend-answer { font-size: 15px; color: #1D9E75; font-weight: 700; display: none; margin-bottom: 8px; }
+.blend-answer.show { display: block; }
+.blend-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.blend-btn { padding: 6px 14px; font-size: 13px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; font-family: inherit; font-weight: 600; }
+.blend-btn.reveal { border-color: #185FA5; color: #185FA5; }
+.blend-btn.reveal:hover { background: #E6F1FB; }
+.blend-btn.yes { border-color: #1D9E75; color: #0F6E56; }
+.blend-btn.yes:hover { background: #E1F5EE; }
+.blend-btn.no { border-color: #E24B4A; color: #A32D2D; }
+.blend-btn.no:hover { background: #FCEBEB; }
+
+/* PRIZE */
+.prize-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.55); z-index: 200; align-items: center; justify-content: center; }
+.prize-overlay.show { display: flex; }
+.prize-box { background: #fff; border-radius: 20px; padding: 2rem; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.prize-stars { font-size: 40px; margin-bottom: 8px; }
+.prize-title { font-size: 24px; font-weight: 800; color: #2E4057; margin-bottom: 6px; }
+.prize-sub { font-size: 14px; color: #666; margin-bottom: 1.25rem; }
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
+.video-link { background: #f0f4ff; border-radius: 10px; padding: 12px 8px; text-decoration: none; color: #185FA5; font-size: 12px; font-weight: 700; border: 1px solid #c8d8f0; display: block; line-height: 1.5; transition: background 0.2s; }
+.video-link:hover { background: #dce8fb; }
+.video-icon { font-size: 20px; margin-bottom: 4px; }
+.keep-going { padding: 10px 28px; font-size: 14px; border: 2px solid #1D9E75; border-radius: 10px; background: #1D9E75; cursor: pointer; color: white; font-weight: 800; font-family: inherit; }
+.keep-going:hover { background: #0F6E56; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title">Six Syllable Types</div>
+    <div class="header-sub">Revive Tutoring</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+</div>
+
+<div class="score-bar">
+  <div class="score-bar-bg"><div class="score-bar-fill" id="prog" style="width:0%"></div></div>
+  <div class="score-label" id="score-label">0 ⭐</div>
+  <div class="prize-label" id="prize-label">5 for a prize! 🎁</div>
+</div>
+
+<div class="syllable-tabs" id="syllable-tabs"></div>
+
+<div id="grade-tabs-wrap" style="background:#fff; border-bottom:1px solid #e0e8f0;">
+  <div class="grade-tabs" id="grade-tabs"></div>
+  <div style="height:12px;"></div>
+</div>
+
+<div class="content" id="main-content"></div>
+
+<div class="prize-overlay" id="prize-modal">
+  <div class="prize-box">
+    <div class="prize-stars">🌟🎉🌟</div>
+    <div class="prize-title">Amazing work!</div>
+    <div class="prize-sub">You earned a video! Pick one to watch!</div>
+    <div class="video-grid" id="video-grid"></div>
+    <button class="keep-going" onclick="closePrize()">Keep going! ▶</button>
+  </div>
+</div>
+
+<script>
+const videosByGrade = {
+  "K-1": [
+    {title:"Alphablocks — Red Level", url:"https://www.youtube.com/watch?v=7BHNPlCRrRo"},
+    {title:"Alphablocks — Season 2", url:"https://www.youtube.com/watch?v=IdIP3BGx11M"},
+    {title:"Stretchy the Word Snake", url:"https://www.youtube.com/watch?v=xIBjAWkPzNA"},
+    {title:"CVC Words — Short A", url:"https://www.youtube.com/watch?v=oDVAhDyHZaA"},
+    {title:"Blendable Letter Sounds", url:"https://www.youtube.com/watch?v=K8Dh_cubb-4"},
+    {title:"Super Simple ABCs", url:"https://www.youtube.com/watch?v=EVTB8xIHWU0"},
+  ],
+  "2-3": [
+    {title:"Nessy — Syllable Division", url:"https://www.youtube.com/watch?v=8NYeMoz9pjI"},
+    {title:"Two Syllable Words — Fun Reading", url:"https://www.youtube.com/watch?v=GXA5ZXOlThI"},
+    {title:"Syllables and Word Parts — Grades 2-3", url:"https://www.youtube.com/watch?v=Qz0LWrJDfx0"},
+    {title:"Prefix or Suffix? — The Bazillions", url:"https://www.youtube.com/watch?v=H2Z4p0au1yk"},
+  ],
+  "4-5": [
+    {title:"Word Parts — Prefixes, Roots, Suffixes", url:"https://www.youtube.com/watch?v=z_4-kcbV5K8"},
+    {title:"The True Story of True — TED-Ed", url:"https://www.youtube.com/watch?v=VYFE3tYUdJU"},
+    {title:"Where Do New Words Come From? — TED-Ed", url:"https://www.youtube.com/watch?v=Ytr28t5VzAs"},
+    {title:"Roots, Prefixes and Suffixes Grade 4", url:"https://www.youtube.com/watch?v=yRwmr7CqnrY"},
+  ]
+};
+
+const syllableTypes = [
+  {
+    id:"closed", label:"1. Closed", color:"#2E4057", light:"#E8EDF3",
+    rule:"A closed syllable has a short vowel CLOSED in by a consonant. The vowel says its short sound.",
+    grades: {
+      "K-1": {
+        ruleExample:["cat","sit","hop","bed","fun","map","bug","pen"],
+        activity1Title:"Read these closed syllable words!",
+        activity1Words:[
+          {w:"cat",hint:"c-a-t"},{w:"sit",hint:"s-i-t"},{w:"hop",hint:"h-o-p"},
+          {w:"bed",hint:"b-e-d"},{w:"fun",hint:"f-u-n"},{w:"map",hint:"m-a-p"},
+          {w:"bug",hint:"b-u-g"},{w:"pen",hint:"p-e-n"},{w:"dig",hint:"d-i-g"},
+          {w:"hot",hint:"h-o-t"},{w:"cup",hint:"c-u-p"},{w:"net",hint:"n-e-t"},
+        ],
+        blends:[
+          {sounds:"c — a — t", word:"cat"},{sounds:"s — i — t", word:"sit"},
+          {sounds:"h — o — p", word:"hop"},{sounds:"b — e — d", word:"bed"},
+          {sounds:"f — u — n", word:"fun"},{sounds:"m — a — p", word:"map"},
+        ]
+      },
+      "2-3": {
+        ruleExample:["rabbit","mitten","basket","napkin","plastic","sunset"],
+        activity1Title:"Read these two-syllable closed words!",
+        activity1Words:[
+          {w:"rabbit",hint:"rab-bit"},{w:"mitten",hint:"mit-ten"},{w:"basket",hint:"bas-ket"},
+          {w:"napkin",hint:"nap-kin"},{w:"plastic",hint:"plas-tic"},{w:"sunset",hint:"sun-set"},
+          {w:"dentist",hint:"den-tist"},{w:"insect",hint:"in-sect"},{w:"mascot",hint:"mas-cot"},
+          {w:"fantastic",hint:"fan-tas-tic"},{w:"traffic",hint:"traf-fic"},{w:"absent",hint:"ab-sent"},
+        ],
+        blends:[
+          {sounds:"rab — bit", word:"rabbit"},{sounds:"mit — ten", word:"mitten"},
+          {sounds:"bas — ket", word:"basket"},{sounds:"nap — kin", word:"napkin"},
+          {sounds:"sun — set", word:"sunset"},{sounds:"den — tist", word:"dentist"},
+        ]
+      },
+      "4-5": {
+        ruleExample:["athletic","fantastic","establish","consistent","disconnect","represent"],
+        activity1Title:"Read these multisyllabic closed words!",
+        activity1Words:[
+          {w:"athletic",hint:"ath-let-ic"},{w:"fantastic",hint:"fan-tas-tic"},{w:"establish",hint:"es-tab-lish"},
+          {w:"consistent",hint:"con-sis-tent"},{w:"disconnect",hint:"dis-con-nect"},{w:"represent",hint:"rep-re-sent"},
+          {w:"manuscript",hint:"man-u-script"},{w:"suspect",hint:"sus-pect"},{w:"conflict",hint:"con-flict"},
+          {w:"construct",hint:"con-struct"},{w:"distinct",hint:"dis-tinct"},{w:"compact",hint:"com-pact"},
+        ],
+        blends:[
+          {sounds:"ath — let — ic", word:"athletic"},{sounds:"fan — tas — tic", word:"fantastic"},
+          {sounds:"es — tab — lish", word:"establish"},{sounds:"con — sis — tent", word:"consistent"},
+          {sounds:"dis — con — nect", word:"disconnect"},{sounds:"rep — re — sent", word:"represent"},
+        ]
+      }
+    }
+  },
+  {
+    id:"open", label:"2. Open", color:"#185FA5", light:"#E6F1FB",
+    rule:"An open syllable ends in a vowel with NOTHING after it. The vowel says its long sound (its name).",
+    grades: {
+      "K-1": {
+        ruleExample:["go","me","hi","no","be","she","we","so"],
+        activity1Title:"Read these open syllable words!",
+        activity1Words:[
+          {w:"go",hint:"g-o"},{w:"me",hint:"m-e"},{w:"hi",hint:"h-i"},
+          {w:"no",hint:"n-o"},{w:"be",hint:"b-e"},{w:"she",hint:"sh-e"},
+          {w:"we",hint:"w-e"},{w:"so",hint:"s-o"},{w:"he",hint:"h-e"},
+          {w:"my",hint:"m-y"},{w:"by",hint:"b-y"},{w:"do",hint:"d-o"},
+        ],
+        blends:[
+          {sounds:"g — o", word:"go"},{sounds:"m — e", word:"me"},
+          {sounds:"h — i", word:"hi"},{sounds:"n — o", word:"no"},
+          {sounds:"b — e", word:"be"},{sounds:"sh — e", word:"she"},
+        ]
+      },
+      "2-3": {
+        ruleExample:["robot","tiger","music","open","paper","hotel"],
+        activity1Title:"Read these two-syllable open words!",
+        activity1Words:[
+          {w:"robot",hint:"ro-bot"},{w:"tiger",hint:"ti-ger"},{w:"music",hint:"mu-sic"},
+          {w:"open",hint:"o-pen"},{w:"paper",hint:"pa-per"},{w:"hotel",hint:"ho-tel"},
+          {w:"bacon",hint:"ba-con"},{w:"legal",hint:"le-gal"},{w:"pilot",hint:"pi-lot"},
+          {w:"student",hint:"stu-dent"},{w:"frozen",hint:"fro-zen"},{w:"climate",hint:"cli-mate"},
+        ],
+        blends:[
+          {sounds:"ro — bot", word:"robot"},{sounds:"ti — ger", word:"tiger"},
+          {sounds:"mu — sic", word:"music"},{sounds:"o — pen", word:"open"},
+          {sounds:"pa — per", word:"paper"},{sounds:"ho — tel", word:"hotel"},
+        ]
+      },
+      "4-5": {
+        ruleExample:["rotation","duration","motivate","dominate","vocabulary","recreation"],
+        activity1Title:"Read these multisyllabic open words!",
+        activity1Words:[
+          {w:"rotation",hint:"ro-ta-tion"},{w:"duration",hint:"du-ra-tion"},{w:"motivate",hint:"mo-ti-vate"},
+          {w:"dominate",hint:"dom-i-nate"},{w:"vocabulary",hint:"vo-cab-u-lar-y"},{w:"recreation",hint:"rec-re-a-tion"},
+          {w:"migration",hint:"mi-gra-tion"},{w:"notation",hint:"no-ta-tion"},{w:"vibration",hint:"vi-bra-tion"},
+          {w:"location",hint:"lo-ca-tion"},{w:"relation",hint:"re-la-tion"},{w:"creation",hint:"cre-a-tion"},
+        ],
+        blends:[
+          {sounds:"ro — ta — tion", word:"rotation"},{sounds:"du — ra — tion", word:"duration"},
+          {sounds:"mo — ti — vate", word:"motivate"},{sounds:"lo — ca — tion", word:"location"},
+          {sounds:"mi — gra — tion", word:"migration"},{sounds:"cre — a — tion", word:"creation"},
+        ]
+      }
+    }
+  },
+  {
+    id:"silente", label:"3. Silent E", color:"#0F6E56", light:"#E1F5EE",
+    rule:"A silent E at the end of a word makes the vowel before the consonant say its long sound. The E is silent but powerful!",
+    grades: {
+      "K-1": {
+        ruleExample:["cake","bike","hope","cute","name","five","rose","mule"],
+        activity1Title:"Read these magic E words!",
+        activity1Words:[
+          {w:"cake",hint:"c-a-ke"},{w:"bike",hint:"b-i-ke"},{w:"hope",hint:"h-o-pe"},
+          {w:"cute",hint:"c-u-te"},{w:"name",hint:"n-a-me"},{w:"five",hint:"f-i-ve"},
+          {w:"rose",hint:"r-o-se"},{w:"mule",hint:"m-u-le"},{w:"gate",hint:"g-a-te"},
+          {w:"pine",hint:"p-i-ne"},{w:"bone",hint:"b-o-ne"},{w:"tune",hint:"t-u-ne"},
+        ],
+        blends:[
+          {sounds:"c — a — ke", word:"cake"},{sounds:"b — i — ke", word:"bike"},
+          {sounds:"h — o — pe", word:"hope"},{sounds:"n — a — me", word:"name"},
+          {sounds:"f — i — ve", word:"five"},{sounds:"r — o — se", word:"rose"},
+        ]
+      },
+      "2-3": {
+        ruleExample:["compete","inside","became","confuse","mistake","admire"],
+        activity1Title:"Read these silent E words!",
+        activity1Words:[
+          {w:"compete",hint:"com-pete"},{w:"inside",hint:"in-side"},{w:"became",hint:"be-came"},
+          {w:"confuse",hint:"con-fuse"},{w:"mistake",hint:"mis-take"},{w:"admire",hint:"ad-mire"},
+          {w:"escape",hint:"es-cape"},{w:"invite",hint:"in-vite"},{w:"include",hint:"in-clude"},
+          {w:"extreme",hint:"ex-treme"},{w:"suppose",hint:"sup-pose"},{w:"describe",hint:"de-scribe"},
+        ],
+        blends:[
+          {sounds:"com — pete", word:"compete"},{sounds:"in — side", word:"inside"},
+          {sounds:"be — came", word:"became"},{sounds:"mis — take", word:"mistake"},
+          {sounds:"in — vite", word:"invite"},{sounds:"es — cape", word:"escape"},
+        ]
+      },
+      "4-5": {
+        ruleExample:["elaborate","contribute","investigate","illuminate","motivate","celebrate"],
+        activity1Title:"Read these multisyllabic silent E words!",
+        activity1Words:[
+          {w:"elaborate",hint:"e-lab-o-rate"},{w:"contribute",hint:"con-trib-ute"},{w:"investigate",hint:"in-ves-ti-gate"},
+          {w:"illuminate",hint:"il-lu-mi-nate"},{w:"motivate",hint:"mo-ti-vate"},{w:"celebrate",hint:"cel-e-brate"},
+          {w:"demonstrate",hint:"dem-on-strate"},{w:"compensate",hint:"com-pen-sate"},{w:"abbreviate",hint:"ab-bre-vi-ate"},
+          {w:"accumulate",hint:"ac-cu-mu-late"},{w:"appreciate",hint:"ap-pre-ci-ate"},{w:"participate",hint:"par-tic-i-pate"},
+        ],
+        blends:[
+          {sounds:"e — lab — o — rate", word:"elaborate"},{sounds:"con — trib — ute", word:"contribute"},
+          {sounds:"in — ves — ti — gate", word:"investigate"},{sounds:"mo — ti — vate", word:"motivate"},
+          {sounds:"cel — e — brate", word:"celebrate"},{sounds:"dem — on — strate", word:"demonstrate"},
+        ]
+      }
+    }
+  },
+  {
+    id:"vowelteam", label:"4. Vowel Team", color:"#854F0B", light:"#FAEEDA",
+    rule:"A vowel team uses two or more vowels together to make one sound. When two vowels go walking, the first one does the talking!",
+    grades: {
+      "K-1": {
+        ruleExample:["rain","feet","boat","read","coat","dream","play","heat"],
+        activity1Title:"Read these vowel team words!",
+        activity1Words:[
+          {w:"rain",hint:"ai team"},{w:"feet",hint:"ee team"},{w:"boat",hint:"oa team"},
+          {w:"read",hint:"ea team"},{w:"coat",hint:"oa team"},{w:"dream",hint:"ea team"},
+          {w:"play",hint:"ay team"},{w:"heat",hint:"ea team"},{w:"mail",hint:"ai team"},
+          {w:"keep",hint:"ee team"},{w:"road",hint:"oa team"},{w:"tray",hint:"ay team"},
+        ],
+        blends:[
+          {sounds:"r — ai — n", word:"rain"},{sounds:"f — ee — t", word:"feet"},
+          {sounds:"b — oa — t", word:"boat"},{sounds:"r — ea — d", word:"read"},
+          {sounds:"pl — ay", word:"play"},{sounds:"h — ea — t", word:"heat"},
+        ]
+      },
+      "2-3": {
+        ruleExample:["explain","between","approach","complete","receive","contain"],
+        activity1Title:"Read these vowel team words!",
+        activity1Words:[
+          {w:"explain",hint:"ex-plain"},{w:"between",hint:"be-tween"},{w:"approach",hint:"ap-proach"},
+          {w:"complete",hint:"com-plete"},{w:"receive",hint:"re-ceive"},{w:"contain",hint:"con-tain"},
+          {w:"complain",hint:"com-plain"},{w:"remain",hint:"re-main"},{w:"proceed",hint:"pro-ceed"},
+          {w:"succeed",hint:"suc-ceed"},{w:"repeat",hint:"re-peat"},{w:"reveal",hint:"re-veal"},
+        ],
+        blends:[
+          {sounds:"ex — plain", word:"explain"},{sounds:"be — tween", word:"between"},
+          {sounds:"ap — proach", word:"approach"},{sounds:"con — tain", word:"contain"},
+          {sounds:"re — peat", word:"repeat"},{sounds:"suc — ceed", word:"succeed"},
+        ]
+      },
+      "4-5": {
+        ruleExample:["achievement","disagreement","misleading","concealing","disappoint","mainstream"],
+        activity1Title:"Read these multisyllabic vowel team words!",
+        activity1Words:[
+          {w:"achievement",hint:"a-chieve-ment"},{w:"disagreement",hint:"dis-a-gree-ment"},{w:"misleading",hint:"mis-lead-ing"},
+          {w:"concealing",hint:"con-ceal-ing"},{w:"disappoint",hint:"dis-ap-point"},{w:"mainstream",hint:"main-stream"},
+          {w:"complaint",hint:"com-plaint"},{w:"explained",hint:"ex-plained"},{w:"maintained",hint:"main-tained"},
+          {w:"achievement",hint:"a-chieve-ment"},{w:"treatment",hint:"treat-ment"},{w:"obtained",hint:"ob-tained"},
+        ],
+        blends:[
+          {sounds:"a — chieve — ment", word:"achievement"},{sounds:"dis — a — gree — ment", word:"disagreement"},
+          {sounds:"mis — lead — ing", word:"misleading"},{sounds:"con — ceal — ing", word:"concealing"},
+          {sounds:"dis — ap — point", word:"disappoint"},{sounds:"main — stream", word:"mainstream"},
+        ]
+      }
+    }
+  },
+  {
+    id:"rcontrolled", label:"5. R-Controlled", color:"#533AB7", light:"#EDE8FB",
+    rule:"When a vowel is followed by R, the R controls the vowel sound. We call it the Bossy R! The vowel no longer says its short or long sound.",
+    grades: {
+      "K-1": {
+        ruleExample:["car","bird","burn","corn","fern","star","hurt","fork"],
+        activity1Title:"Read these bossy R words!",
+        activity1Words:[
+          {w:"car",hint:"ar"},{w:"bird",hint:"ir"},{w:"burn",hint:"ur"},
+          {w:"corn",hint:"or"},{w:"fern",hint:"er"},{w:"star",hint:"ar"},
+          {w:"hurt",hint:"ur"},{w:"fork",hint:"or"},{w:"sir",hint:"ir"},
+          {w:"her",hint:"er"},{w:"far",hint:"ar"},{w:"born",hint:"or"},
+        ],
+        blends:[
+          {sounds:"c — ar", word:"car"},{sounds:"b — ir — d", word:"bird"},
+          {sounds:"b — ur — n", word:"burn"},{sounds:"c — or — n", word:"corn"},
+          {sounds:"f — er — n", word:"fern"},{sounds:"st — ar", word:"star"},
+        ]
+      },
+      "2-3": {
+        ruleExample:["market","garden","burger","corner","sister","perfect"],
+        activity1Title:"Read these r-controlled words!",
+        activity1Words:[
+          {w:"market",hint:"mar-ket"},{w:"garden",hint:"gar-den"},{w:"burger",hint:"bur-ger"},
+          {w:"corner",hint:"cor-ner"},{w:"sister",hint:"sis-ter"},{w:"perfect",hint:"per-fect"},
+          {w:"morning",hint:"mor-ning"},{w:"turkey",hint:"tur-key"},{w:"circus",hint:"cir-cus"},
+          {w:"certain",hint:"cer-tain"},{w:"dirty",hint:"dir-ty"},{w:"purple",hint:"pur-ple"},
+        ],
+        blends:[
+          {sounds:"mar — ket", word:"market"},{sounds:"gar — den", word:"garden"},
+          {sounds:"bur — ger", word:"burger"},{sounds:"cor — ner", word:"corner"},
+          {sounds:"per — fect", word:"perfect"},{sounds:"cir — cus", word:"circus"},
+        ]
+      },
+      "4-5": {
+        ruleExample:["surrender","particularly","furthermore","environment","corporation","furthermore"],
+        activity1Title:"Read these multisyllabic r-controlled words!",
+        activity1Words:[
+          {w:"surrender",hint:"sur-ren-der"},{w:"particularly",hint:"par-tic-u-lar-ly"},{w:"furthermore",hint:"fur-ther-more"},
+          {w:"environment",hint:"en-vi-ron-ment"},{w:"corporation",hint:"cor-po-ra-tion"},{w:"remarkable",hint:"re-mar-ka-ble"},
+          {w:"persistent",hint:"per-sis-tent"},{w:"interpret",hint:"in-ter-pret"},{w:"perfectly",hint:"per-fect-ly"},
+          {w:"government",hint:"gov-ern-ment"},{w:"furniture",hint:"fur-ni-ture"},{w:"iversity",hint:"u-ni-ver-si-ty"},
+        ],
+        blends:[
+          {sounds:"sur — ren — der", word:"surrender"},{sounds:"fur — ther — more", word:"furthermore"},
+          {sounds:"en — vi — ron — ment", word:"environment"},{sounds:"re — mar — ka — ble", word:"remarkable"},
+          {sounds:"per — sis — tent", word:"persistent"},{sounds:"gov — ern — ment", word:"government"},
+        ]
+      }
+    }
+  },
+  {
+    id:"consle", label:"6. Consonant-LE", color:"#A32D2D", light:"#FCEBEB",
+    rule:"A consonant-LE syllable comes at the END of a word. The E is silent. The consonant and LE make a final stable syllable together.",
+    grades: {
+      "K-1": {
+        ruleExample:["table","cable","little","bottle","purple","simple","candle","gentle"],
+        activity1Title:"Read these consonant-LE words!",
+        activity1Words:[
+          {w:"table",hint:"ta-ble"},{w:"cable",hint:"ca-ble"},{w:"little",hint:"lit-tle"},
+          {w:"bottle",hint:"bot-tle"},{w:"purple",hint:"pur-ple"},{w:"simple",hint:"sim-ple"},
+          {w:"candle",hint:"can-dle"},{w:"gentle",hint:"gen-tle"},{w:"apple",hint:"ap-ple"},
+          {w:"puzzle",hint:"puz-zle"},{w:"maple",hint:"ma-ple"},{w:"circle",hint:"cir-cle"},
+        ],
+        blends:[
+          {sounds:"ta — ble", word:"table"},{sounds:"lit — tle", word:"little"},
+          {sounds:"bot — tle", word:"bottle"},{sounds:"sim — ple", word:"simple"},
+          {sounds:"can — dle", word:"candle"},{sounds:"ap — ple", word:"apple"},
+        ]
+      },
+      "2-3": {
+        ruleExample:["possible","terrible","comfortable","responsible","incredible","acceptable"],
+        activity1Title:"Read these consonant-LE words!",
+        activity1Words:[
+          {w:"possible",hint:"pos-si-ble"},{w:"terrible",hint:"ter-ri-ble"},{w:"comfortable",hint:"com-for-ta-ble"},
+          {w:"responsible",hint:"re-spon-si-ble"},{w:"incredible",hint:"in-cred-i-ble"},{w:"acceptable",hint:"ac-cep-ta-ble"},
+          {w:"available",hint:"a-vail-a-ble"},{w:"vegetable",hint:"veg-e-ta-ble"},{w:"invisible",hint:"in-vis-i-ble"},
+          {w:"honorable",hint:"hon-or-a-ble"},{w:"reasonable",hint:"rea-son-a-ble"},{w:"memorable",hint:"mem-o-ra-ble"},
+        ],
+        blends:[
+          {sounds:"pos — si — ble", word:"possible"},{sounds:"ter — ri — ble", word:"terrible"},
+          {sounds:"com — for — ta — ble", word:"comfortable"},{sounds:"re — spon — si — ble", word:"responsible"},
+          {sounds:"in — cred — i — ble", word:"incredible"},{sounds:"veg — e — ta — ble", word:"vegetable"},
+        ]
+      },
+      "4-5": {
+        ruleExample:["indispensable","incomprehensible","irresponsible","uncomfortable","unreasonable","impenetrable"],
+        activity1Title:"Read these multisyllabic consonant-LE words!",
+        activity1Words:[
+          {w:"indispensable",hint:"in-dis-pen-sa-ble"},{w:"incomprehensible",hint:"in-com-pre-hen-si-ble"},{w:"irresponsible",hint:"ir-re-spon-si-ble"},
+          {w:"uncomfortable",hint:"un-com-for-ta-ble"},{w:"unreasonable",hint:"un-rea-son-a-ble"},{w:"impenetrable",hint:"im-pen-e-tra-ble"},
+          {w:"unimaginable",hint:"un-i-mag-i-na-ble"},{w:"unacceptable",hint:"un-ac-cep-ta-ble"},{w:"unforgettable",hint:"un-for-get-ta-ble"},
+          {w:"inseparable",hint:"in-sep-a-ra-ble"},{w:"incompatible",hint:"in-com-pat-i-ble"},{w:"invincible",hint:"in-vin-ci-ble"},
+        ],
+        blends:[
+          {sounds:"in — dis — pen — sa — ble", word:"indispensable"},{sounds:"ir — re — spon — si — ble", word:"irresponsible"},
+          {sounds:"un — com — for — ta — ble", word:"uncomfortable"},{sounds:"un — rea — son — a — ble", word:"unreasonable"},
+          {sounds:"un — for — get — ta — ble", word:"unforgettable"},{sounds:"in — vin — ci — ble", word:"invincible"},
+        ]
+      }
+    }
+  }
+];
+
+const grades = ["K-1","2-3","4-5"];
+let currentSyllable = 0;
+let currentGrade = "K-1";
+let totalScore = 0;
+let lastMilestone = 0;
+
+function addScore(n) {
+  totalScore += n;
+  const pct = Math.min(100, Math.round((totalScore / 100) * 100));
+  document.getElementById("prog").style.width = pct + "%";
+  document.getElementById("score-label").textContent = totalScore + " ⭐";
+  const toNext = 5 - (totalScore % 5);
+  document.getElementById("prize-label").textContent = toNext === 5 ? "Keep it up! 🎁" : toNext + " more for a prize! 🎁";
+  const milestone = Math.floor(totalScore / 5);
+  if (milestone > lastMilestone) { lastMilestone = milestone; showPrize(); }
+}
+
+function showPrize() {
+  const grid = document.getElementById("video-grid");
+  const pool = videosByGrade[currentGrade] || videosByGrade["K-1"];
+  const pick = [...pool].sort(() => Math.random() - 0.5).slice(0, 4);
+  grid.innerHTML = pick.map(v => `<a class="video-link" href="${v.url}" target="_blank"><div class="video-icon">▶️</div>${v.title}</a>`).join("");
+  document.getElementById("prize-modal").classList.add("show");
+}
+
+function closePrize() { document.getElementById("prize-modal").classList.remove("show"); }
+
+function buildSyllableTabs() {
+  const wrap = document.getElementById("syllable-tabs");
+  wrap.innerHTML = "";
+  syllableTypes.forEach((s, i) => {
+    const btn = document.createElement("button");
+    btn.className = "syllable-tab" + (i === currentSyllable ? " active" : "");
+    btn.textContent = s.label;
+    btn.onclick = () => { currentSyllable = i; render(); };
+    wrap.appendChild(btn);
+  });
+}
+
+function buildGradeTabs() {
+  const wrap = document.getElementById("grade-tabs");
+  wrap.innerHTML = "";
+  grades.forEach(g => {
+    const btn = document.createElement("button");
+    btn.className = "grade-tab" + (g === currentGrade ? " active" : "");
+    btn.textContent = "Grades " + g;
+    btn.onclick = () => { currentGrade = g; render(); };
+    wrap.appendChild(btn);
+  });
+}
+
+function markCard(id, correct) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove("correct","incorrect");
+  el.classList.add(correct ? "correct" : "incorrect");
+  if (correct) addScore(1);
+}
+
+function revealBlend(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add("show");
+}
+
+function markBlend(cardId, revealId, correct) {
+  const card = document.getElementById(cardId);
+  if (!card) return;
+  card.classList.remove("correct","incorrect");
+  card.classList.add(correct ? "correct" : "incorrect");
+  if (correct) addScore(1);
+}
+
+function render() {
+  buildSyllableTabs();
+  buildGradeTabs();
+  const s = syllableTypes[currentSyllable];
+  const g = s.grades[currentGrade];
+  const content = document.getElementById("main-content");
+
+  // Rule card
+  let html = `<div class="rule-card" style="border-color:${s.color};background:${s.light};">
+    <div class="rule-title" style="color:${s.color};">${s.label.replace(/^\d+\.\s*/,'')} Syllable</div>
+    <div class="rule-body">${s.rule}</div>
+    <div class="rule-examples">`;
+  g.ruleExample.forEach(w => {
+    html += `<div class="rule-example" style="background:${s.color};color:white;">${w}</div>`;
+  });
+  html += `</div></div>`;
+
+  // Read words activity
+  html += `<div class="activity-title">Read It!</div>`;
+  html += `<div class="word-grid">`;
+  g.activity1Words.forEach((item, i) => {
+    const id = `wc_${s.id}_${currentGrade}_${i}`;
+    html += `<div class="word-card" id="${id}">
+      <div class="word-big">${item.w}</div>
+      <div class="word-type">${item.hint}</div>
+      <div class="card-btns">
+        <button class="card-btn yes" onclick="markCard('${id}',true)">✅</button>
+        <button class="card-btn no" onclick="markCard('${id}',false)">❌</button>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  // Blend activity
+  html += `<div class="activity-title">Blend It!</div>`;
+  html += `<div class="blend-list">`;
+  g.blends.forEach((item, i) => {
+    const cardId = `bl_${s.id}_${currentGrade}_${i}`;
+    const revId = `blr_${s.id}_${currentGrade}_${i}`;
+    html += `<div class="blend-card" id="${cardId}">
+      <div class="blend-prompt">Blend these syllables into a word:</div>
+      <div class="blend-sounds">${item.sounds}</div>
+      <div class="blend-answer" id="${revId}">The word is: <strong>${item.word}</strong> 🎉</div>
+      <div class="blend-btns">
+        <button class="blend-btn reveal" onclick="revealBlend('${revId}')">👀 Reveal</button>
+        <button class="blend-btn yes" onclick="markBlend('${cardId}','${revId}',true)">✅ Got it!</button>
+        <button class="blend-btn no" onclick="markBlend('${cardId}','${revId}',false)">❌ Try again</button>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  content.innerHTML = html;
+}
+
+function resetAll() {
+  totalScore = 0;
+  lastMilestone = 0;
+  currentSyllable = 0;
+  currentGrade = "K-1";
+  document.getElementById("prog").style.width = "0%";
+  document.getElementById("score-label").textContent = "0 ⭐";
+  document.getElementById("prize-label").textContent = "5 for a prize! 🎁";
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phonics Fun — Revive Tutoring</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f0f7ff; color: #1a1a1a; }
+.header { background: #2E4057; color: white; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+.header h1 { font-size: 20px; font-weight: 600; }
+.header .sub { font-size: 13px; opacity: 0.7; }
+.reset-btn { padding: 6px 14px; font-size: 13px; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: transparent; cursor: pointer; color: white; }
+.reset-btn:hover { background: rgba(255,255,255,0.1); }
+.session-nav { display: flex; gap: 8px; padding: 12px 20px; background: #fff; border-bottom: 1px solid #e0e8f0; flex-wrap: wrap; }
+.session-btn { padding: 8px 16px; font-size: 14px; border: 2px solid #e0e8f0; border-radius: 20px; background: #fff; cursor: pointer; color: #555; font-weight: 500; transition: all 0.2s; }
+.session-btn.active { border-color: #1D9E75; background: #E1F5EE; color: #0F6E56; }
+.session-btn.done { border-color: #1D9E75; background: #1D9E75; color: white; }
+.progress-wrap { padding: 12px 20px; background: #fff; border-bottom: 1px solid #e0e8f0; }
+.progress-bar-bg { background: #e0e8f0; border-radius: 999px; height: 14px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #1D9E75, #0F6E56); border-radius: 999px; transition: width 0.4s; }
+.score-row { display: flex; justify-content: space-between; margin-top: 6px; font-size: 13px; color: #666; }
+.content { padding: 20px; max-width: 800px; margin: 0 auto; }
+.part-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.part-tab { padding: 8px 14px; font-size: 13px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; color: #666; }
+.part-tab.active { border-color: #185FA5; background: #E6F1FB; color: #185FA5; font-weight: 500; }
+.part-content { display: none; }
+.part-content.active { display: block; }
+.section-label { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.instructions-box { background: #fff; border: 1px solid #e0e8f0; border-radius: 12px; padding: 14px 16px; font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 16px; }
+.letter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.letter-card { background: #fff; border: 2px solid #e0e8f0; border-radius: 14px; padding: 14px 8px; text-align: center; cursor: default; transition: border-color 0.2s; }
+.letter-card.correct { border-color: #1D9E75; background: #E1F5EE; }
+.letter-card.incorrect { border-color: #E24B4A; background: #FCEBEB; }
+.ltr-big { font-size: 32px; font-weight: 700; color: #2E4057; line-height: 1; }
+.ltr-emoji { font-size: 28px; margin: 4px 0; }
+.ltr-word { font-size: 11px; color: #888; margin-bottom: 2px; }
+.ltr-sound { font-size: 13px; color: #0F6E56; font-weight: 600; margin-bottom: 8px; }
+.card-btns { display: flex; gap: 4px; justify-content: center; }
+.card-btn { padding: 4px 8px; font-size: 11px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; }
+.card-btn.yes { border-color: #1D9E75; color: #0F6E56; }
+.card-btn.yes:hover { background: #E1F5EE; }
+.card-btn.no { border-color: #E24B4A; color: #A32D2D; }
+.card-btn.no:hover { background: #FCEBEB; }
+.blend-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.blend-card { background: #fff; border: 2px solid #e0e8f0; border-radius: 14px; padding: 16px 20px; transition: border-color 0.2s; }
+.blend-card.correct { border-color: #1D9E75; background: #f0faf6; }
+.blend-card.incorrect { border-color: #E24B4A; background: #fff8f8; }
+.blend-sounds { font-size: 28px; font-weight: 700; color: #185FA5; letter-spacing: 6px; margin-bottom: 8px; }
+.blend-prompt { font-size: 13px; color: #888; margin-bottom: 6px; }
+.blend-reveal { font-size: 15px; color: #1D9E75; font-weight: 600; display: none; margin-bottom: 8px; }
+.blend-reveal.show { display: block; }
+.blend-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.blend-btn { padding: 6px 14px; font-size: 13px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; }
+.blend-btn.reveal-btn { border-color: #185FA5; color: #185FA5; }
+.blend-btn.reveal-btn:hover { background: #E6F1FB; }
+.blend-btn.yes { border-color: #1D9E75; color: #0F6E56; }
+.blend-btn.yes:hover { background: #E1F5EE; }
+.blend-btn.no { border-color: #E24B4A; color: #A32D2D; }
+.blend-btn.no:hover { background: #FCEBEB; }
+.word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.word-card { background: #fff; border: 2px solid #e0e8f0; border-radius: 14px; padding: 16px 8px; text-align: center; cursor: default; }
+.word-card.correct { border-color: #1D9E75; background: #E1F5EE; }
+.word-card.incorrect { border-color: #E24B4A; background: #FCEBEB; }
+.word-big { font-size: 26px; font-weight: 700; color: #185FA5; margin-bottom: 10px; letter-spacing: 3px; }
+.prize-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; }
+.prize-overlay.show { display: flex; }
+.prize-box { background: #fff; border-radius: 20px; padding: 2rem; max-width: 440px; width: 90%; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.prize-stars { font-size: 40px; margin-bottom: 8px; }
+.prize-title { font-size: 26px; font-weight: 700; color: #2E4057; margin-bottom: 6px; }
+.prize-sub { font-size: 15px; color: #666; margin-bottom: 1.5rem; }
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+.video-link { background: #f0f7ff; border-radius: 10px; padding: 12px 10px; text-decoration: none; color: #185FA5; font-size: 13px; border: 1px solid #c0d8f0; display: block; line-height: 1.5; font-weight: 500; transition: background 0.2s; }
+.video-link:hover { background: #dceefa; }
+.video-icon { font-size: 22px; margin-bottom: 4px; }
+.keep-going { padding: 10px 28px; font-size: 15px; border: 2px solid #1D9E75; border-radius: 10px; background: #1D9E75; cursor: pointer; color: white; font-weight: 600; }
+.keep-going:hover { background: #0F6E56; }
+.session-complete { background: #E1F5EE; border: 2px solid #1D9E75; border-radius: 14px; padding: 20px; text-align: center; margin-top: 20px; }
+.session-complete h2 { font-size: 22px; color: #0F6E56; margin-bottom: 8px; }
+.session-complete p { font-size: 14px; color: #555; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="h1" style="font-size:20px;font-weight:600;color:white;">⭐ Phonics Fun!</div>
+    <div class="sub">Revive Tutoring</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+</div>
+
+<div class="session-nav" id="session-nav"></div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog" style="width:0%"></div></div>
+  <div class="score-row">
+    <span id="score-label">Score: 0 ⭐</span>
+    <span id="next-prize-label">5 more for a prize! 🎁</span>
+  </div>
+</div>
+
+<div class="content" id="main-content"></div>
+
+<div class="prize-overlay" id="prize-modal">
+  <div class="prize-box">
+    <div class="prize-stars">🌟🎉🌟</div>
+    <div class="prize-title">Amazing job!</div>
+    <div class="prize-sub">You earned a video! Pick one to watch!</div>
+    <div class="video-grid" id="video-grid"></div>
+    <button class="keep-going" onclick="closePrize()">Keep going! ▶</button>
+  </div>
+</div>
+
+<script>
+const sessions = [
+  {
+    title: "Session 1",
+    subtitle: "Two sounds — let's blend!",
+    letters: ["A","E","I","O","U","M","S","T","B","P"],
+    letterEmoji: {"A":"🍎","E":"🥚","I":"🍦","O":"🐙","U":"☂️","M":"🌙","S":"☀️","T":"🐢","B":"🐝","P":"🐧"},
+    letterWord: {"A":"apple","E":"egg","I":"ice cream","O":"octopus","U":"umbrella","M":"moon","S":"sun","T":"turtle","B":"bee","P":"penguin"},
+    letterSound: {"A":"/a/","E":"/e/","I":"/i/","O":"/o/","U":"/u/","M":"/m/","S":"/s/","T":"/t/","B":"/b/","P":"/p/"},
+    oral: [
+      {display:"i — t", word:"it"},
+      {display:"a — t", word:"at"},
+      {display:"a — m", word:"am"},
+      {display:"u — p", word:"up"},
+      {display:"i — n", word:"in"},
+      {display:"o — n", word:"on"},
+      {display:"u — s", word:"us"},
+      {display:"a — n", word:"an"},
+    ],
+    bridge: [
+      {display:"a — t", word:"at"},
+      {display:"a — m", word:"am"},
+      {display:"i — t", word:"it"},
+      {display:"u — p", word:"up"},
+      {display:"i — n", word:"in"},
+    ],
+    decode: ["at","am","it","up","in","on","us","an"]
+  },
+  {
+    title: "Session 2",
+    subtitle: "Short a and i words!",
+    letters: ["A","I","S","T","M","P","B","D","F","H","R"],
+    letterEmoji: {"A":"🍎","I":"🍦","S":"☀️","T":"🐢","M":"🌙","P":"🐧","B":"🐝","D":"🐶","F":"🐟","H":"🏠","R":"🌈"},
+    letterWord: {"A":"apple","I":"ice cream","S":"sun","T":"turtle","M":"moon","P":"penguin","B":"bee","D":"dog","F":"fish","H":"house","R":"rainbow"},
+    letterSound: {"A":"/a/","I":"/i/","S":"/s/","T":"/t/","M":"/m/","P":"/p/","B":"/b/","D":"/d/","F":"/f/","H":"/h/","R":"/r/"},
+    oral: [
+      {display:"s — a — t", word:"sat"},
+      {display:"m — a — p", word:"map"},
+      {display:"h — a — t", word:"hat"},
+      {display:"t — a — p", word:"tap"},
+      {display:"f — a — n", word:"fan"},
+      {display:"s — i — t", word:"sit"},
+      {display:"b — i — g", word:"big"},
+      {display:"d — i — g", word:"dig"},
+      {display:"r — i — p", word:"rip"},
+      {display:"f — i — n", word:"fin"},
+    ],
+    bridge: [
+      {display:"s — a — t", word:"sat"},
+      {display:"m — a — p", word:"map"},
+      {display:"s — i — t", word:"sit"},
+      {display:"b — i — g", word:"big"},
+      {display:"h — a — t", word:"hat"},
+    ],
+    decode: ["sat","map","hat","tap","sit","big","dig","rip","fan","fin"]
+  },
+  {
+    title: "Session 3",
+    subtitle: "Short o, e, and u!",
+    letters: ["O","E","U","H","N","G","L","C","J","W"],
+    letterEmoji: {"O":"🐙","E":"🥚","U":"☂️","H":"🏠","N":"🪺","G":"🍇","L":"🦁","C":"🐱","J":"🫙","W":"🐋"},
+    letterWord: {"O":"octopus","E":"egg","U":"umbrella","H":"house","N":"nest","G":"grapes","L":"lion","C":"cat","J":"jar","W":"whale"},
+    letterSound: {"O":"/o/","E":"/e/","U":"/u/","H":"/h/","N":"/n/","G":"/g/","L":"/l/","C":"/k/","J":"/j/","W":"/w/"},
+    oral: [
+      {display:"h — o — p", word:"hop"},
+      {display:"d — o — g", word:"dog"},
+      {display:"t — o — p", word:"top"},
+      {display:"h — o — t", word:"hot"},
+      {display:"b — e — d", word:"bed"},
+      {display:"n — e — t", word:"net"},
+      {display:"l — e — g", word:"leg"},
+      {display:"p — e — t", word:"pet"},
+      {display:"c — u — p", word:"cup"},
+      {display:"b — u — g", word:"bug"},
+    ],
+    bridge: [
+      {display:"h — o — p", word:"hop"},
+      {display:"b — e — d", word:"bed"},
+      {display:"c — u — p", word:"cup"},
+      {display:"d — o — g", word:"dog"},
+      {display:"n — e — t", word:"net"},
+    ],
+    decode: ["hop","dog","bed","net","cup","bug","top","leg","hot","pet"]
+  },
+  {
+    title: "Session 4",
+    subtitle: "Mix it all up — you've got this!",
+    letters: ["A","E","I","O","U","F","R","J","W","X","Y","Z"],
+    letterEmoji: {"A":"🍎","E":"🥚","I":"🍦","O":"🐙","U":"☂️","F":"🐟","R":"🌈","J":"🫙","W":"🐋","X":"🎻","Y":"🧶","Z":"🦓"},
+    letterWord: {"A":"apple","E":"egg","I":"ice cream","O":"octopus","U":"umbrella","F":"fish","R":"rainbow","J":"jar","W":"whale","X":"xylophone","Y":"yarn","Z":"zebra"},
+    letterSound: {"A":"/a/","E":"/e/","I":"/i/","O":"/o/","U":"/u/","F":"/f/","R":"/r/","J":"/j/","W":"/w/","X":"/ks/","Y":"/y/","Z":"/z/"},
+    oral: [
+      {display:"f — u — n", word:"fun"},
+      {display:"r — u — n", word:"run"},
+      {display:"s — u — n", word:"sun"},
+      {display:"m — u — d", word:"mud"},
+      {display:"p — i — n", word:"pin"},
+      {display:"w — i — n", word:"win"},
+      {display:"d — o — t", word:"dot"},
+      {display:"r — o — b", word:"rob"},
+      {display:"h — e — m", word:"hem"},
+      {display:"j — e — t", word:"jet"},
+    ],
+    bridge: [
+      {display:"f — u — n", word:"fun"},
+      {display:"p — i — n", word:"pin"},
+      {display:"d — o — t", word:"dot"},
+      {display:"h — e — m", word:"hem"},
+      {display:"m — u — d", word:"mud"},
+    ],
+    decode: ["fun","run","pin","win","dot","rob","hem","jet","mud","sun","map","sit","hop","bed","cup"]
+  }
+];
+
+const videos = [
+  {
+    "title": "Alphablocks \u2014 Red Level Full Episodes",
+    "url": "https://www.youtube.com/watch?v=7BHNPlCRrRo"
+  },
+  {
+    "title": "Alphablocks \u2014 Season 2 Full Episode",
+    "url": "https://www.youtube.com/watch?v=IdIP3BGx11M"
+  },
+  {
+    "title": "Jack Hartmann \u2014 Stretchy the Word Snake",
+    "url": "https://www.youtube.com/watch?v=xIBjAWkPzNA"
+  },
+  {
+    "title": "Jack Hartmann \u2014 CVC Words Short A",
+    "url": "https://www.youtube.com/watch?v=oDVAhDyHZaA"
+  },
+  {
+    "title": "Jack Hartmann \u2014 CVC Words Short I",
+    "url": "https://www.youtube.com/watch?v=13clYehVJHo"
+  },
+  {
+    "title": "Jack Hartmann \u2014 Blendable Letter Sounds",
+    "url": "https://www.youtube.com/watch?v=K8Dh_cubb-4"
+  },
+  {
+    "title": "Jack Hartmann \u2014 Let's Make Words",
+    "url": "https://www.youtube.com/watch?v=RyRwuV0SPzA"
+  },
+  {
+    "title": "Super Simple ABCs Phonics Songs",
+    "url": "https://www.youtube.com/watch?v=EVTB8xIHWU0"
+  }
+];
+
+let currentSession = 0;
+let currentPart = "letters";
+let totalScore = 0;
+let lastMilestone = 0;
+
+function buildNav() {
+  const nav = document.getElementById("session-nav");
+  nav.innerHTML = "";
+  sessions.forEach((s, i) => {
+    const btn = document.createElement("button");
+    btn.className = "session-btn" + (i === currentSession ? " active" : "");
+    btn.textContent = s.title + " " + (i < currentSession ? "✓" : "");
+    btn.onclick = () => { currentSession = i; currentPart = "letters"; render(); };
+    nav.appendChild(btn);
+  });
+}
+
+function render() {
+  buildNav();
+  const s = sessions[currentSession];
+  const content = document.getElementById("main-content");
+
+  const tabs = [
+    {id:"letters", label:"1 — Letter Sounds 🔤"},
+    {id:"oral", label:"2 — Oral Blending 👂"},
+    {id:"bridge", label:"3 — Bridge to Print 🔡"},
+    {id:"decode", label:"4 — Read It! 📖"},
+  ];
+
+  let html = `<div style="margin-bottom:16px;">
+    <div style="font-size:22px;font-weight:700;color:#2E4057;margin-bottom:2px;">${s.title}: ${s.subtitle}</div>
+  </div>
+  <div class="part-tabs">`;
+  tabs.forEach(t => {
+    html += `<button class="part-tab${currentPart===t.id?' active':''}" onclick="switchPart('${t.id}')">${t.label}</button>`;
+  });
+  html += `</div>`;
+
+  if (currentPart === "letters") {
+    html += `<div class="instructions-box">Say the letter, the sound it makes, and the picture word! Click ✅ or ❌ after answering.</div>`;
+    html += `<div class="letter-grid">`;
+    s.letters.forEach((l, i) => {
+      html += `<div class="letter-card" id="lc_${currentSession}_${i}">
+        <div class="ltr-big">${l}</div>
+        <div class="ltr-emoji">${s.letterEmoji[l]}</div>
+        <div class="ltr-word">${s.letterWord[l]}</div>
+        <div class="ltr-sound">${s.letterSound[l]}</div>
+        <div class="card-btns">
+          <button class="card-btn yes" onclick="markCard('lc_${currentSession}_${i}',true)">✅</button>
+          <button class="card-btn no" onclick="markCard('lc_${currentSession}_${i}',false)">❌</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  else if (currentPart === "oral") {
+    html += `<div class="instructions-box">🎧 Listen carefully! Your teacher will say the sounds slowly. Can you put them together into a word?</div>`;
+    html += `<div class="blend-list">`;
+    s.oral.forEach((item, i) => {
+      html += `<div class="blend-card" id="oral_${currentSession}_${i}">
+        <div class="blend-prompt">What word do these sounds make?</div>
+        <div class="blend-sounds">${item.display}</div>
+        <div class="blend-reveal" id="oralrev_${currentSession}_${i}">The word is: <strong>${item.word}</strong> 🎉</div>
+        <div class="blend-btns">
+          <button class="blend-btn reveal-btn" onclick="revealBlend('oralrev_${currentSession}_${i}')">👀 Reveal</button>
+          <button class="blend-btn yes" onclick="markBlend('oral_${currentSession}_${i}',true)">✅ Got it!</button>
+          <button class="blend-btn no" onclick="markBlend('oral_${currentSession}_${i}',false)">❌ Try again</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  else if (currentPart === "bridge") {
+    html += `<div class="instructions-box">🔡 Look at the letters! Say each sound, then slide them together into one word.</div>`;
+    html += `<div class="blend-list">`;
+    s.bridge.forEach((item, i) => {
+      html += `<div class="blend-card" id="bridge_${currentSession}_${i}">
+        <div class="blend-prompt">Look at the letters and blend them!</div>
+        <div class="blend-sounds">${item.display}</div>
+        <div class="blend-reveal" id="bridgerev_${currentSession}_${i}">The word is: <strong>${item.word}</strong> 🎉</div>
+        <div class="blend-btns">
+          <button class="blend-btn reveal-btn" onclick="revealBlend('bridgerev_${currentSession}_${i}')">👀 Reveal</button>
+          <button class="blend-btn yes" onclick="markBlend('bridge_${currentSession}_${i}',true)">✅ Got it!</button>
+          <button class="blend-btn no" onclick="markBlend('bridge_${currentSession}_${i}',false)">❌ Try again</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  else if (currentPart === "decode") {
+    html += `<div class="instructions-box">📖 Read each word! Sound it out letter by letter, then say the whole word.</div>`;
+    html += `<div class="word-grid">`;
+    s.decode.forEach((word, i) => {
+      const letters = word.split("").join(" — ");
+      html += `<div class="word-card" id="dec_${currentSession}_${i}">
+        <div class="word-big">${word}</div>
+        <div style="font-size:13px;color:#888;margin-bottom:10px;">${letters}</div>
+        <div class="card-btns">
+          <button class="card-btn yes" onclick="markCard('dec_${currentSession}_${i}',true)">✅</button>
+          <button class="card-btn no" onclick="markCard('dec_${currentSession}_${i}',false)">❌</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  content.innerHTML = html;
+}
+
+function switchPart(part) {
+  currentPart = part;
+  render();
+}
+
+function markCard(id, correct) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove("correct","incorrect");
+  el.classList.add(correct ? "correct" : "incorrect");
+  if (correct) addScore(1);
+}
+
+function revealBlend(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add("show");
+}
+
+function markBlend(id, correct) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove("correct","incorrect");
+  el.classList.add(correct ? "correct" : "incorrect");
+  if (correct) addScore(1);
+}
+
+function addScore(n) {
+  totalScore += n;
+  const pct = Math.min(100, Math.round((totalScore / 80) * 100));
+  document.getElementById("prog").style.width = pct + "%";
+  document.getElementById("score-label").textContent = "Score: " + totalScore + " ⭐";
+  const toNext = 5 - (totalScore % 5);
+  document.getElementById("next-prize-label").textContent = toNext === 5 ? "Keep it up! 🎁" : toNext + " more for a prize! 🎁";
+  const milestone = Math.floor(totalScore / 5);
+  if (milestone > lastMilestone) {
+    lastMilestone = milestone;
+    showPrize();
+  }
+}
+
+function showPrize() {
+  const grid = document.getElementById("video-grid");
+  const pick = [...videos].sort(() => Math.random() - 0.5).slice(0, 4);
+  grid.innerHTML = pick.map(v => `<a class="video-link" href="${v.url}" target="_blank"><div class="video-icon">▶️</div>${v.title}</a>`).join("");
+  document.getElementById("prize-modal").classList.add("show");
+}
+
+function closePrize() {
+  document.getElementById("prize-modal").classList.remove("show");
+}
+
+function resetAll() {
+  totalScore = 0;
+  lastMilestone = 0;
+  currentSession = 0;
+  currentPart = "letters";
+  document.getElementById("prog").style.width = "0%";
+  document.getElementById("score-label").textContent = "Score: 0 ⭐";
+  document.getElementById("next-prize-label").textContent = "5 more for a prize! 🎁";
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

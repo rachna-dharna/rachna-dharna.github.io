@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Early Reading Checklist — Revive Tutoring</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Lato', sans-serif; background: #fff; color: #1a1a1a; }
+
+.page { max-width: 800px; margin: 0 auto; padding: 0; }
+
+/* COVER */
+.cover { background: #2E4057; padding: 48px 40px 40px; text-align: center; position: relative; overflow: hidden; }
+.cover-circles { position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+.cover-circles2 { position: absolute; bottom: -60px; left: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+.cover-emoji-row { font-size: 36px; margin-bottom: 20px; letter-spacing: 8px; }
+.cover h1 { font-family: 'Nunito', sans-serif; font-size: 32px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 10px; }
+.cover h1 span { color: #5DCAA5; }
+.cover-sub { font-size: 16px; color: rgba(255,255,255,0.75); margin-bottom: 24px; line-height: 1.6; }
+.cover-grade { display: inline-block; background: #1D9E75; color: white; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; padding: 6px 18px; border-radius: 20px; margin-bottom: 8px; }
+.cover-brand { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 24px; }
+.cover-brand a { color: rgba(255,255,255,0.7); text-decoration: none; }
+
+/* INTRO */
+.intro { padding: 32px 40px; background: #f8fdf9; border-bottom: 3px solid #E1F5EE; }
+.intro h2 { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: #2E4057; margin-bottom: 10px; }
+.intro p { font-size: 15px; line-height: 1.8; color: #444; }
+.intro p + p { margin-top: 10px; }
+.how-to-use { background: #fff; border: 2px solid #E1F5EE; border-radius: 14px; padding: 16px 20px; margin-top: 20px; }
+.how-to-use h3 { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #1A6B5C; margin-bottom: 10px; }
+.scale-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.scale-pill { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+.pill-no { background: #FCEBEB; color: #A32D2D; }
+.pill-some { background: #FAEEDA; color: #854F0B; }
+.pill-yes { background: #E1F5EE; color: #0F6E56; }
+
+/* SECTION */
+.section { padding: 28px 40px; border-bottom: 1px solid #f0f0f0; }
+.section:nth-child(odd) { background: #fff; }
+.section:nth-child(even) { background: #fafafa; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.section-icon { font-size: 36px; flex-shrink: 0; }
+.section-title { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: #2E4057; }
+.section-grade { font-size: 12px; color: #888; font-weight: 400; }
+.section-desc { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 20px; padding-left: 50px; }
+.checklist { display: flex; flex-direction: column; gap: 10px; }
+.check-item { background: #fff; border: 1.5px solid #e8eef4; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+.check-text { flex: 1; font-size: 14px; color: #333; line-height: 1.5; }
+.check-text .example { font-size: 12px; color: #888; margin-top: 3px; }
+.check-emoji { font-size: 22px; flex-shrink: 0; width: 32px; text-align: center; }
+.check-scale { display: flex; gap: 6px; flex-shrink: 0; }
+.scale-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #e0e0e0; background: #fff; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.scale-btn:hover { transform: scale(1.1); }
+.scale-btn.sel-no { border-color: #E24B4A; background: #FCEBEB; }
+.scale-btn.sel-some { border-color: #EF9F27; background: #FAEEDA; }
+.scale-btn.sel-yes { border-color: #1D9E75; background: #E1F5EE; }
+
+/* RESULTS */
+.results { padding: 28px 40px; background: #fff; border-bottom: 1px solid #f0f0f0; }
+.results h2 { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: #2E4057; margin-bottom: 16px; }
+.result-card { border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; border: 1.5px solid; }
+.result-card.mostly-yes { border-color: #1D9E75; background: #f0faf6; }
+.result-card.some-not-yet { border-color: #EF9F27; background: #fffbf0; }
+.result-card.mostly-no { border-color: #E24B4A; background: #fff8f8; }
+.result-card h3 { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+.mostly-yes h3 { color: #0F6E56; }
+.some-not-yet h3 { color: #854F0B; }
+.mostly-no h3 { color: #A32D2D; }
+.result-card p { font-size: 13px; line-height: 1.7; color: #555; }
+
+/* CTA */
+.cta { padding: 32px 40px; background: #2E4057; text-align: center; }
+.cta h2 { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.cta p { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 20px; }
+.cta-info { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+.cta-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 20px; color: white; font-size: 14px; }
+.cta-item a { color: #5DCAA5; text-decoration: none; }
+.cta-item a:hover { text-decoration: underline; }
+.cta-note { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+@media print {
+  .scale-btn { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+.action-bar { position: sticky; bottom: 0; background: #fff; border-top: 1px solid #e0e8f0; padding: 12px 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; z-index: 50; }
+.action-btn { padding: 10px 24px; font-size: 14px; border-radius: 8px; cursor: pointer; font-family: system-ui, sans-serif; font-weight: 600; border: 2px solid; transition: all 0.2s; }
+.btn-reset { border-color: #ccc; background: #fff; color: #555; }
+.btn-reset:hover { background: #f5f5f0; }
+.btn-email { border-color: #1D9E75; background: #1D9E75; color: white; }
+.btn-email:hover { background: #0F6E56; border-color: #0F6E56; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-circles"></div>
+    <div class="cover-circles2"></div>
+    <div class="cover-emoji-row">📚 🔤 ⭐</div>
+    <h1>Is My Child on Track<br>with <span>Reading?</span></h1>
+    <div class="cover-sub">A free early reading checklist for parents to identify areas of concern.</div>
+    <div class="cover-grade">Kindergarten through 2nd Grade</div>
+    <div style="margin-bottom:16px;">
+    <button onclick="window.print()" style="padding:8px 20px;font-size:13px;border:1px solid rgba(255,255,255,0.4);border-radius:8px;background:transparent;cursor:pointer;color:white;font-family:system-ui,sans-serif;">Print / Save as PDF</button>
+  </div>
+  <div class="cover-brand">Created by <a href="https://www.revivetutoring.com">Revive Tutoring</a> &nbsp;|&nbsp; Rachna Deepa Dharna, M.A. &nbsp;|&nbsp; Reading and Literacy Authorization</div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <h2>Why Early Reading Skills Matter</h2>
+    <p>Reading struggles rarely appear out of nowhere. Most of the time, there are early signs. A child who cannot quite hear the sounds in words, who guesses words instead of sounding them out, or who can identify letters but still cannot blend them together.</p>
+    <p>The good news: when caught early, these gaps are very addressable. This checklist covers five foundational reading skills that research shows predict reading success. It is not a diagnosis but simply a starting point for a conversation about your child's reading skills.</p>
+    <div class="how-to-use">
+      <h3>How to use this checklist</h3>
+      <p style="font-size:14px;color:#444;margin-bottom:12px;">Go through each item and mark how your child does. Be honest. There are no wrong answers here.</p>
+      <div class="scale-row">
+        <div class="scale-pill pill-no">❌ Not yet</div>
+        <div class="scale-pill pill-some">🟡 Sometimes</div>
+        <div class="scale-pill pill-yes">✅ Yes!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: PHONOLOGICAL AWARENESS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">👂</div>
+      <div>
+        <div class="section-title">Phonological Awareness</div>
+        <div class="section-grade">Hearing and playing with sounds in words</div>
+      </div>
+    </div>
+    <div class="section-desc">Before children can read, they need to hear the sounds that make up words. This is called phonological awareness, and it has nothing to do with letters yet. It is all about listening.</div>
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-emoji">🎵</div>
+        <div class="check-text">
+          My child can tell if two words rhyme.
+          <div class="example">Example: "Do cat and hat rhyme? Yes! Do dog and cup rhyme? No."</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" title="Not yet" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" title="Sometimes" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" title="Yes" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">👏</div>
+        <div class="check-text">
+          My child can clap or tap the syllables in a word.
+          <div class="example">Example: "rain-bow" = 2 claps. "hel-i-cop-ter" = 4 claps.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">🔊</div>
+        <div class="check-text">
+          My child can hear the first sound in a word.
+          <div class="example">Example: "What sound does sun start with? /s/!"</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">🧩</div>
+        <div class="check-text">
+          My child can blend sounds together into a word when I say them slowly.
+          <div class="example">Example: You say "/c/... /a/... /t/" and the child says "cat!"</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">✂️</div>
+        <div class="check-text">
+          My child can break a simple word into its individual sounds.
+          <div class="example">Example: "What sounds do you hear in 'map'? /m/ /a/ /p/!"</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: LETTER SOUNDS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🔤</div>
+      <div>
+        <div class="section-title">Letter Sound Knowledge</div>
+        <div class="section-grade">Knowing what sounds letters make</div>
+      </div>
+    </div>
+    <div class="section-desc">Knowing letter names is just the beginning. What matters for reading is knowing the sound each letter makes and being able to recall it quickly without hesitation.</div>
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-emoji">🔡</div>
+        <div class="check-text">
+          My child knows the sounds of most consonants (b, d, f, g, h, j, k, l, m, n, p, r, s, t, v, w, z).
+          <div class="example">Example: Show the letter "b" and the child says "/b/" not just "bee."</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">🗣️</div>
+        <div class="check-text">
+          My child knows the short vowel sounds (a as in apple, e as in egg, i as in itch, o as in octopus, u as in umbrella).
+          <div class="example">Short vowels are the most common sounds in early reading words.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">⚡</div>
+        <div class="check-text">
+          My child can recall letter sounds quickly, without long pauses.
+          <div class="example">Slow, effortful recall means the sound is not yet automatic. Automaticity is key to fluent reading.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: DECODING -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🔍</div>
+      <div>
+        <div class="section-title">Decoding</div>
+        <div class="section-grade">Sounding out words on the page</div>
+      </div>
+    </div>
+    <div class="section-desc">Decoding is the ability to look at a printed word, apply letter-sound knowledge, and blend the sounds into a word. It is the core reading skill and the one that breaks down most visibly when a child is struggling.</div>
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-emoji">📝</div>
+        <div class="check-text">
+          My child can read simple 3-letter words by sounding them out (cat, sit, hop, bed, fun).
+          <div class="example">These are called CVC words: consonant, vowel, consonant. They are the first real words children decode.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">🚫</div>
+        <div class="check-text">
+          My child sounds out words rather than guessing from pictures or the first letter.
+          <div class="example">Guessing is a sign the child does not yet trust their decoding skills or has not fully developed them.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">🔁</div>
+        <div class="check-text">
+          When my child makes a reading error, they notice it and try to fix it.
+          <div class="example">Self-correction shows the child is monitoring meaning and applying phonics knowledge.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: SIGHT WORDS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">👁️</div>
+      <div>
+        <div class="section-title">Sight Word Recognition</div>
+        <div class="section-grade">Reading common words instantly</div>
+      </div>
+    </div>
+    <div class="section-desc">Some of the most common words in books like "the," "said," "they," and "have" are tricky to sound out. Children need to recognize these words instantly, by sight, to read fluently.</div>
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-emoji">⚡</div>
+        <div class="check-text">
+          My child can read the most common sight words instantly (the, and, a, to, is, he, she, was, said, you).
+          <div class="example">If they have to sound these out every time, reading will feel slow and tiring.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">📖</div>
+        <div class="check-text">
+          My child recognizes sight words in books, not just on flashcards.
+          <div class="example">Some children memorize words in isolation but don't recognize them in running text.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: COMPREHENSION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💭</div>
+      <div>
+        <div class="section-title">Listening Comprehension</div>
+        <div class="section-grade">Understanding what is read or heard</div>
+      </div>
+    </div>
+    <div class="section-desc">Even before children can read independently, they should be able to understand stories read aloud to them. Comprehension skills develop through listening first — and they predict reading comprehension later on.</div>
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-emoji">🗣️</div>
+        <div class="check-text">
+          After hearing a story read aloud, my child can retell what happened in their own words.
+          <div class="example">Even a simple retell like "the bear got lost and then found his mom" shows comprehension is developing.</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">❓</div>
+        <div class="check-text">
+          My child can answer simple questions about a story (who, what, where).
+          <div class="example">Example: "Who was the story about?" "Where did they go?" "What happened at the end?"</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-emoji">🤔</div>
+        <div class="check-text">
+          My child can make a simple prediction or inference about a story.
+          <div class="example">Example: "Why do you think the character felt sad?" or "What do you think will happen next?"</div>
+        </div>
+        <div class="check-scale">
+          <button class="scale-btn" onclick="mark(this,'no')">❌</button>
+          <button class="scale-btn" onclick="mark(this,'some')">🟡</button>
+          <button class="scale-btn" onclick="mark(this,'yes')">✅</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results">
+    <h2>What Your Results Mean</h2>
+    <div class="result-card mostly-yes">
+      <h3>✅ Mostly "Yes!" — Your child is on track</h3>
+      <p>Your child is building strong reading foundations. Keep reading together daily, visit your local library, and celebrate their progress. If you have any lingering concerns, a brief check-in with a reading specialist can offer some answers.</p>
+    </div>
+    <div class="result-card some-not-yet">
+      <h3>🟡 A mix of "Sometimes" and "Not yet" — Worth a closer look</h3>
+      <p>Your child may have gaps in one or two areas that are starting to affect their reading confidence. The earlier these are addressed, the easier they are to close. Consider a reading assessment to pinpoint exactly where support is needed.</p>
+    </div>
+    <div class="result-card mostly-no">
+      <h3>❌ Mostly "Not yet" — Early support is recommended</h3>
+      <p>Your child is showing signs of foundational reading gaps that are likely to grow without targeted instruction. This is not a reflection of intelligence. Many children simply need explicit, structured teaching that schools do not always provide. Reaching out to a reading specialist is a strong next step.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Questions? We are here to help.</h2>
+    <p>Revive Tutoring specializes in targeted, skill-based reading and literacy instruction for K–12 students. If this checklist raised concerns, reach out — a conversation costs nothing.</p>
+    <div class="cta-info">
+      <div class="cta-item">🌐 <a href="https://www.revivetutoring.com">revivetutoring.com</a></div>
+      <div class="cta-item">✉️ <a href="mailto:rachna@revivetutoring.com">rachna@revivetutoring.com</a></div>
+      <div class="cta-item">📍 San Carlos, CA &nbsp;|&nbsp; In-person + Virtual</div>
+    </div>
+    <div class="cta-note">Rachna Deepa Dharna, M.A. &nbsp;|&nbsp; Single Subject Teaching Credential &nbsp;|&nbsp; Reading and Literacy Authorization</div>
+  </div>
+
+</div>
+<script>
+function mark(btn, val) {
+  const group = btn.closest('.check-scale');
+  group.querySelectorAll('.scale-btn').forEach(b => {
+    b.classList.remove('sel-no','sel-some','sel-yes');
+  });
+  btn.classList.add(val === 'no' ? 'sel-no' : val === 'some' ? 'sel-some' : 'sel-yes');
+}
+</script>
+
+<div class="action-bar">
+  <button class="action-btn btn-reset" onclick="resetAll()">↺ Start Over</button>
+  <button class="action-btn btn-email" onclick="emailResults()">Share My Results with Rachna</button>
+</div>
+
+<script>
+function resetAll() {
+  document.querySelectorAll('.scale-btn').forEach(b => {
+    b.classList.remove('sel-no','sel-some','sel-yes');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function emailResults() {
+  const sections = {
+    'Phonological Awareness': [],
+    'Letter Sound Knowledge': [],
+    'Decoding': [],
+    'Sight Word Recognition': [],
+    'Listening Comprehension': []
+  };
+
+  const items = document.querySelectorAll('.check-item');
+  const sectionNames = Object.keys(sections);
+  const counts = [5, 3, 3, 2, 3];
+  let idx = 0;
+  let sIdx = 0;
+  let sCount = 0;
+
+  items.forEach(item => {
+    const text = item.querySelector('.check-text').firstChild.textContent.trim();
+    const sel = item.querySelector('.sel-no, .sel-some, .sel-yes');
+    const result = sel ? (sel.classList.contains('sel-no') ? 'Not Yet' : sel.classList.contains('sel-some') ? 'Sometimes' : 'Yes!') : 'Not answered';
+    sections[sectionNames[sIdx]].push(text.substring(0, 60) + '... ' + result);
+    sCount++;
+    if (sCount >= counts[sIdx]) { sIdx++; sCount = 0; }
+  });
+
+  let body = "Hi Rachna,%0D%0A%0D%0AI completed the Early Reading Checklist for my child and wanted to share my results.%0D%0A%0D%0A";
+  for (const [section, items] of Object.entries(sections)) {
+    body += section.toUpperCase() + "%0D%0A";
+    items.forEach(i => { body += "- " + i + "%0D%0A"; });
+    body += "%0D%0A";
+  }
+  body += "I would love to learn more about scheduling an assessment. Please let me know the next steps.%0D%0A%0D%0AThank you!";
+
+  window.location.href = "mailto:rachna@revivetutoring.com?subject=Early Reading Checklist Results&body=" + body;
+}
+</script>
+
+<div class="action-bar">
+  <button class="action-btn btn-reset" onclick="resetAll()">&#8635; Start Over</button>
+  <button class="action-btn btn-email" onclick="emailResults()">Share My Results with Rachna</button>
+</div>
+
+</body>
+</html>
