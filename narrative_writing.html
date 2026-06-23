@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narrative Writing: Telling a True Story - Revive Tutoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#eef4f0;color:#1a1a1a}
+.hdr{background:#1a3a2a;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.hdr-t{font-size:18px;font-weight:800;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.6)}
+.rst{padding:6px 14px;font-size:12px;border:1px solid rgba(255,255,255,.4);border-radius:8px;background:transparent;cursor:pointer;color:#fff}
+.prg{background:#fff;padding:10px 20px;border-bottom:1px solid #d0e4d8;display:flex;align-items:center;gap:12px}
+.prg-bg{flex:1;background:#d0e4d8;border-radius:999px;height:12px;overflow:hidden}
+.prg-fill{height:100%;background:linear-gradient(90deg,#1a3a2a,#2d7a4f);border-radius:999px;transition:width .4s}
+.prg-txt{font-size:12px;font-weight:700;color:#555;white-space:nowrap}
+.tabs{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #d0e4d8;padding:0 8px}
+.tab{padding:10px 12px;font-size:11px;font-weight:700;border:none;background:transparent;cursor:pointer;color:#999;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.on{color:#1a3a2a;border-bottom-color:#2d7a4f}
+.tab.dn{color:#2d7a4f}
+.wrap{max-width:800px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;border:1px solid #d0e4d8;margin-bottom:16px;overflow:hidden}
+.card-hd{background:#1a3a2a;padding:14px 20px}
+.card-num{font-size:10px;font-weight:700;color:#7dcca0;letter-spacing:2px;margin-bottom:3px}
+.card-ttl{font-size:18px;font-weight:800;color:#fff}
+.card-bd{padding:20px}
+.inst{background:#f0f7f3;border-left:4px solid #2d7a4f;padding:12px 16px;font-size:13px;line-height:1.7;color:#333;margin-bottom:14px;border-radius:0 8px 8px 0}
+.ex-box{background:#f6fcf8;border:2px solid #a8d8b8;border-radius:10px;padding:16px;margin-bottom:14px}
+.ex-ttl{font-size:14px;font-weight:800;color:#1a3a2a;margin-bottom:10px}
+.clue-lbl{background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;color:#5a4708;margin-bottom:10px}
+.clue-lbl .lbl{font-size:10px;font-weight:700;color:#8b6914;letter-spacing:1px;margin-bottom:4px}
+.q{margin-bottom:14px}
+.q-lbl{font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;line-height:1.5}
+textarea{width:100%;border:2px solid #d0e4d8;border-radius:8px;padding:10px;font-size:13px;font-family:Arial,sans-serif;line-height:1.6;resize:vertical;min-height:90px;background:#fefefe}
+textarea:focus{outline:none;border-color:#2d7a4f}
+textarea.ok{border-color:#2d7a4f;background:#f6fcf8}
+.btn{padding:10px 22px;font-size:13px;font-weight:700;border-radius:10px;cursor:pointer;font-family:Arial,sans-serif;border:none}
+.btn-sub{background:#1a3a2a;color:#fff}
+.btn-sub:disabled{background:#aaa;cursor:default}
+.btn-nav{border:2px solid #1a3a2a;background:transparent;color:#1a3a2a}
+.btn-nav.nxt{background:#1a3a2a;color:#fff}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+.done{display:none;background:#e1f5ee;border:2px solid #1d9e75;border-radius:10px;padding:10px 16px;font-size:13px;color:#0f6e56;font-weight:700;text-align:center;margin-top:10px}
+.done.show{display:block}
+.vs-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.vs-opt{border:2px solid #d0e4d8;border-radius:10px;padding:12px;cursor:pointer;font-size:13px;line-height:1.6;background:#fff}
+.vs-opt:hover{border-color:#2d7a4f}
+.vs-opt.cor{border-color:#1d9e75;background:#e1f5ee}
+.vs-opt.wrg{border-color:#e24b4a;background:#fcebeb}
+.vs-opt.rev{border-color:#1d9e75;background:#e1f5ee}
+.vs-fb{font-size:12px;margin-top:6px;padding:8px 10px;border-radius:6px;display:none}
+.vs-fb.show{display:block}
+.vs-fb.cor{background:#e1f5ee;color:#0f6e56}
+.vs-fb.wrg{background:#fcebeb;color:#a32d2d}
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sw-word{padding:7px 13px;border-radius:14px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;background:#fff;cursor:pointer;user-select:none;white-space:normal;text-align:left}
+.sw-word.placed{opacity:.4;cursor:default}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bin{border:2px dashed #aaa;border-radius:10px;padding:10px;min-height:80px;cursor:pointer}
+.bin-ttl{font-size:12px;font-weight:700;color:#555;margin-bottom:6px;text-align:center}
+.bin-words{display:flex;flex-wrap:wrap;gap:6px;min-height:36px}
+.placed-tag{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:700;color:#fff}
+.cl-w{cursor:pointer;background:#fff;border-radius:4px;padding:1px 4px;border-bottom:2px dashed #aaa}
+.cl-w:hover{background:#ffe08a}
+.cl-w.fnd{background:#e1f5ee;border-bottom-color:#1d9e75;color:#0f6e56;font-weight:700}
+.cl-w.keep{background:#f0f0f0;border-bottom-color:#bbb;color:#777}
+.ann-ph{background:#fff8e1;border-bottom:2px solid #f0c040;cursor:pointer;border-radius:3px;padding:1px 3px}
+.ann-ph:hover{background:#fff0a0}
+.ann-ph.a-mem{background:#e6f1fb;border-bottom-color:#185fa5}
+.ann-ph.a-feel{background:#fcebeb;border-bottom-color:#a32d2d}
+.ann-ph.a-dec{background:#ececec;border-bottom-color:#444}
+.ann-ph.a-hope{background:#e1f5ee;border-bottom-color:#2d7a4f}
+.ann-ph.a-act{background:#faeeda;border-bottom-color:#854f0b}
+.ann-pop{background:#fff;border:2px solid #d0e4d8;border-radius:10px;padding:12px;margin:6px 0}
+.ann-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ann-btn{padding:5px 12px;border-radius:14px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;font-family:Arial,sans-serif}
+.ann-res{font-size:12px;padding:8px 10px;border-radius:6px;margin-top:6px}
+.ann-res.cor{background:#e1f5ee;color:#0f6e56}
+.ann-res.wrg{background:#faeeda;color:#854f0b}
+.passage{background:#fffdf7;border:2px solid #e8d8a0;border-radius:10px;padding:16px 18px;margin-bottom:14px;font-size:14px;line-height:2;color:#2a2a2a}
+.passage p{margin-bottom:10px}
+.checklist{background:#1a3a2a;border-radius:10px;padding:14px 16px;color:#fff;margin-bottom:14px}
+.checklist h4{font-size:11px;letter-spacing:1px;color:#7dcca0;margin-bottom:8px}
+.checklist ul{list-style:none;font-size:12px;line-height:1.8}
+.checklist li:before{content:'\2713  ';color:#7dcca0;font-weight:800}
+.prz-ov{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+.prz-ov.show{display:flex}
+.prz-bx{background:#fff;border-radius:20px;padding:28px;max-width:460px;width:92%;text-align:center}
+.prz-icon{font-size:48px;margin-bottom:8px}
+.prz-ttl{font-size:22px;font-weight:800;color:#1a3a2a;margin-bottom:6px}
+.prz-sub{font-size:14px;color:#666;margin-bottom:16px}
+.prz-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+.prz-tab{padding:7px 16px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;border-radius:18px;background:#fff;cursor:pointer;font-family:Arial,sans-serif}
+.prz-tab.on{border-color:#1a3a2a;background:#e8f4ec;color:#1a3a2a}
+.vid-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.vid-a{background:#eef4f0;border-radius:8px;padding:10px 8px;text-decoration:none;color:#1a3a2a;font-size:11px;font-weight:700;border:1px solid #a8d8b8;display:block;line-height:1.5}
+.vid-icon{font-size:18px;margin-bottom:3px}
+.kg-btn{padding:10px 28px;font-size:14px;font-weight:800;border:none;border-radius:10px;background:#1a3a2a;cursor:pointer;color:#fff;font-family:Arial,sans-serif}
+@media(max-width:600px){.vs-pair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-t">Narrative Writing: Telling a True Story</div><div class="hdr-s">Revive Tutoring</div></div>
+  <div style="display:flex;gap:8px">
+    <button class="rst" id="vid-btn">Brain Break</button>
+    <button class="rst" id="rst-btn">Reset</button>
+  </div>
+</div>
+<div class="prg">
+  <div class="prg-bg"><div class="prg-fill" id="pf" style="width:0%"></div></div>
+  <div class="prg-txt" id="pt">0 / 10</div>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="wrap" id="main"></div>
+<div class="prz-ov" id="pm">
+  <div class="prz-bx">
+    <div class="prz-icon" id="pi">&#x1F3AC;</div>
+    <div class="prz-ttl">You earned a brain break!</div>
+    <div class="prz-sub">Pick a category.</div>
+    <div class="prz-tabs" id="prz-tabs-row"></div>
+    <div class="vid-grid" id="vg"></div>
+    <button class="kg-btn" id="kg-btn">Back to Writing</button>
+  </div>
+</div>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  var d = document.createElement('div');
+  d.style.cssText = 'background:red;color:white;padding:20px;font-size:16px;position:fixed;top:0;left:0;right:0;z-index:9999;';
+  d.textContent = 'JS ERROR: ' + msg + ' (line ' + line + ')';
+  document.body.appendChild(d);
+  return false;
+};
+// ===== SETUP =====
+var N=10, done=[], score=0, cur=0, pvt='r', correct=0, lastVid=0;
+for(var i=0;i<N;i++) done.push(false);
+
+var VIDS={
+  r:[{t:'Can you solve the bridge riddle?',u:'https://www.youtube.com/watch?v=7yDmGnA8Hw0'},{t:"Can you solve Einstein's riddle?",u:'https://www.youtube.com/watch?v=1rDVz_Fb6HQ'},{t:'Can you solve the prisoner hat riddle?',u:'https://www.youtube.com/watch?v=N5vJSNXPEwA'}],
+  i:[{t:'How optical illusions trick your brain',u:'https://www.youtube.com/watch?v=rfdJyDfIHIc'},{t:'The McGurk Effect (an audio illusion)',u:'https://www.youtube.com/watch?v=jtsfidRq2tw'},{t:'The moon illusion',u:'https://www.youtube.com/watch?v=RXkYjL_7jME'}],
+  s:[{t:"Turbulence: physics' great unsolved mystery",u:'https://www.youtube.com/watch?v=S3i6tJ4XNqA'},{t:"What would happen if you didn't sleep?",u:'https://www.youtube.com/watch?v=dqONk48l5vY'},{t:'Why do we dream?',u:'https://www.youtube.com/watch?v=2W85Dwxx218'}]
+};
+
+// ===== UTILS =====
+function sv(k,v){try{localStorage.setItem('nar_'+k,v);}catch(e){}}
+function ld(k){try{return localStorage.getItem('nar_'+k)||'';}catch(e){return '';}}
+function clr(){try{for(var k in localStorage){if(k.indexOf('nar_')===0)localStorage.removeItem(k);}}catch(e){}}
+function el(id){return document.getElementById(id);}
+function ce(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e;}
+function restTA(){
+  setTimeout(function(){
+    var ts=document.querySelectorAll('textarea[id]');
+    for(var i=0;i<ts.length;i++){
+      var s=ld(ts[i].id);
+      if(s&&!ts[i].disabled){ts[i].value=s;if(s.trim().length>10)ts[i].classList.add('ok');}
+    }
+  },120);
+}
+
+// ===== PROGRESS =====
+function mark(i){
+  if(done[i])return;
+  done[i]=true;score++;
+  el('pf').style.width=Math.round(score/N*100)+'%';
+  el('pt').textContent=score+' / '+N;
+  buildTabs();
+}
+function addCorrect(){
+  correct++;
+  var v=Math.floor(correct/5);
+  if(v>lastVid){lastVid=v;setTimeout(showP,400);}
+}
+
+// ===== PRIZE =====
+function setPT(t){pvt=t;showVids();}
+function showVids(){
+  var vg=el('vg');if(!vg)return;
+  var pool=VIDS[pvt],pick=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,4);
+  vg.innerHTML='';
+  pick.forEach(function(v){
+    var a=ce('a','vid-a');a.href=v.u;a.target='_blank';
+    var icon=ce('div','vid-icon');icon.textContent='▶';a.appendChild(icon);
+    a.appendChild(document.createTextNode(v.t));
+    vg.appendChild(a);
+  });
+}
+function showP(){
+  pvt='r';
+  el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t,i){t.classList.toggle('on',i===0);});
+  el('pi').textContent='🎬';
+  showVids();
+  el('pm').classList.add('show');
+}
+
+// ===== TABS =====
+var TLBL=['Openings','Senses','Dialogue','Slow Down','Transitions','Ending Parts','Sat/Boring','Extend','Plan','Write'];
+function buildTabs(){
+  var w=el('tabs');w.innerHTML='';
+  for(var i=0;i<N;i++){
+    var b=ce('button','tab'+(i===cur?' on':'')+(done[i]?' dn':''));
+    b.textContent=(done[i]?'+ ':'')+TLBL[i];
+    b.setAttribute('data-i',String(i));
+    b.addEventListener('click',function(){cur=parseInt(this.getAttribute('data-i'));render();});
+    w.appendChild(b);
+  }
+}
+
+// ===== SHARED MODEL TEXT =====
+var MODEL=[
+  'I stood at the top of the ramp and looked down. The concrete curved away beneath my board like the inside of a giant wave. My heart slammed against my ribs.',
+  '"You\'ve got this, Marcus," Diego called from the bottom. "Just lean forward. If you lean back, you\'ll slip out."',
+  'I had watched Diego drop in a hundred times. It looked easy when he did it. Now my front wheels hung over the edge, and my legs felt like wet noodles. "What if I fall?" I yelled down. "Then you get back up," he said, shrugging like it was the most obvious thing in the world.',
+  'I took a breath. The morning air smelled like hot asphalt and sunscreen. I counted to three in my head. One. Two. On three, I stomped my front foot down and leaned forward. For half a second the world tilted, and I was sure I would eat concrete. Then the wheels caught. The ramp roared under me, and suddenly I was flying across the bottom, the wind pulling tears from the corners of my eyes.'
+];
+function buildModel(){
+  var box=ce('div','passage');
+  MODEL.forEach(function(t){var p=ce('p');p.textContent=t;box.appendChild(p);});
+  return box;
+}
+
+// ===== PICKERS (idx 0 Openings, 2 Dialogue, 3 Pacing) =====
+var PICK={
+  0:[
+    {clue:'Which opening pulls you into a moment?',a:'I stood at the top of the ramp and looked down, my heart slamming against my ribs.',b:'This is a story about the time I learned to skateboard.',c:'a',f:'A strong opening drops the reader into a moment with a narrator and a feeling. The other only announces the topic.'},
+    {clue:'Which opening orients the reader best?',a:'One day something happened that I will never forget.',b:'The first crack of thunder hit just as we reached the middle of the lake, and Dad\'s smile vanished.',c:'b',f:'The strong opening names a character, a setting, and a problem all at once. The other promises a story but shows nothing.'},
+    {clue:'Which opening shows instead of announces?',a:'My name is Sam and I am going to tell you about my dog.',b:'The shelter was loud with barking, but the small brown dog in the last cage just watched me, silent.',c:'b',f:'Open inside a specific moment with sensory detail, not with an introduction of yourself.'},
+    {clue:'Which opening hooks the reader?',a:'Saturdays are usually pretty normal for me.',b:'It was the worst Saturday of my life, and it started with a phone call at six in the morning.',c:'b',f:'A strong hook hints at trouble and makes the reader want to know more. The other stays flat.'}
+  ],
+  2:[
+    {clue:'Marcus is frozen at the top of the ramp. Which reply develops the moment?',a:'"Then you get back up," he said, shrugging.',b:'"You should always try your best," he said.',c:'a',f:'Diego\'s shrug and easy words show his confidence and push Marcus forward. The other just states a lesson.'},
+    {clue:'Which line sounds like a real, nervous kid?',a:'"I am feeling very frightened of this ramp," Marcus said.',b:'"What if I fall?" Marcus yelled down.',c:'b',f:'Under stress, real people speak in short, urgent words. The other sounds like a textbook.'},
+    {clue:'Which line of dialogue does a job in the story?',a:'"Hi Diego, how is your day going?"',b:'"You\'ve got this. Just lean forward."',c:'b',f:'Strong dialogue gives advice, raises the stakes, or reveals a person. Small talk stalls the story.'},
+    {clue:'Which version shows how Diego feels?',a:'"I told you!" Diego shouted, throwing both hands in the air.',b:'"That was good," Diego said.',c:'a',f:'The action tag and the exclamation show his excitement. The other tells the reader almost nothing.'}
+  ],
+  3:[
+    {clue:'Which version slows down the big moment?',a:'I dropped in and made it to the bottom.',b:'I counted to three. One. Two. On three, I stomped down and leaned forward. For half a second the world tilted.',c:'b',f:'Stretching the key moment into beats makes the reader hold their breath. Rushing past it throws away the best part.'},
+    {clue:'Which version puts you inside the action?',a:'Then I rode down the ramp really fast.',b:'The wheels caught. The ramp roared under me, and suddenly I was flying, the wind pulling tears from my eyes.',c:'b',f:'Strong verbs and a beat-by-beat build place the reader in the moment. The other just reports it.'},
+    {clue:'Which version builds the tension?',a:'Then the storm came and it was scary.',b:'The first fat drop hit my arm. Then another. Then the sky tore open.',c:'b',f:'Slowing down and adding detail creates the tension that the phrase "it was scary" only names.'}
+  ]
+};
+var pickAns={0:{},2:{},3:{}}, pickCount={0:0,2:0,3:0};
+function pickClick(act,pi,ch){
+  if(pickAns[act][pi])return;pickAns[act][pi]=true;pickCount[act]++;
+  var p=PICK[act][pi],ok=ch===p.c;
+  var ae=el('p'+act+'a'+pi),be=el('p'+act+'b'+pi),fb=el('p'+act+'f'+pi);
+  var cor=p.c==='a'?ae:be,wrg=p.c==='a'?be:ae;
+  if(ok){cor.classList.add('cor');wrg.style.opacity='.5';fb.textContent='Strong choice. '+p.f;fb.className='vs-fb show cor';addCorrect();}
+  else{wrg.classList.add('wrg');cor.classList.add('rev');fb.textContent='Look again. '+p.f;fb.className='vs-fb show wrg';}
+  if(pickCount[act]>=PICK[act].length){var d=el('pk'+act+'_done');if(d)d.classList.add('show');mark(act);}
+}
+function renderPick(act,instTxt,doneTxt,banner){
+  var wrap=ce('div');
+  if(banner)wrap.appendChild(banner);
+  wrap.appendChild(ce('div','inst')).textContent=instTxt;
+  PICK[act].forEach(function(p,i){
+    var box=ce('div','ex-box');
+    var cl=ce('div','clue-lbl');
+    var cll=ce('div','lbl');cll.textContent='THINK ABOUT IT';cl.appendChild(cll);
+    cl.appendChild(document.createTextNode(p.clue));box.appendChild(cl);
+    var pair=ce('div','vs-pair');
+    var oa=ce('div','vs-opt');oa.id='p'+act+'a'+i;oa.textContent=p.a;oa.addEventListener('click',function(){pickClick(act,i,'a');});
+    var ob=ce('div','vs-opt');ob.id='p'+act+'b'+i;ob.textContent=p.b;ob.addEventListener('click',function(){pickClick(act,i,'b');});
+    pair.appendChild(oa);pair.appendChild(ob);box.appendChild(pair);
+    var fb=ce('div','vs-fb');fb.id='p'+act+'f'+i;box.appendChild(fb);
+    wrap.appendChild(box);
+  });
+  var dn=ce('div','done'+(done[act]?' show':''));dn.id='pk'+act+'_done';dn.textContent=doneTxt;wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== CLUE HUNTS (idx 1 Senses, idx 4 Transitions) =====
+var CLUE={
+  1:[
+    {text:'I stood at the top of the ramp. '},
+    {word:'The concrete curved away beneath my board like the inside of a giant wave',clue:true},
+    {text:'. '},
+    {word:'My heart slammed against my ribs',clue:true},
+    {text:'. '},
+    {word:'I had watched Diego drop in a hundred times',clue:false},
+    {text:'. '},
+    {word:'The morning air smelled like hot asphalt and sunscreen',clue:true},
+    {text:'. '},
+    {word:'I counted to three in my head',clue:false},
+    {text:'. On three, I leaned forward and dropped. '},
+    {word:'The ramp roared under me',clue:true},
+    {text:', and '},
+    {word:'the wind pulled tears from the corners of my eyes',clue:true},
+    {text:'. '},
+    {word:'It was over in a few seconds',clue:false},
+    {text:'.'}
+  ],
+  4:[
+    {word:'At first',clue:true},
+    {text:', I could barely look over the edge. '},
+    {word:'A moment later',clue:true},
+    {text:', '},
+    {word:'Diego waved me forward',clue:false},
+    {text:'. '},
+    {word:'Now',clue:true},
+    {text:' my wheels hung in the air. '},
+    {word:'On three',clue:true},
+    {text:', '},
+    {word:'I leaned in',clue:false},
+    {text:'. '},
+    {word:'Suddenly',clue:true},
+    {text:' the ramp dropped away beneath me. '},
+    {word:'By the time I reached the bottom',clue:true},
+    {text:', '},
+    {word:'I was grinning',clue:false},
+    {text:'. '},
+    {word:'Later that night',clue:true},
+    {text:', I still felt the rush.'}
+  ]
+};
+var clFound={1:0,4:0};
+function clickCL(act,el2){
+  if(el2.classList.contains('fnd')||el2.classList.contains('keep'))return;
+  var cnt=el('cl_cnt'),fb=el('cl_fb');
+  if(el2.getAttribute('data-clue')!=='1'){
+    el2.classList.add('keep');
+    if(fb){fb.textContent=(act===1?'That line moves the story, but it does not paint a picture for the senses. Look for sight, sound, smell, or touch.':'That phrase is part of the action, not a signal of time or place. Look for words that tell the reader when or where.');fb.style.color='#777';}
+    return;
+  }
+  el2.classList.add('fnd');clFound[act]++;addCorrect();
+  if(fb){fb.textContent=(act===1?'Nice. That detail lets the reader see, hear, smell, or feel the moment.':'Good. That phrase signals a shift in time or place and keeps the reader on track.');fb.style.color='#0f6e56';}
+  if(clFound[act]<5){if(cnt)cnt.textContent='Found: '+clFound[act]+' / 5 needed';}
+  else{if(cnt)cnt.textContent='Found: '+clFound[act]+'. Great work.';var d=el('cl_done');if(d)d.classList.add('show');mark(act);}
+}
+function renderCL(act,instTxt,doneTxt){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=instTxt;
+  var box=ce('div','passage');
+  var para=ce('div');para.style.cssText='font-size:14px;line-height:2.6;color:#2a2a2a;';
+  CLUE[act].forEach(function(d){
+    if(d.text){para.appendChild(document.createTextNode(d.text));}
+    else{var sp=ce('span','cl-w');sp.textContent=d.word;sp.setAttribute('data-clue',d.clue?'1':'0');sp.addEventListener('click',function(){clickCL(act,this);});para.appendChild(sp);}
+  });
+  box.appendChild(para);wrap.appendChild(box);
+  var cnt=ce('div');cnt.id='cl_cnt';cnt.style.cssText='font-size:12px;color:#555;margin-bottom:4px;font-weight:700;';
+  cnt.textContent=clFound[act]<5?('Found: '+clFound[act]+' / 5 needed'):('Found: '+clFound[act]+'. Great work.');wrap.appendChild(cnt);
+  var fb=ce('div');fb.id='cl_fb';fb.style.cssText='font-size:12px;margin-bottom:10px;min-height:16px;';wrap.appendChild(fb);
+  var dn=ce('div','done'+(done[act]?' show':''));dn.id='cl_done';dn.textContent=doneTxt;wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== ANALYZE THE ENDING (annotate, idx 5) =====
+var ANN_DATA={
+  0:{txt:'pictured the ramp roaring under my wheels again',l:'memory',c:'a-mem',w:'The narrator looks back at the main event. Replaying the moment in his mind makes this a memory.'},
+  1:{txt:'My whole body still buzzed with the thrill of it',l:'feeling',c:'a-feel',w:'This names the emotion the narrator carries after the event, so it is a feeling.'},
+  2:{txt:'I made up my mind to be back at the park before anyone else',l:'decision',c:'a-dec',w:'The narrator chooses what he will do next. A choice like this is a decision.'},
+  3:{txt:'wrote down the next three tricks I wanted to land',l:'action',c:'a-act',w:'The narrator does something that shows how the moment changed him. That is a defining action.'},
+  4:{txt:'hoped that by the end of summer I would drop in without a flicker of fear',l:'hope',c:'a-hope',w:'The narrator looks ahead to something he wants. Looking forward like this is a hope or wish.'}
+};
+var CHE=['memory','feeling','decision','hope','action'];
+var ANN_COLORS={'memory':'#185fa5','feeling':'#a32d2d','decision':'#444','hope':'#2d7a4f','action':'#854f0b'};
+var annAns={};
+function makeAnnotatable(el2,idx){el2.classList.add('ann-ph');el2.addEventListener('click',function(){doAnnotate(idx);});}
+function doAnnotate(idx){
+  if(annAns[idx])return;
+  if(el('af'+idx))return;
+  var ph=el('ap'+idx);if(!ph)return;
+  var data=ANN_DATA[idx];if(!data)return;
+  var rd=el('ar0');if(!rd)return;
+  var pop=ce('div','ann-pop');
+  var pv=ce('div');pv.style.cssText='font-size:12px;color:#555;font-style:italic;margin-bottom:6px;';
+  pv.textContent='"'+ph.textContent.trim().substring(0,90)+'"';pop.appendChild(pv);
+  var lbl=ce('div');lbl.style.cssText='font-size:12px;font-weight:700;color:#1a3a2a;margin-bottom:4px;';lbl.textContent='Which part of a strong ending is this?';pop.appendChild(lbl);
+  var choices=ce('div','ann-choices');
+  CHE.forEach(function(c){
+    var col=ANN_COLORS[c]||'#888';
+    var btn=ce('button','ann-btn');btn.style.cssText='background:'+col+'22;color:'+col+';border-color:'+col+';';btn.textContent=c;
+    btn.addEventListener('click',function(){doPickAnn(idx,c,pop);});
+    choices.appendChild(btn);
+  });
+  pop.appendChild(choices);
+  var fb=ce('div');fb.id='af'+idx;pop.appendChild(fb);
+  rd.appendChild(pop);
+}
+function doPickAnn(idx,ch,pop){
+  if(annAns[idx])return;annAns[idx]=true;
+  var data=ANN_DATA[idx];var ph=el('ap'+idx);var fb=el('af'+idx);
+  var ok=ch===data.l;
+  if(ok)addCorrect();
+  if(ph)ph.className='ann-ph '+data.c;
+  if(fb){var r=ce('div','ann-res '+(ok?'cor':'wrg'));r.innerHTML=(ok?'Correct. ':'Not quite. ')+'<strong>'+data.l+'</strong>: '+data.w;fb.appendChild(r);}
+  if(pop)pop.querySelectorAll('.ann-btn').forEach(function(b){b.disabled=true;});
+  var allDone=true;for(var k in ANN_DATA){if(!annAns[k])allDone=false;}
+  if(allDone){var d=el('ann_done');if(d)d.classList.add('show');mark(5);}
+}
+function renderEnding(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A strong ending does more than stop the story. It often includes five moves: a memory of the event, a feeling, a decision, a hope or wish, and a defining action that shows how the writer changed. Click each highlighted phrase and name which move it is.';
+  var legend=ce('div','ex-box');legend.style.cssText='background:#fefaf3;border-color:#e8d8a0;';
+  var lh=ce('div');lh.style.cssText='font-size:10px;font-weight:700;color:#8b6914;letter-spacing:2px;margin-bottom:8px;';lh.textContent='THE FIVE PARTS OF A STRONG ENDING';legend.appendChild(lh);
+  var lr=ce('div');lr.style.cssText='display:flex;flex-wrap:wrap;gap:6px;';
+  CHE.forEach(function(l){var sp=ce('span');sp.style.cssText='background:'+ANN_COLORS[l]+';color:#fff;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;';sp.textContent=l;lr.appendChild(sp);});
+  legend.appendChild(lr);wrap.appendChild(legend);
+  var box=ce('div','passage');
+  var p=ce('p');
+  p.appendChild(document.createTextNode('That night, I lay in bed and '));
+  var s0=ce('span');s0.id='ap0';s0.textContent=ANN_DATA[0].txt;makeAnnotatable(s0,0);p.appendChild(s0);
+  p.appendChild(document.createTextNode('. '));
+  var s1=ce('span');s1.id='ap1';s1.textContent=ANN_DATA[1].txt;makeAnnotatable(s1,1);p.appendChild(s1);
+  p.appendChild(document.createTextNode('. '));
+  var s2=ce('span');s2.id='ap2';s2.textContent=ANN_DATA[2].txt;makeAnnotatable(s2,2);p.appendChild(s2);
+  p.appendChild(document.createTextNode(' the next morning. I '));
+  var s3=ce('span');s3.id='ap3';s3.textContent=ANN_DATA[3].txt;makeAnnotatable(s3,3);p.appendChild(s3);
+  p.appendChild(document.createTextNode(' in my notebook. More than anything, I '));
+  var s4=ce('span');s4.id='ap4';s4.textContent=ANN_DATA[4].txt;makeAnnotatable(s4,4);p.appendChild(s4);
+  p.appendChild(document.createTextNode('.'));
+  box.appendChild(p);wrap.appendChild(box);
+  var ar=ce('div');ar.id='ar0';ar.style.marginBottom='12px';wrap.appendChild(ar);
+  var dn=ce('div','done'+(done[5]?' show':''));dn.id='ann_done';dn.textContent='You found all five parts of a strong ending.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== SATISFYING OR BORING (sorter, idx 6) =====
+var SORT_ITEMS=[
+  {w:'Standing there with my heart still pounding, I knew I would never see that ramp the same way again.',s:'sat'},
+  {w:'I decided right then to come back the next morning and try the next trick.',s:'sat'},
+  {w:'On the walk home I kept replaying the moment the wheels caught, and I could not stop smiling.',s:'sat'},
+  {w:'I hoped that someday I would teach my little brother to drop in too.',s:'sat'},
+  {w:'And that is how I learned to drop in. THE END',s:'bor'},
+  {w:'So it was a pretty good day.',s:'bor'},
+  {w:'Anyway, that is my story.',s:'bor'},
+  {w:'The end. It was fun.',s:'bor'}
+];
+var soPlaced={},soSel=null;
+function selSO(i){
+  if(soPlaced[i])return;
+  document.querySelectorAll('.sw-word').forEach(function(e){e.style.outline='';});
+  soSel=i;var e=el('so'+i);if(e)e.style.outline='3px solid #2d7a4f';
+}
+function dropSO(bn){
+  if(soSel===null)return;
+  var item=SORT_ITEMS[soSel],we=el('so'+soSel);
+  if(!item||!we)return;
+  if(bn!==item.s){
+    we.style.outline='3px solid #e24b4a';
+    var si=soSel;soSel=null;
+    setTimeout(function(){var e=el('so'+si);if(e)e.style.outline='';},700);
+    return;
+  }
+  var bw=el('sob'+bn);
+  if(bw){var t=ce('div','placed-tag');t.style.background=bn==='sat'?'#2d7a4f':'#a32d2d';t.textContent=item.w;bw.appendChild(t);}
+  we.classList.add('placed');we.style.outline='';soPlaced[soSel]=true;soSel=null;addCorrect();
+  var cnt=Object.keys(soPlaced).length;
+  var sc=el('so_sc');if(sc)sc.textContent='Sorted: '+cnt+' / 8';
+  if(cnt===8){var d=el('so_done');if(d)d.classList.add('show');mark(6);}
+}
+function renderSort(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A satisfying ending sums up the story and shows how the writer felt or changed. A boring ending just stops. Click an ending, then click the bin where it belongs.';
+  var sw=ce('div','sw');
+  SORT_ITEMS.forEach(function(item,i){
+    var w=ce('div','sw-word'+(soPlaced[i]?' placed':''));w.id='so'+i;w.textContent=item.w;w.style.maxWidth='100%';
+    w.addEventListener('click',function(){selSO(i);});
+    sw.appendChild(w);
+  });
+  wrap.appendChild(sw);
+  var bins=ce('div','bins');
+  [['sat','SATISFYING ENDING'],['bor','BORING ENDING']].forEach(function(b){
+    var bx=ce('div','bin');
+    var bt=ce('div','bin-ttl');bt.textContent=b[1];bx.appendChild(bt);
+    var bw=ce('div','bin-words');bw.id='sob'+b[0];bx.appendChild(bw);
+    bx.addEventListener('click',function(){dropSO(b[0]);});
+    bins.appendChild(bx);
+  });
+  wrap.appendChild(bins);
+  var sc=ce('div');sc.id='so_sc';sc.style.cssText='font-size:12px;color:#555;margin-top:6px;';
+  sc.textContent='Sorted: '+Object.keys(soPlaced).length+' / 8';wrap.appendChild(sc);
+  var dn=ce('div','done'+(done[6]?' show':''));dn.id='so_done';dn.textContent='You can spot an ending that does its job.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== WRITING EXERCISES (idx 7,8,9) =====
+function makeQ(lbl,ta){var q=ce('div','q');var ql=ce('div','q-lbl');ql.textContent=lbl;q.appendChild(ql);q.appendChild(ta);return q;}
+function makeWrEx(exIdx,mapIdx,qs,intro,topNode){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=intro;
+  if(topNode)wrap.appendChild(topNode);
+  qs.forEach(function(q,i){
+    var ta=ce('textarea');ta.id='wr'+exIdx+'_'+i;ta.placeholder='Write here...';if(q.tall)ta.style.minHeight='130px';
+    var saved=ld(ta.id);if(saved){ta.value=saved;if(saved.trim().length>10)ta.classList.add('ok');}
+    ta.addEventListener('input',function(){sv(this.id,this.value);if(this.value.trim().length>10)this.classList.add('ok');chkWrEx(exIdx,mapIdx);});
+    wrap.appendChild(makeQ(q.t,ta));
+  });
+  var dn=ce('div','done'+(done[mapIdx]?' show':''));dn.id='wd'+exIdx;dn.textContent='Activity complete.';wrap.appendChild(dn);
+  var navrow=ce('div','nav-row');
+  var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur=mapIdx-1;render();});
+  if(mapIdx===0)back.style.visibility='hidden';
+  var sub=ce('button','btn btn-sub');sub.id='wsub'+exIdx;sub.disabled=true;sub.textContent=done[mapIdx]?'Done':'Mark Complete';
+  sub.addEventListener('click',function(){subWrEx(exIdx,mapIdx);});
+  var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur=mapIdx+1;render();});
+  if(mapIdx===N-1)nxt.style.visibility='hidden';
+  navrow.appendChild(back);navrow.appendChild(sub);navrow.appendChild(nxt);
+  wrap.appendChild(navrow);
+  setTimeout(function(){chkWrEx(exIdx,mapIdx);},50);
+  return wrap;
+}
+function chkWrEx(exIdx,mapIdx){
+  var ts=document.querySelectorAll('[id^="wr'+exIdx+'_"]');
+  var ok=true;ts.forEach(function(ta){if(ta.value.trim().length<10)ok=false;});
+  var btn=el('wsub'+exIdx);if(btn)btn.disabled=!ok;
+}
+function subWrEx(exIdx,mapIdx){if(done[mapIdx])return;var d=el('wd'+exIdx);if(d)d.classList.add('show');mark(mapIdx);if(mapIdx<N-1)setTimeout(function(){cur=mapIdx+1;render();},700);}
+
+function endingReminder(){
+  var box=ce('div','checklist');
+  box.appendChild(ce('h4',null,'A STRONG ENDING CAN INCLUDE'));
+  var ul=ce('ul');
+  ['A memory of the main event','A feeling about what happened','A decision the writer made','A hope or wish for the future','A defining action that shows the change'].forEach(function(t){var li=ce('li');li.textContent=t;ul.appendChild(li);});
+  box.appendChild(ul);return box;
+}
+function movesReminder(){
+  var box=ce('div','checklist');
+  box.appendChild(ce('h4',null,'A STRONG NARRATIVE'));
+  var ul=ce('ul');
+  ['Opens in a moment with a narrator, a character, and a setting','Centers on one clear problem or experience','Uses dialogue that reveals character','Uses sensory details and strong verbs','Slows down at the most important moment','Uses transitions to guide the reader','Ends with a satisfying, extended ending'].forEach(function(t){var li=ce('li');li.textContent=t;ul.appendChild(li);});
+  box.appendChild(ul);return box;
+}
+
+// ===== MAIN RENDER =====
+var EX_INFO=[
+  {num:'Part 1',type:'Strong Openings',title:'Hook the reader from the first line'},
+  {num:'Part 2',type:'Sensory Details',title:'Make the reader see, hear, and feel it'},
+  {num:'Part 3',type:'Dialogue',title:'Let your characters talk'},
+  {num:'Part 4',type:'Pacing',title:'Slow down the big moment'},
+  {num:'Part 5',type:'Transitions',title:'Guide the reader through time and place'},
+  {num:'Part 6',type:'Analyze the Ending',title:'The five parts of a strong ending'},
+  {num:'Part 7',type:'Endings',title:'Satisfying or boring?'},
+  {num:'Ex 1',type:'Extend the Ending',title:'Turn a flat ending into a strong one'},
+  {num:'Ex 2',type:'Plan Your True Story',title:'Map it before you write'},
+  {num:'Ex 3',type:'Write Your Narrative',title:'Put it all together'}
+];
+function render(){
+  buildTabs();
+  var ex=EX_INFO[cur];
+  var card=ce('div','card');
+  var hd=ce('div','card-hd');
+  hd.appendChild(ce('div','card-num')).textContent=ex.num+' - '+ex.type;
+  hd.appendChild(ce('div','card-ttl')).textContent=ex.title;
+  card.appendChild(hd);
+  var bd=ce('div','card-bd');
+  var content;
+  if(cur===0)content=renderPick(0,'A narrative drops the reader into a moment. A strong opening introduces the narrator, names who is there, sets the scene, and hints at the problem. Read each pair and choose the stronger opening.','You can spot an opening that hooks a reader.',movesReminder());
+  else if(cur===1)content=renderCL(1,'Sensory details let the reader see, hear, smell, and feel the story. Read this part of the model narrative and click the phrases that appeal to the senses. Leave the plain statements alone. Find at least five.','You found the details that bring the scene to life.');
+  else if(cur===2)content=renderPick(2,'Good dialogue sounds like a real person and does a job: it reveals character, builds tension, or moves the story. Read each pair and choose the stronger line.','You can tell dialogue that works from dialogue that stalls.');
+  else if(cur===3)content=renderPick(3,'At the most important moment, slow down. Stretch the action across several short sentences so the reader feels it. Choose the version that builds the moment.','You know how to stretch the moment that matters most.');
+  else if(cur===4)content=renderCL(4,'Transitions are words and phrases that signal a shift in time or place. They keep the reader from getting lost. Read the passage and click the transition signals. Leave the plain actions alone. Find at least five.','You found the signals that guide a reader through a story.');
+  else if(cur===5)content=renderEnding();
+  else if(cur===6)content=renderSort();
+  else if(cur===7)content=makeWrEx(7,7,[
+    {t:'Story 1: A kid is nervous about his first day at a new school, but by the end of the day he has made a friend. Flat ending: "So my first day was not so bad after all." Rewrite it as an extended ending. Use at least three of the five parts: a memory, a feeling, a decision, a hope, a defining action.',tall:true},
+    {t:'Story 2: A girl finishes a 5K race she trained months for. Flat ending: "I crossed the finish line and the race was over." Rewrite it as an extended ending using at least three of the five parts.',tall:true}
+  ],'A flat ending just stops. Turn each one below into an ending that shows how the character felt and changed.',endingReminder());
+  else if(cur===8)content=makeWrEx(8,8,[
+    {t:'Choose one true-story idea: (1) a fun or hard time during extreme weather, (2) a time someone helped you or you helped someone, (3) a person who influenced you, (4) a time you learned to do something, (5) a great time that did not cost much money, or (6) a time you gave or got advice. Which will you write about?'},
+    {t:'Fill in the story map. This story is about... The problem or experience was... It was solved or ended when...',tall:true},
+    {t:'Plan your ending now. Jot down a memory, a feeling, a decision, and a hope you might use at the end.',tall:true}
+  ],'Plan before you write. A clear map makes the draft much easier.');
+  else if(cur===9)content=makeWrEx(9,9,[
+    {t:'Write a strong opening. Drop the reader into a moment. Name yourself as the narrator, say who is there, set the scene, and hint at the problem.',tall:true},
+    {t:'Write the middle. Tell what happened in order. Include at least one line of dialogue, two sensory details, and slow down your most important moment. Use transitions to move from one part to the next.',tall:true},
+    {t:'Write an extended ending. Include at least three of the five parts: a memory, a feeling, a decision, a hope or wish, and a defining action.',tall:true}
+  ],'Now put it all together and write your true story. Use the checklist as you go.',movesReminder());
+  if(cur<=6){
+    var navrow=ce('div','nav-row');
+    if(cur>0){var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur--;render();});navrow.appendChild(back);}else{navrow.appendChild(ce('div'));}
+    navrow.appendChild(ce('div'));
+    if(cur<N-1){var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur++;render();});navrow.appendChild(nxt);}else{navrow.appendChild(ce('div'));}
+    content.appendChild(navrow);
+  }
+  bd.appendChild(content);card.appendChild(bd);
+  el('main').innerHTML='';el('main').appendChild(card);
+  restTA();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetAll(){
+  clr();
+  done=[];for(var i=0;i<N;i++)done.push(false);
+  score=0;cur=0;correct=0;lastVid=0;
+  pickAns={0:{},2:{},3:{}};pickCount={0:0,2:0,3:0};
+  clFound={1:0,4:0};
+  annAns={};
+  soPlaced={};soSel=null;
+  el('pf').style.width='0%';el('pt').textContent='0 / '+N;
+  render();
+}
+
+// ===== WIRE UP STATIC BUTTONS =====
+el('rst-btn').addEventListener('click',resetAll);
+el('vid-btn').addEventListener('click',showP);
+el('kg-btn').addEventListener('click',function(){el('pm').classList.remove('show');});
+
+var ptab_data=[{t:'Riddles',k:'r'},{t:'Illusions',k:'i'},{t:'Weird Science',k:'s'}];
+ptab_data.forEach(function(p,i){
+  var b=ce('button','prz-tab'+(i===0?' on':''));b.textContent=p.t;
+  b.addEventListener('click',function(){
+    el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t){t.classList.remove('on');});
+    this.classList.add('on');setPT(p.k);
+  });
+  el('prz-tabs-row').appendChild(b);
+});
+
+render();
+</script>
+</body>
+</html>
