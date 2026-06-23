@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Narrative - Revive Tutoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#eef4f0;color:#1a1a1a}
+.hdr{background:#1a3a2a;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.hdr-t{font-size:18px;font-weight:800;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.6)}
+.rst{padding:6px 14px;font-size:12px;border:1px solid rgba(255,255,255,.4);border-radius:8px;background:transparent;cursor:pointer;color:#fff}
+.prg{background:#fff;padding:10px 20px;border-bottom:1px solid #d0e4d8;display:flex;align-items:center;gap:12px}
+.prg-bg{flex:1;background:#d0e4d8;border-radius:999px;height:12px;overflow:hidden}
+.prg-fill{height:100%;background:linear-gradient(90deg,#1a3a2a,#2d7a4f);border-radius:999px;transition:width .4s}
+.prg-txt{font-size:12px;font-weight:700;color:#555;white-space:nowrap}
+.tabs{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #d0e4d8;padding:0 8px}
+.tab{padding:10px 12px;font-size:11px;font-weight:700;border:none;background:transparent;cursor:pointer;color:#999;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.on{color:#1a3a2a;border-bottom-color:#2d7a4f}
+.tab.dn{color:#2d7a4f}
+.wrap{max-width:800px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;border:1px solid #d0e4d8;margin-bottom:16px;overflow:hidden}
+.card-hd{background:#1a3a2a;padding:14px 20px}
+.card-num{font-size:10px;font-weight:700;color:#7dcca0;letter-spacing:2px;margin-bottom:3px}
+.card-ttl{font-size:18px;font-weight:800;color:#fff}
+.card-bd{padding:20px}
+.inst{background:#f0f7f3;border-left:4px solid #2d7a4f;padding:12px 16px;font-size:13px;line-height:1.7;color:#333;margin-bottom:14px;border-radius:0 8px 8px 0}
+.ex-box{background:#f6fcf8;border:2px solid #a8d8b8;border-radius:10px;padding:16px;margin-bottom:14px}
+.clue-lbl{background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;color:#5a4708;margin-bottom:10px}
+.clue-lbl .lbl{font-size:10px;font-weight:700;color:#8b6914;letter-spacing:1px;margin-bottom:4px}
+.q{margin-bottom:14px}
+.q-lbl{font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;line-height:1.5}
+textarea{width:100%;border:2px solid #d0e4d8;border-radius:8px;padding:10px;font-size:13px;font-family:Arial,sans-serif;line-height:1.6;resize:vertical;min-height:90px;background:#fefefe}
+textarea:focus{outline:none;border-color:#2d7a4f}
+textarea.ok{border-color:#2d7a4f;background:#f6fcf8}
+.btn{padding:10px 22px;font-size:13px;font-weight:700;border-radius:10px;cursor:pointer;font-family:Arial,sans-serif;border:none}
+.btn-sub{background:#1a3a2a;color:#fff}
+.btn-sub:disabled{background:#aaa;cursor:default}
+.btn-nav{border:2px solid #1a3a2a;background:transparent;color:#1a3a2a}
+.btn-nav.nxt{background:#1a3a2a;color:#fff}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+.done{display:none;background:#e1f5ee;border:2px solid #1d9e75;border-radius:10px;padding:10px 16px;font-size:13px;color:#0f6e56;font-weight:700;text-align:center;margin-top:10px}
+.done.show{display:block}
+.vs-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.vs-opt{border:2px solid #d0e4d8;border-radius:10px;padding:12px;cursor:pointer;font-size:13px;line-height:1.6;background:#fff}
+.vs-opt:hover{border-color:#2d7a4f}
+.vs-opt.cor{border-color:#1d9e75;background:#e1f5ee}
+.vs-opt.wrg{border-color:#e24b4a;background:#fcebeb}
+.vs-opt.rev{border-color:#1d9e75;background:#e1f5ee}
+.vs-fb{font-size:12px;margin-top:6px;padding:8px 10px;border-radius:6px;display:none}
+.vs-fb.show{display:block}
+.vs-fb.cor{background:#e1f5ee;color:#0f6e56}
+.vs-fb.wrg{background:#fcebeb;color:#a32d2d}
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sw-word{padding:7px 13px;border-radius:14px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;background:#fff;cursor:pointer;user-select:none;white-space:normal;text-align:left}
+.sw-word.placed{opacity:.4;cursor:default}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bin{border:2px dashed #aaa;border-radius:10px;padding:10px;min-height:80px;cursor:pointer}
+.bin-ttl{font-size:12px;font-weight:700;color:#555;margin-bottom:6px;text-align:center}
+.bin-words{display:flex;flex-wrap:wrap;gap:6px;min-height:36px}
+.placed-tag{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:700;color:#fff}
+.menu{background:#fffdf7;border:2px solid #e8d8a0;border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.menu h4{font-size:11px;letter-spacing:1px;color:#8b6914;margin:10px 0 4px}
+.menu h4:first-child{margin-top:0}
+.menu p{font-size:12.5px;line-height:1.6;color:#3a3a2a;margin-bottom:3px;padding-left:12px;text-indent:-12px}
+.prz-ov{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+.prz-ov.show{display:flex}
+.prz-bx{background:#fff;border-radius:20px;padding:28px;max-width:460px;width:92%;text-align:center}
+.prz-icon{font-size:48px;margin-bottom:8px}
+.prz-ttl{font-size:22px;font-weight:800;color:#1a3a2a;margin-bottom:6px}
+.prz-sub{font-size:14px;color:#666;margin-bottom:16px}
+.prz-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+.prz-tab{padding:7px 16px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;border-radius:18px;background:#fff;cursor:pointer;font-family:Arial,sans-serif}
+.prz-tab.on{border-color:#1a3a2a;background:#e8f4ec;color:#1a3a2a}
+.vid-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.vid-a{background:#eef4f0;border-radius:8px;padding:10px 8px;text-decoration:none;color:#1a3a2a;font-size:11px;font-weight:700;border:1px solid #a8d8b8;display:block;line-height:1.5}
+.vid-icon{font-size:18px;margin-bottom:3px}
+.kg-btn{padding:10px 28px;font-size:14px;font-weight:800;border:none;border-radius:10px;background:#1a3a2a;cursor:pointer;color:#fff;font-family:Arial,sans-serif}
+@media(max-width:600px){.vs-pair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-t">Personal Narrative</div><div class="hdr-s">Revive Tutoring</div></div>
+  <div style="display:flex;gap:8px">
+    <button class="rst" id="vid-btn">Brain Break</button>
+    <button class="rst" id="rst-btn">Reset</button>
+  </div>
+</div>
+<div class="prg">
+  <div class="prg-bg"><div class="prg-fill" id="pf" style="width:0%"></div></div>
+  <div class="prg-txt" id="pt">0 / 6</div>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="wrap" id="main"></div>
+<div class="prz-ov" id="pm">
+  <div class="prz-bx">
+    <div class="prz-icon" id="pi">&#x1F4D3;</div>
+    <div class="prz-ttl">You earned a brain break!</div>
+    <div class="prz-sub">Pick a category.</div>
+    <div class="prz-tabs" id="prz-tabs-row"></div>
+    <div class="vid-grid" id="vg"></div>
+    <button class="kg-btn" id="kg-btn">Back to Writing</button>
+  </div>
+</div>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  var d = document.createElement('div');
+  d.style.cssText = 'background:red;color:white;padding:20px;font-size:16px;position:fixed;top:0;left:0;right:0;z-index:9999;';
+  d.textContent = 'JS ERROR: ' + msg + ' (line ' + line + ')';
+  document.body.appendChild(d);
+  return false;
+};
+var N=6, done=[], score=0, cur=0, pvt='r', correct=0, lastVid=0;
+for(var i=0;i<N;i++) done.push(false);
+
+var VIDS={
+  r:[{t:'Can you solve the bridge riddle?',u:'https://www.youtube.com/watch?v=7yDmGnA8Hw0'},{t:"Can you solve Einstein's riddle?",u:'https://www.youtube.com/watch?v=1rDVz_Fb6HQ'},{t:'Can you solve the prisoner hat riddle?',u:'https://www.youtube.com/watch?v=N5vJSNXPEwA'}],
+  i:[{t:'How optical illusions trick your brain',u:'https://www.youtube.com/watch?v=rfdJyDfIHIc'},{t:'The McGurk Effect (an audio illusion)',u:'https://www.youtube.com/watch?v=jtsfidRq2tw'},{t:'The moon illusion',u:'https://www.youtube.com/watch?v=RXkYjL_7jME'}],
+  s:[{t:"Turbulence: physics' great unsolved mystery",u:'https://www.youtube.com/watch?v=S3i6tJ4XNqA'},{t:"What would happen if you didn't sleep?",u:'https://www.youtube.com/watch?v=dqONk48l5vY'},{t:'Why do we dream?',u:'https://www.youtube.com/watch?v=2W85Dwxx218'}]
+};
+
+function sv(k,v){try{localStorage.setItem('pn_'+k,v);}catch(e){}}
+function ld(k){try{return localStorage.getItem('pn_'+k)||'';}catch(e){return '';}}
+function clr(){try{for(var k in localStorage){if(k.indexOf('pn_')===0)localStorage.removeItem(k);}}catch(e){}}
+function el(id){return document.getElementById(id);}
+function ce(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e;}
+function restTA(){
+  setTimeout(function(){
+    var ts=document.querySelectorAll('textarea[id]');
+    for(var i=0;i<ts.length;i++){
+      var s=ld(ts[i].id);
+      if(s&&!ts[i].disabled){ts[i].value=s;if(s.trim().length>10)ts[i].classList.add('ok');}
+    }
+  },120);
+}
+function mark(i){
+  if(done[i])return;
+  done[i]=true;score++;
+  el('pf').style.width=Math.round(score/N*100)+'%';
+  el('pt').textContent=score+' / '+N;
+  buildTabs();
+}
+function addCorrect(){
+  correct++;
+  var v=Math.floor(correct/5);
+  if(v>lastVid){lastVid=v;setTimeout(showP,400);}
+}
+function setPT(t){pvt=t;showVids();}
+function showVids(){
+  var vg=el('vg');if(!vg)return;
+  var pool=VIDS[pvt],pick=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,4);
+  vg.innerHTML='';
+  pick.forEach(function(v){
+    var a=ce('a','vid-a');a.href=v.u;a.target='_blank';
+    var icon=ce('div','vid-icon');icon.textContent='▶';a.appendChild(icon);
+    a.appendChild(document.createTextNode(v.t));
+    vg.appendChild(a);
+  });
+}
+function showP(){
+  pvt='r';
+  el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t,i){t.classList.toggle('on',i===0);});
+  el('pi').textContent='📓';
+  showVids();
+  el('pm').classList.add('show');
+}
+
+var TLBL=['One Moment','Story Test','Pick a Prompt','Zoom In','3 Questions','Sketch It'];
+function buildTabs(){
+  var w=el('tabs');w.innerHTML='';
+  for(var i=0;i<N;i++){
+    var b=ce('button','tab'+(i===cur?' on':'')+(done[i]?' dn':''));
+    b.textContent=(done[i]?'+ ':'')+TLBL[i];
+    b.setAttribute('data-i',String(i));
+    b.addEventListener('click',function(){cur=parseInt(this.getAttribute('data-i'));render();});
+    w.appendChild(b);
+  }
+}
+
+// ===== PROMPT MENU =====
+var PROMPTS=[
+  {h:'CHALLENGES AND FIRSTS', items:[
+    'Tell about a time you learned to do something that was hard at first.',
+    'Tell about your first day somewhere new, like a school, a team, or a neighborhood.',
+    'Tell about a time you were nervous or scared but did the thing anyway.',
+    'Tell about a time you tried something, failed, and decided what to do next.']},
+  {h:'PEOPLE WHO MATTER', items:[
+    'Tell about a person who changed the way you see something.',
+    'Tell about a time someone helped you, or a time you helped someone else.',
+    'Tell about a moment with a family member that you will never forget.',
+    'Tell about a time you and a friend argued, and what happened afterward.']},
+  {h:'TURNING POINTS AND LESSONS', items:[
+    'Tell about a time you changed your mind about something important.',
+    'Tell about a time you were given advice, or gave it, and how it turned out.',
+    'Tell about a moment when you realized you had grown up a little.',
+    'Tell about a mistake that ended up teaching you something.']},
+  {h:'STRONG FEELINGS', items:[
+    'Tell about the proudest moment you can remember.',
+    'Tell about a time you were embarrassed, and how you got through it.',
+    'Tell about a time something did not go the way you planned.',
+    'Tell about a time you waited a long time for something, and it finally came.']},
+  {h:'PLACES, WEATHER, AND EVENTS', items:[
+    'Tell about a fun or hard time you had during extreme weather.',
+    'Tell about a great time you had that did not cost much money.',
+    'Tell about a trip or an outing that surprised you.',
+    'Tell about a tradition or celebration that means a lot to you.']},
+  {h:'GOALS AND SURPRISES', items:[
+    'Tell about a time you set a goal and reached it.',
+    'Tell about a time you got an unexpected surprise.',
+    'Tell about a time you were brave for someone other than yourself.']}
+];
+function buildMenu(){
+  var box=ce('div','menu');
+  PROMPTS.forEach(function(cat){
+    box.appendChild(ce('h4',null,cat.h));
+    cat.items.forEach(function(it){var p=ce('p');p.textContent='\u2022  '+it;box.appendChild(p);});
+  });
+  return box;
+}
+
+// ===== PICKERS (idx 0 One Moment, idx 3 Zoom In) =====
+var PICK={
+  0:[
+    {clue:'A personal narrative zooms in on one moment. Which option is a single moment you could tell as a story?',a:'My whole summer.',b:'The afternoon a wave flipped my kayak at the lake.',c:'b',f:'"My whole summer" holds hundreds of moments. The kayak flip is one moment with a beginning, a middle, and an end.'},
+    {clue:'Which option is a story, not a subject?',a:'The morning I forgot my lines in the school play.',b:'Everything about being in plays.',c:'a',f:'One specific morning is a scene you can tell. "Being in plays" is a topic, not a moment.'},
+    {clue:'Which option has real events to tell?',a:'My favorite foods.',b:'The night I cooked dinner for my family and set off the smoke alarm.',c:'b',f:'A list of foods has no events. The dinner disaster has a clear sequence and a turning point.'},
+    {clue:'Which option is small enough to stretch into a story?',a:'Soccer.',b:'The penalty kick I took in the last minute of the championship.',c:'b',f:'"Soccer" could fill a book. One penalty kick is a single, tense moment you can slow down and stretch.'}
+  ],
+  3:[
+    {clue:'Big idea: a person who influenced me. Which version zooms in on one moment?',a:'My coach has helped me in many ways for three years.',b:'The one practice my coach pulled me aside and told me to stop quitting on myself.',c:'b',f:'Three years is a summary. One practice, one piece of advice, is a moment you can build a story around.'},
+    {clue:'Big idea: a time I learned something. Which version is a single moment?',a:'I learned to swim over many lessons that summer.',b:'The moment I let go of the wall and swam to my dad on my own.',c:'b',f:'A whole summer of lessons is background. Letting go of the wall is the moment that mattered.'},
+    {clue:'Big idea: helping someone. Which version is one scene?',a:'I help my little brother all the time.',b:'The afternoon my little brother cried on the bus and I sat with him the whole way home.',c:'b',f:'"All the time" is a habit, not a story. One afternoon on the bus is a moment with a beginning and an end.'}
+  ]
+};
+var pickAns={0:{},3:{}}, pickCount={0:0,3:0};
+function pickClick(act,pi,ch){
+  if(pickAns[act][pi])return;pickAns[act][pi]=true;pickCount[act]++;
+  var p=PICK[act][pi],ok=ch===p.c;
+  var ae=el('p'+act+'a'+pi),be=el('p'+act+'b'+pi),fb=el('p'+act+'f'+pi);
+  var cor=p.c==='a'?ae:be,wrg=p.c==='a'?be:ae;
+  if(ok){cor.classList.add('cor');wrg.style.opacity='.5';fb.textContent='Yes. '+p.f;fb.className='vs-fb show cor';addCorrect();}
+  else{wrg.classList.add('wrg');cor.classList.add('rev');fb.textContent='Look again. '+p.f;fb.className='vs-fb show wrg';}
+  if(pickCount[act]>=PICK[act].length){var d=el('pk'+act+'_done');if(d)d.classList.add('show');mark(act);}
+}
+function renderPick(act,instTxt,doneTxt){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=instTxt;
+  PICK[act].forEach(function(p,i){
+    var box=ce('div','ex-box');
+    var cl=ce('div','clue-lbl');
+    var cll=ce('div','lbl');cll.textContent='THINK ABOUT IT';cl.appendChild(cll);
+    cl.appendChild(document.createTextNode(p.clue));box.appendChild(cl);
+    var pair=ce('div','vs-pair');
+    var oa=ce('div','vs-opt');oa.id='p'+act+'a'+i;oa.textContent=p.a;oa.addEventListener('click',function(){pickClick(act,i,'a');});
+    var ob=ce('div','vs-opt');ob.id='p'+act+'b'+i;ob.textContent=p.b;ob.addEventListener('click',function(){pickClick(act,i,'b');});
+    pair.appendChild(oa);pair.appendChild(ob);box.appendChild(pair);
+    var fb=ce('div','vs-fb');fb.id='p'+act+'f'+i;box.appendChild(fb);
+    wrap.appendChild(box);
+  });
+  var dn=ce('div','done'+(done[act]?' show':''));dn.id='pk'+act+'_done';dn.textContent=doneTxt;wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== SORTER (idx 1 Story Test) =====
+var SORT_ITEMS=[
+  {w:'The time I got lost at the county fair.',s:'story'},
+  {w:'The morning my dog ran away and we searched for hours.',s:'story'},
+  {w:'The first time I rode the tallest roller coaster.',s:'story'},
+  {w:'The day I finally landed my skateboard trick.',s:'story'},
+  {w:'My life with pets.',s:'topic'},
+  {w:'Things I like to do in summer.',s:'topic'},
+  {w:'Why I love music.',s:'topic'},
+  {w:'All about my best friend.',s:'topic'}
+];
+var soPlaced={},soSel=null;
+function selSO(i){
+  if(soPlaced[i])return;
+  document.querySelectorAll('.sw-word').forEach(function(e){e.style.outline='';});
+  soSel=i;var e=el('so'+i);if(e)e.style.outline='3px solid #2d7a4f';
+}
+function dropSO(bn){
+  if(soSel===null)return;
+  var item=SORT_ITEMS[soSel],we=el('so'+soSel);
+  if(!item||!we)return;
+  if(bn!==item.s){
+    we.style.outline='3px solid #e24b4a';
+    var si=soSel;soSel=null;
+    setTimeout(function(){var e=el('so'+si);if(e)e.style.outline='';},700);
+    return;
+  }
+  var bw=el('sob'+bn);
+  if(bw){var t=ce('div','placed-tag');t.style.background=bn==='story'?'#2d7a4f':'#a32d2d';t.textContent=item.w;bw.appendChild(t);}
+  we.classList.add('placed');we.style.outline='';soPlaced[soSel]=true;soSel=null;addCorrect();
+  var cnt=Object.keys(soPlaced).length;
+  var sc=el('so_sc');if(sc)sc.textContent='Sorted: '+cnt+' / 8';
+  if(cnt===8){var d=el('so_done');if(d)d.classList.add('show');mark(1);}
+}
+function renderSort(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A good personal-narrative idea is one moment, not a broad subject. Click an idea, then click the bin where it belongs: a story you could tell, or a topic that is still too big.';
+  var sw=ce('div','sw');
+  SORT_ITEMS.forEach(function(item,i){
+    var w=ce('div','sw-word'+(soPlaced[i]?' placed':''));w.id='so'+i;w.textContent=item.w;w.style.maxWidth='100%';
+    w.addEventListener('click',function(){selSO(i);});
+    sw.appendChild(w);
+  });
+  wrap.appendChild(sw);
+  var bins=ce('div','bins');
+  [['story','A STORY (ONE MOMENT)'],['topic','STILL A TOPIC (TOO BIG)']].forEach(function(b){
+    var bx=ce('div','bin');
+    var bt=ce('div','bin-ttl');bt.textContent=b[1];bx.appendChild(bt);
+    var bw=ce('div','bin-words');bw.id='sob'+b[0];bx.appendChild(bw);
+    bx.addEventListener('click',function(){dropSO(b[0]);});
+    bins.appendChild(bx);
+  });
+  wrap.appendChild(bins);
+  var sc=ce('div');sc.id='so_sc';sc.style.cssText='font-size:12px;color:#555;margin-top:6px;';
+  sc.textContent='Sorted: '+Object.keys(soPlaced).length+' / 8';wrap.appendChild(sc);
+  var dn=ce('div','done'+(done[1]?' show':''));dn.id='so_done';dn.textContent='You can tell a story-sized idea from a topic that is too big.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== WRITING EXERCISES (idx 2,4,5) =====
+function makeQ(lbl,ta){var q=ce('div','q');var ql=ce('div','q-lbl');ql.textContent=lbl;q.appendChild(ql);q.appendChild(ta);return q;}
+function makeWrEx(exIdx,mapIdx,qs,intro,topNode){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=intro;
+  if(topNode)wrap.appendChild(topNode);
+  qs.forEach(function(q,i){
+    var ta=ce('textarea');ta.id='wr'+exIdx+'_'+i;ta.placeholder='Write here...';if(q.tall)ta.style.minHeight='130px';
+    var saved=ld(ta.id);if(saved){ta.value=saved;if(saved.trim().length>10)ta.classList.add('ok');}
+    ta.addEventListener('input',function(){sv(this.id,this.value);if(this.value.trim().length>10)this.classList.add('ok');chkWrEx(exIdx,mapIdx);});
+    wrap.appendChild(makeQ(q.t,ta));
+  });
+  var dn=ce('div','done'+(done[mapIdx]?' show':''));dn.id='wd'+exIdx;dn.textContent='Activity complete.';wrap.appendChild(dn);
+  var navrow=ce('div','nav-row');
+  var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur=mapIdx-1;render();});
+  if(mapIdx===0)back.style.visibility='hidden';
+  var sub=ce('button','btn btn-sub');sub.id='wsub'+exIdx;sub.disabled=true;sub.textContent=done[mapIdx]?'Done':'Mark Complete';
+  sub.addEventListener('click',function(){subWrEx(exIdx,mapIdx);});
+  var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur=mapIdx+1;render();});
+  if(mapIdx===N-1)nxt.style.visibility='hidden';
+  navrow.appendChild(back);navrow.appendChild(sub);navrow.appendChild(nxt);
+  wrap.appendChild(navrow);
+  setTimeout(function(){chkWrEx(exIdx,mapIdx);},50);
+  return wrap;
+}
+function chkWrEx(exIdx,mapIdx){
+  var ts=document.querySelectorAll('[id^="wr'+exIdx+'_"]');
+  var ok=true;ts.forEach(function(ta){if(ta.value.trim().length<10)ok=false;});
+  var btn=el('wsub'+exIdx);if(btn)btn.disabled=!ok;
+}
+function subWrEx(exIdx,mapIdx){if(done[mapIdx])return;var d=el('wd'+exIdx);if(d)d.classList.add('show');mark(mapIdx);if(mapIdx<N-1)setTimeout(function(){cur=mapIdx+1;render();},700);}
+
+// ===== MAIN RENDER =====
+var EX_INFO=[
+  {num:'Part 1',type:'One Moment, Not a Topic',title:'Zoom in on a single moment'},
+  {num:'Part 2',type:'The Story Test',title:'A story or still a topic?'},
+  {num:'Part 3',type:'Pick a Prompt',title:'Find an idea that sparks a memory'},
+  {num:'Part 4',type:'Zoom In',title:'Find the moment that mattered'},
+  {num:'Part 5',type:'The Three Questions',title:'Test your idea'},
+  {num:'Part 6',type:'Sketch Your Moment',title:'Map it before you draft'}
+];
+var WRITE_ACTS=[2,4,5];
+function render(){
+  buildTabs();
+  var ex=EX_INFO[cur];
+  var card=ce('div','card');
+  var hd=ce('div','card-hd');
+  hd.appendChild(ce('div','card-num')).textContent=ex.num+' - '+ex.type;
+  hd.appendChild(ce('div','card-ttl')).textContent=ex.title;
+  card.appendChild(hd);
+  var bd=ce('div','card-bd');
+  var content;
+  if(cur===0)content=renderPick(0,'A personal narrative tells one true moment from your life, not a whole topic. The first job is to zoom in. Read each pair and choose the single moment you could actually tell as a story.','You know the difference between a moment and a topic.');
+  else if(cur===1)content=renderSort();
+  else if(cur===2)content=makeWrEx(2,2,[
+    {t:'Write down two or three prompts that brought a real memory to mind. Next to each, name the memory in a few words.',tall:true}
+  ],'Read the prompt menu below. As you read, notice which prompts make a specific memory pop into your head right away. Those are your best stories.',buildMenu());
+  else if(cur===3)content=renderPick(3,'When a memory feels too big, find the one moment inside it that mattered most. That single moment is your story. Pick the zoomed-in version.','You can find the one moment inside a big memory.');
+  else if(cur===4)content=makeWrEx(4,4,[
+    {t:'Where were you? Describe the place.'},
+    {t:'Who else was there?'},
+    {t:'What changed by the end? What was different about you or the situation afterward?',tall:true}
+  ],'Test your top idea against three questions. If you can answer all three, you have a story worth telling.');
+  else if(cur===5)content=makeWrEx(5,5,[
+    {t:'In one sentence, what is this story about?'},
+    {t:'What happened first, next, and last? Jot the order.',tall:true},
+    {t:'Write a first line that drops the reader into the moment. Start in the action, not with "This is a story about."',tall:true}
+  ],'Sketch your moment before you draft. Keep it quick and rough. This becomes the plan for your full story.');
+  if(WRITE_ACTS.indexOf(cur)===-1){
+    var navrow=ce('div','nav-row');
+    if(cur>0){var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur--;render();});navrow.appendChild(back);}else{navrow.appendChild(ce('div'));}
+    navrow.appendChild(ce('div'));
+    if(cur<N-1){var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur++;render();});navrow.appendChild(nxt);}else{navrow.appendChild(ce('div'));}
+    content.appendChild(navrow);
+  }
+  bd.appendChild(content);card.appendChild(bd);
+  el('main').innerHTML='';el('main').appendChild(card);
+  restTA();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetAll(){
+  clr();
+  done=[];for(var i=0;i<N;i++)done.push(false);
+  score=0;cur=0;correct=0;lastVid=0;
+  pickAns={0:{},3:{}};pickCount={0:0,3:0};
+  soPlaced={};soSel=null;
+  el('pf').style.width='0%';el('pt').textContent='0 / '+N;
+  render();
+}
+
+el('rst-btn').addEventListener('click',resetAll);
+el('vid-btn').addEventListener('click',showP);
+el('kg-btn').addEventListener('click',function(){el('pm').classList.remove('show');});
+
+var ptab_data=[{t:'Riddles',k:'r'},{t:'Illusions',k:'i'},{t:'Weird Science',k:'s'}];
+ptab_data.forEach(function(p,i){
+  var b=ce('button','prz-tab'+(i===0?' on':''));b.textContent=p.t;
+  b.addEventListener('click',function(){
+    el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t){t.classList.remove('on');});
+    this.classList.add('on');setPT(p.k);
+  });
+  el('prz-tabs-row').appendChild(b);
+});
+
+render();
+</script>
+</body>
+</html>
