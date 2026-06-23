@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narrative Drills - Revive Tutoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#eef4f0;color:#1a1a1a}
+.hdr{background:#1a3a2a;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.hdr-t{font-size:18px;font-weight:800;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.6)}
+.rst{padding:6px 14px;font-size:12px;border:1px solid rgba(255,255,255,.4);border-radius:8px;background:transparent;cursor:pointer;color:#fff}
+.prg{background:#fff;padding:10px 20px;border-bottom:1px solid #d0e4d8;display:flex;align-items:center;gap:12px}
+.prg-bg{flex:1;background:#d0e4d8;border-radius:999px;height:12px;overflow:hidden}
+.prg-fill{height:100%;background:linear-gradient(90deg,#1a3a2a,#2d7a4f);border-radius:999px;transition:width .4s}
+.prg-txt{font-size:12px;font-weight:700;color:#555;white-space:nowrap}
+.section-tag{background:#0f2419;padding:6px 20px;display:flex;gap:8px;align-items:center}
+.section-tag span{font-size:10px;font-weight:700;letter-spacing:1px;color:#7dcca0}
+.tabs{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #d0e4d8;padding:0 8px}
+.tab{padding:10px 12px;font-size:11px;font-weight:700;border:none;background:transparent;cursor:pointer;color:#999;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.on{color:#1a3a2a;border-bottom-color:#2d7a4f}
+.tab.dn{color:#2d7a4f}
+.wrap{max-width:800px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;border:1px solid #d0e4d8;margin-bottom:16px;overflow:hidden}
+.card-hd{background:#1a3a2a;padding:14px 20px}
+.card-grp{font-size:10px;font-weight:700;color:#7dcca0;letter-spacing:2px;margin-bottom:3px}
+.card-ttl{font-size:18px;font-weight:800;color:#fff}
+.card-bd{padding:20px}
+.inst{background:#f0f7f3;border-left:4px solid #2d7a4f;padding:12px 16px;font-size:13px;line-height:1.7;color:#333;margin-bottom:14px;border-radius:0 8px 8px 0}
+.ex-box{background:#f6fcf8;border:2px solid #a8d8b8;border-radius:10px;padding:16px;margin-bottom:14px}
+.clue-lbl{background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;color:#5a4708;margin-bottom:10px}
+.clue-lbl .lbl{font-size:10px;font-weight:700;color:#8b6914;letter-spacing:1px;margin-bottom:4px}
+.card-txt{font-size:13.5px;line-height:1.6;color:#2a2a2a;margin-bottom:10px}
+.q{margin-bottom:14px}
+.q-lbl{font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;line-height:1.5}
+textarea{width:100%;border:2px solid #d0e4d8;border-radius:8px;padding:10px;font-size:13px;font-family:Arial,sans-serif;line-height:1.6;resize:vertical;min-height:90px;background:#fefefe}
+textarea:focus{outline:none;border-color:#2d7a4f}
+textarea.ok{border-color:#2d7a4f;background:#f6fcf8}
+.btn{padding:10px 22px;font-size:13px;font-weight:700;border-radius:10px;cursor:pointer;font-family:Arial,sans-serif;border:none}
+.btn-sub{background:#1a3a2a;color:#fff}
+.btn-sub:disabled{background:#aaa;cursor:default}
+.btn-nav{border:2px solid #1a3a2a;background:transparent;color:#1a3a2a}
+.btn-nav.nxt{background:#1a3a2a;color:#fff}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+.done{display:none;background:#e1f5ee;border:2px solid #1d9e75;border-radius:10px;padding:10px 16px;font-size:13px;color:#0f6e56;font-weight:700;text-align:center;margin-top:10px}
+.done.show{display:block}
+.vs-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.vs-opt{border:2px solid #d0e4d8;border-radius:10px;padding:12px;cursor:pointer;font-size:13px;line-height:1.6;background:#fff}
+.vs-opt:hover{border-color:#2d7a4f}
+.vs-opt.cor{border-color:#1d9e75;background:#e1f5ee}
+.vs-opt.wrg{border-color:#e24b4a;background:#fcebeb}
+.vs-opt.rev{border-color:#1d9e75;background:#e1f5ee}
+.vs-fb{font-size:12px;margin-top:6px;padding:8px 10px;border-radius:6px;display:none}
+.vs-fb.show{display:block}
+.vs-fb.cor{background:#e1f5ee;color:#0f6e56}
+.vs-fb.wrg{background:#fcebeb;color:#a32d2d}
+.lab-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lab-btn{padding:6px 12px;border-radius:14px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;font-family:Arial,sans-serif}
+.lab-res{font-size:12px;padding:8px 10px;border-radius:6px;margin-top:8px}
+.lab-res.cor{background:#e1f5ee;color:#0f6e56}
+.lab-res.wrg{background:#faeeda;color:#854f0b}
+.legend{background:#fefaf3;border:2px solid #e8d8a0;border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.legend h4{font-size:10px;font-weight:700;color:#8b6914;letter-spacing:2px;margin-bottom:8px}
+.legend .row{display:flex;flex-wrap:wrap;gap:6px}
+.legend span{color:#fff;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700}
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sw-word{padding:7px 13px;border-radius:14px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;background:#fff;cursor:pointer;user-select:none;white-space:normal;text-align:left}
+.sw-word.placed{opacity:.4;cursor:default}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bin{border:2px dashed #aaa;border-radius:10px;padding:10px;min-height:80px;cursor:pointer}
+.bin-ttl{font-size:12px;font-weight:700;color:#555;margin-bottom:6px;text-align:center}
+.bin-words{display:flex;flex-wrap:wrap;gap:6px;min-height:36px}
+.placed-tag{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:700;color:#fff}
+.prz-ov{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+.prz-ov.show{display:flex}
+.prz-bx{background:#fff;border-radius:20px;padding:28px;max-width:460px;width:92%;text-align:center}
+.prz-icon{font-size:48px;margin-bottom:8px}
+.prz-ttl{font-size:22px;font-weight:800;color:#1a3a2a;margin-bottom:6px}
+.prz-sub{font-size:14px;color:#666;margin-bottom:16px}
+.prz-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+.prz-tab{padding:7px 16px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;border-radius:18px;background:#fff;cursor:pointer;font-family:Arial,sans-serif}
+.prz-tab.on{border-color:#1a3a2a;background:#e8f4ec;color:#1a3a2a}
+.vid-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.vid-a{background:#eef4f0;border-radius:8px;padding:10px 8px;text-decoration:none;color:#1a3a2a;font-size:11px;font-weight:700;border:1px solid #a8d8b8;display:block;line-height:1.5}
+.vid-icon{font-size:18px;margin-bottom:3px}
+.kg-btn{padding:10px 28px;font-size:14px;font-weight:800;border:none;border-radius:10px;background:#1a3a2a;cursor:pointer;color:#fff;font-family:Arial,sans-serif}
+@media(max-width:600px){.vs-pair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-t">Narrative Drills</div><div class="hdr-s">Revive Tutoring</div></div>
+  <div style="display:flex;gap:8px">
+    <button class="rst" id="vid-btn">Brain Break</button>
+    <button class="rst" id="rst-btn">Reset</button>
+  </div>
+</div>
+<div class="prg">
+  <div class="prg-bg"><div class="prg-fill" id="pf" style="width:0%"></div></div>
+  <div class="prg-txt" id="pt">0 / 12</div>
+</div>
+<div class="section-tag"><span id="sec-tag">SHOWING AND CHARACTER</span></div>
+<div class="tabs" id="tabs"></div>
+<div class="wrap" id="main"></div>
+<div class="prz-ov" id="pm">
+  <div class="prz-bx">
+    <div class="prz-icon" id="pi">&#x1F4D3;</div>
+    <div class="prz-ttl">You earned a brain break!</div>
+    <div class="prz-sub">Pick a category.</div>
+    <div class="prz-tabs" id="prz-tabs-row"></div>
+    <div class="vid-grid" id="vg"></div>
+    <button class="kg-btn" id="kg-btn">Back to Writing</button>
+  </div>
+</div>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  var d = document.createElement('div');
+  d.style.cssText = 'background:red;color:white;padding:20px;font-size:16px;position:fixed;top:0;left:0;right:0;z-index:9999;';
+  d.textContent = 'JS ERROR: ' + msg + ' (line ' + line + ')';
+  document.body.appendChild(d);
+  return false;
+};
+var N=12, done=[], score=0, cur=0, pvt='r', correct=0, lastVid=0;
+for(var i=0;i<N;i++) done.push(false);
+
+var VIDS={
+  r:[{t:'Can you solve the bridge riddle?',u:'https://www.youtube.com/watch?v=7yDmGnA8Hw0'},{t:"Can you solve Einstein's riddle?",u:'https://www.youtube.com/watch?v=1rDVz_Fb6HQ'},{t:'Can you solve the prisoner hat riddle?',u:'https://www.youtube.com/watch?v=N5vJSNXPEwA'}],
+  i:[{t:'How optical illusions trick your brain',u:'https://www.youtube.com/watch?v=rfdJyDfIHIc'},{t:'The McGurk Effect (an audio illusion)',u:'https://www.youtube.com/watch?v=jtsfidRq2tw'},{t:'The moon illusion',u:'https://www.youtube.com/watch?v=RXkYjL_7jME'}],
+  s:[{t:"Turbulence: physics' great unsolved mystery",u:'https://www.youtube.com/watch?v=S3i6tJ4XNqA'},{t:"What would happen if you didn't sleep?",u:'https://www.youtube.com/watch?v=dqONk48l5vY'},{t:'Why do we dream?',u:'https://www.youtube.com/watch?v=2W85Dwxx218'}]
+};
+
+function sv(k,v){try{localStorage.setItem('nwd_'+k,v);}catch(e){}}
+function ld(k){try{return localStorage.getItem('nwd_'+k)||'';}catch(e){return '';}}
+function clr(){try{for(var k in localStorage){if(k.indexOf('nwd_')===0)localStorage.removeItem(k);}}catch(e){}}
+function el(id){return document.getElementById(id);}
+function ce(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e;}
+function restTA(){
+  setTimeout(function(){
+    var ts=document.querySelectorAll('textarea[id]');
+    for(var i=0;i<ts.length;i++){
+      var s=ld(ts[i].id);
+      if(s&&!ts[i].disabled){ts[i].value=s;if(s.trim().length>10)ts[i].classList.add('ok');}
+    }
+  },120);
+}
+function mark(i){
+  if(done[i])return;
+  done[i]=true;score++;
+  el('pf').style.width=Math.round(score/N*100)+'%';
+  el('pt').textContent=score+' / '+N;
+  buildTabs();
+}
+function addCorrect(){
+  correct++;
+  var v=Math.floor(correct/5);
+  if(v>lastVid){lastVid=v;setTimeout(showP,400);}
+}
+function setPT(t){pvt=t;showVids();}
+function showVids(){
+  var vg=el('vg');if(!vg)return;
+  var pool=VIDS[pvt],pick=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,4);
+  vg.innerHTML='';
+  pick.forEach(function(v){
+    var a=ce('a','vid-a');a.href=v.u;a.target='_blank';
+    var icon=ce('div','vid-icon');icon.textContent='▶';a.appendChild(icon);
+    a.appendChild(document.createTextNode(v.t));
+    vg.appendChild(a);
+  });
+}
+function showP(){
+  pvt='r';
+  el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t,i){t.classList.toggle('on',i===0);});
+  el('pi').textContent='📓';
+  showVids();
+  el('pm').classList.add('show');
+}
+
+var TLBL=['Tell vs Show','Name It','Show It','Inner Voice','Show Change','Punctuate','Tag or Beat','New Speaker','Fix It','Vivid Verbs','Precise Nouns','Combine'];
+var GROUP=['SHOWING AND CHARACTER','SHOWING AND CHARACTER','SHOWING AND CHARACTER','SHOWING AND CHARACTER','SHOWING AND CHARACTER','DIALOGUE MECHANICS','DIALOGUE MECHANICS','DIALOGUE MECHANICS','DIALOGUE MECHANICS','WORD AND SENTENCE POWER','WORD AND SENTENCE POWER','WORD AND SENTENCE POWER'];
+function buildTabs(){
+  var w=el('tabs');w.innerHTML='';
+  for(var i=0;i<N;i++){
+    var b=ce('button','tab'+(i===cur?' on':'')+(done[i]?' dn':''));
+    b.textContent=(done[i]?'+ ':'')+TLBL[i];
+    b.setAttribute('data-i',String(i));
+    b.addEventListener('click',function(){cur=parseInt(this.getAttribute('data-i'));render();});
+    w.appendChild(b);
+  }
+}
+
+// ===== PICKERS (0 Tell/Show, 3 Inner Voice, 4 Show Change, 5 Punctuate, 7 New Speaker) =====
+var PICK={
+  0:[
+    {clue:'How do you show a scared character?',a:'My stomach dropped and my legs turned to jelly.',b:'I was really scared.',c:'a',f:'The showing version drops the fear into the body, so the reader feels it too. The other only slaps on a label.'},
+    {clue:'How do you show a happy character?',a:'She was very happy about the news.',b:'She spun in a circle and could not stop grinning.',c:'b',f:'Spinning and grinning broadcast the joy. "Very happy" names it and moves on.'},
+    {clue:'How do you show a cold room?',a:'My breath puffed white and I tucked my hands into my sleeves.',b:'The room was freezing cold.',c:'a',f:'White breath and tucked-in hands make the reader shiver. "Freezing cold" only announces it.'},
+    {clue:'How do you show a worn-out character?',a:'He was exhausted after the game.',b:'He dropped onto the couch, and his eyes shut before his head hit the cushion.',c:'b',f:'The collapse and the instant sleep act out the exhaustion. "Exhausted" just states it.'}
+  ],
+  3:[
+    {clue:'The teacher drops Maya into a group with the three kids who never lift a finger.',a:'Maya was annoyed about her group.',b:'Great, Maya thought, another project where I do everything myself.',c:'b',f:'The inner voice hands us Maya\u2019s exact thought and a flash of her personality. The other slaps a label on her mood.'},
+    {clue:'Theo just fed his coach a small lie.',a:'He felt bad about it.',b:'Why did I say that? Theo thought. I could have just told the truth.',c:'b',f:'Theo\u2019s own question exposes his conscience. "Felt bad" reports the mood and skips the thinking.'},
+    {clue:'Ava hovers at the edge of the game, working up the nerve to ask in.',a:'What if they say no? Ava thought. What if they laugh? She made herself step forward anyway.',b:'Ava was unsure, but she joined the game.',c:'a',f:'Ava\u2019s worried questions drop us inside her head. The other version skips her thinking entirely.'}
+  ],
+  4:[
+    {clue:'A story about a kid who freezes whenever the teacher calls for volunteers.',a:'After that, things went back to normal.',b:'The next morning, my hand shot up before I could talk myself out of it.',c:'b',f:'His hand shooting up proves he changed. "Back to normal" proves nothing happened.'},
+    {clue:'A story about a girl who sized up the new student and wrote her off in one glance.',a:'By lunch, I had saved her a seat without even thinking about it.',b:'In the end, the day was over and I went home.',c:'a',f:'Saving a seat reveals a real shift in how she treats the new student. The other just stops the story.'},
+    {clue:'A story about a kid who bails the second anything turns hard.',a:'I put the guitar back in its case like always.',b:'My fingers ached, but this time I gripped the guitar and stabbed at the chord again.',c:'b',f:'Reaching for the guitar again marks real growth, the opposite of his old habit. The other leaves him exactly where he started.'}
+  ],
+  5:[
+    {clue:'Which line punctuates the shout correctly?',a:'"Watch out!" Maria shouted.',b:'"Watch out"! Maria shouted.',c:'a',f:'The exclamation point stays inside the quotation marks, right next to the words Maria actually shouted.'},
+    {clue:'Which line sets off the tag correctly?',a:'Diego said "we should go".',b:'Diego said, "We should go."',c:'b',f:'A comma sets off the tag, the first spoken word takes a capital, and the period sits inside the quotes.'},
+    {clue:'A tag follows the speech. Which line is correct?',a:'"I already finished," she said.',b:'"I already finished." she said.',c:'a',f:'When a tag follows, the speech ends with a comma inside the quotes, not a period.'},
+    {clue:'Which line capitalizes the speech correctly?',a:'"are you coming with us?" he asked.',b:'"Are you coming with us?" he asked.',c:'b',f:'The first word inside the quotes takes a capital, just like the start of any sentence.'}
+  ],
+  7:[
+    {clue:'Sam asks a question and Mara answers. Which choice helps the reader?',a:'Keep both speakers in one paragraph to save space.',b:'Start a new paragraph each time the speaker changes.',c:'b',f:'A new paragraph for each speaker lets the reader track who is talking without getting lost.'},
+    {clue:'You are writing a fast back-and-forth argument between two friends.',a:'Run all the lines together in one block.',b:'Break to a new line for each new speaker.',c:'b',f:'Each speaker gets a fresh paragraph, so the rhythm of the argument stays clear.'},
+    {clue:'Which layout keeps a conversation easy to follow?',a:'New paragraph each time a different person speaks.',b:'One long paragraph with every line of dialogue packed inside.',c:'a',f:'Breaking to a new paragraph for each speaker is the standard that keeps dialogue readable.'}
+  ],
+  9:[
+    {clue:'(He is furious.) He ____ the door behind him.',a:'closed',b:'slammed',c:'b',f:'"Slammed" carries the anger in the action itself. "Closed" stays flat.'},
+    {clue:'(She is sneaking past a sleeping baby.) She ____ across the room.',a:'tiptoed',b:'walked',c:'a',f:'"Tiptoed" shows the care and the quiet. "Walked" leaves the reader to guess.'},
+    {clue:'(The puppy is thrilled to see her.) The puppy ____ toward the door.',a:'went',b:'bolted',c:'b',f:'"Bolted" bursts with the dog\u2019s energy. "Went" is a weak verb that shows nothing.'},
+    {clue:'(Rain pounds hard all night.) Rain ____ against the window.',a:'hammered',b:'fell',c:'a',f:'"Hammered" makes the reader hear the storm. "Fell" just reports that rain happened.'}
+  ],
+  10:[
+    {clue:'Which gives the reader a clearer picture?',a:'A bird landed on the fence.',b:'A blue jay landed on the fence.',c:'b',f:'"Blue jay" lets the reader see the exact bird. "Bird" could be anything.'},
+    {clue:'Which noun is more precise?',a:'She grabbed her shoes and ran.',b:'She grabbed her cleats and ran.',c:'b',f:'"Cleats" hint that she is headed for a field or a game. "Shoes" wastes the chance.'},
+    {clue:'Which noun does more work?',a:'We drove past the store.',b:'We drove past the bakery.',c:'b',f:'"Bakery" brings a specific place to mind, maybe even a smell. "Store" stays blank.'},
+    {clue:'Which noun paints the scene?',a:'He sat under a tree.',b:'He sat under a willow.',c:'b',f:'"Willow" gives the tree a shape and a mood. "Tree" leaves the picture empty.'}
+  ]
+};
+var pickAns={0:{},3:{},4:{},5:{},7:{},9:{},10:{}}, pickCount={0:0,3:0,4:0,5:0,7:0,9:0,10:0};
+function pickClick(act,pi,ch){
+  if(pickAns[act][pi])return;pickAns[act][pi]=true;pickCount[act]++;
+  var p=PICK[act][pi],ok=ch===p.c;
+  var ae=el('p'+act+'a'+pi),be=el('p'+act+'b'+pi),fb=el('p'+act+'f'+pi);
+  var cor=p.c==='a'?ae:be,wrg=p.c==='a'?be:ae;
+  if(ok){cor.classList.add('cor');wrg.style.opacity='.5';fb.textContent='Yes. '+p.f;fb.className='vs-fb show cor';addCorrect();}
+  else{wrg.classList.add('wrg');cor.classList.add('rev');fb.textContent='Look again. '+p.f;fb.className='vs-fb show wrg';}
+  if(pickCount[act]>=PICK[act].length){var d=el('pk'+act+'_done');if(d)d.classList.add('show');mark(act);}
+}
+function renderPick(act,instTxt,doneTxt,lblTxt){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=instTxt;
+  PICK[act].forEach(function(p,i){
+    var box=ce('div','ex-box');
+    var cl=ce('div','clue-lbl');
+    var cll=ce('div','lbl');cll.textContent=lblTxt;cl.appendChild(cll);
+    cl.appendChild(document.createTextNode(p.clue));box.appendChild(cl);
+    var pair=ce('div','vs-pair');
+    var oa=ce('div','vs-opt');oa.id='p'+act+'a'+i;oa.textContent=p.a;oa.addEventListener('click',function(){pickClick(act,i,'a');});
+    var ob=ce('div','vs-opt');ob.id='p'+act+'b'+i;ob.textContent=p.b;ob.addEventListener('click',function(){pickClick(act,i,'b');});
+    pair.appendChild(oa);pair.appendChild(ob);box.appendChild(pair);
+    var fb=ce('div','vs-fb');fb.id='p'+act+'f'+i;box.appendChild(fb);
+    wrap.appendChild(box);
+  });
+  var dn=ce('div','done'+(done[act]?' show':''));dn.id='pk'+act+'_done';dn.textContent=doneTxt;wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== ACT 1: WHAT DOES IT SHOW? (label cards) =====
+var FEELINGS=['nervous','excited','angry','embarrassed','relieved'];
+var FEEL_COLORS={'nervous':'#854f0b','excited':'#185fa5','angry':'#a32d2d','embarrassed':'#6b4fa3','relieved':'#2d7a4f'};
+var LABEL=[
+  {t:'Her knee bounced under the desk, and she checked the clock for the third time.',l:'nervous',w:'The bouncing knee and the repeated clock-checks leak her worry about what is coming. That reads as nervous.'},
+  {t:'He pumped his fist and let out a whoop that echoed down the hall.',l:'excited',w:'The fist pump and the whoop burst out with pure energy. That reads as excited.'},
+  {t:'She slammed the locker shut, and her jaw clenched.',l:'angry',w:'The slammed locker and the tight jaw broadcast the anger she fights to hold down. That reads as angry.'},
+  {t:'His face burned, and he stared hard at his shoes.',l:'embarrassed',w:'The hot face and the eyes glued to his shoes beg the floor to swallow him. That reads as embarrassed.'},
+  {t:'She let out a long breath, and her shoulders finally dropped.',l:'relieved',w:'The long exhale and the loosened shoulders drain the tension out of her. That reads as relieved.'}
+];
+var labAns={};
+function labPick(i,choice,box){
+  if(labAns[i])return;labAns[i]=true;
+  var item=LABEL[i],ok=choice===item.l;
+  if(ok)addCorrect();
+  box.querySelectorAll('.lab-btn').forEach(function(b){ b.disabled=true; if(b.getAttribute('data-c')===item.l){ b.style.background=FEEL_COLORS[item.l]; b.style.color='#fff'; } });
+  var res=ce('div','lab-res '+(ok?'cor':'wrg'));res.innerHTML=(ok?'Correct. ':'Not quite. ')+'<strong>'+item.l+'</strong>: '+item.w;box.appendChild(res);
+  var all=true;for(var k=0;k<LABEL.length;k++){if(!labAns[k])all=false;}
+  if(all){var d=el('lab_done');if(d)d.classList.add('show');mark(1);}
+}
+function renderFeelings(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='When you show instead of tell, the reader reads the feeling straight from the clues you plant. Read each showing detail and name the feeling it reveals.';
+  var legend=ce('div','legend');
+  legend.appendChild(ce('h4',null,'FEELINGS'));
+  var row=ce('div','row');
+  FEELINGS.forEach(function(s){var sp=ce('span');sp.style.background=FEEL_COLORS[s];sp.textContent=s;row.appendChild(sp);});
+  legend.appendChild(row);wrap.appendChild(legend);
+  LABEL.forEach(function(item,i){
+    var box=ce('div','ex-box');
+    box.appendChild(ce('div','card-txt')).textContent=item.t;
+    var choices=ce('div','lab-choices');
+    FEELINGS.forEach(function(s){
+      var col=FEEL_COLORS[s];
+      var btn=ce('button','lab-btn');btn.style.cssText='background:'+col+'22;color:'+col+';border-color:'+col+';';btn.textContent=s;btn.setAttribute('data-c',s);
+      btn.addEventListener('click',function(){labPick(i,s,box);});
+      choices.appendChild(btn);
+    });
+    box.appendChild(choices);
+    wrap.appendChild(box);
+  });
+  var dn=ce('div','done'+(done[1]?' show':''));dn.id='lab_done';dn.textContent='You can read a feeling straight from the clues.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== ACT 6: TAG OR ACTION BEAT (sorter) =====
+var SORT_ITEMS=[
+  {w:'he whispered',s:'tag'},
+  {w:'Maria asked',s:'tag'},
+  {w:'they shouted',s:'tag'},
+  {w:'She crossed her arms.',s:'beat'},
+  {w:'He pointed at the door.',s:'beat'},
+  {w:'Dad set down his fork.',s:'beat'}
+];
+var soPlaced={},soSel=null;
+function selSO(i){
+  if(soPlaced[i])return;
+  document.querySelectorAll('.sw-word').forEach(function(e){e.style.outline='';});
+  soSel=i;var e=el('so'+i);if(e)e.style.outline='3px solid #2d7a4f';
+}
+function dropSO(bn){
+  if(soSel===null)return;
+  var item=SORT_ITEMS[soSel],we=el('so'+soSel);
+  if(!item||!we)return;
+  if(bn!==item.s){
+    we.style.outline='3px solid #e24b4a';
+    var si=soSel;soSel=null;
+    setTimeout(function(){var e=el('so'+si);if(e)e.style.outline='';},700);
+    return;
+  }
+  var bw=el('sob'+bn);
+  if(bw){var t=ce('div','placed-tag');t.style.background=bn==='tag'?'#185fa5':'#854f0b';t.textContent=item.w;bw.appendChild(t);}
+  we.classList.add('placed');we.style.outline='';soPlaced[soSel]=true;soSel=null;addCorrect();
+  var cnt=Object.keys(soPlaced).length;
+  var sc=el('so_sc');if(sc)sc.textContent='Sorted: '+cnt+' / 6';
+  if(cnt===6){var d=el('so_done');if(d)d.classList.add('show');mark(6);}
+}
+function renderSort(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A dialogue tag tells who speaks and how (said, asked, whispered), and it joins the quote with a comma: "Let\u2019s go," he whispered. An action beat is a full sentence that shows what a character does, and it stands on its own with a period: "Let\u2019s go." She grabbed her coat. Click an item, then click the bin where it belongs.';
+  var sw=ce('div','sw');
+  SORT_ITEMS.forEach(function(item,i){
+    var w=ce('div','sw-word'+(soPlaced[i]?' placed':''));w.id='so'+i;w.textContent=item.w;w.style.maxWidth='100%';
+    w.addEventListener('click',function(){selSO(i);});
+    sw.appendChild(w);
+  });
+  wrap.appendChild(sw);
+  var bins=ce('div','bins');
+  [['tag','DIALOGUE TAG (use a comma)'],['beat','ACTION BEAT (use a period)']].forEach(function(b){
+    var bx=ce('div','bin');
+    var bt=ce('div','bin-ttl');bt.textContent=b[1];bx.appendChild(bt);
+    var bw=ce('div','bin-words');bw.id='sob'+b[0];bx.appendChild(bw);
+    bx.addEventListener('click',function(){dropSO(b[0]);});
+    bins.appendChild(bx);
+  });
+  wrap.appendChild(bins);
+  var sc=ce('div');sc.id='so_sc';sc.style.cssText='font-size:12px;color:#555;margin-top:6px;';
+  sc.textContent='Sorted: '+Object.keys(soPlaced).length+' / 6';wrap.appendChild(sc);
+  var dn=ce('div','done'+(done[6]?' show':''));dn.id='so_done';dn.textContent='You can tell a dialogue tag from an action beat.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== WRITING EXERCISES (2 Show It, 8 Fix the Dialogue) =====
+function makeQ(lbl,ta){var q=ce('div','q');var ql=ce('div','q-lbl');ql.textContent=lbl;q.appendChild(ql);q.appendChild(ta);return q;}
+function makeWrEx(exIdx,mapIdx,qs,intro){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=intro;
+  qs.forEach(function(q,i){
+    var ta=ce('textarea');ta.id='wr'+exIdx+'_'+i;ta.placeholder='Write here...';if(q.tall)ta.style.minHeight='130px';
+    var saved=ld(ta.id);if(saved){ta.value=saved;if(saved.trim().length>10)ta.classList.add('ok');}
+    ta.addEventListener('input',function(){sv(this.id,this.value);if(this.value.trim().length>10)this.classList.add('ok');chkWrEx(exIdx,mapIdx);});
+    wrap.appendChild(makeQ(q.t,ta));
+  });
+  var dn=ce('div','done'+(done[mapIdx]?' show':''));dn.id='wd'+exIdx;dn.textContent='Activity complete.';wrap.appendChild(dn);
+  var navrow=ce('div','nav-row');
+  var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur=mapIdx-1;render();});
+  if(mapIdx===0)back.style.visibility='hidden';
+  var sub=ce('button','btn btn-sub');sub.id='wsub'+exIdx;sub.disabled=true;sub.textContent=done[mapIdx]?'Done':'Mark Complete';
+  sub.addEventListener('click',function(){subWrEx(exIdx,mapIdx);});
+  var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur=mapIdx+1;render();});
+  if(mapIdx===N-1)nxt.style.visibility='hidden';
+  navrow.appendChild(back);navrow.appendChild(sub);navrow.appendChild(nxt);
+  wrap.appendChild(navrow);
+  setTimeout(function(){chkWrEx(exIdx,mapIdx);},50);
+  return wrap;
+}
+function chkWrEx(exIdx,mapIdx){
+  var ts=document.querySelectorAll('[id^="wr'+exIdx+'_"]');
+  var ok=true;ts.forEach(function(ta){if(ta.value.trim().length<10)ok=false;});
+  var btn=el('wsub'+exIdx);if(btn)btn.disabled=!ok;
+}
+function subWrEx(exIdx,mapIdx){if(done[mapIdx])return;var d=el('wd'+exIdx);if(d)d.classList.add('show');mark(mapIdx);if(mapIdx<N-1)setTimeout(function(){cur=mapIdx+1;render();},700);}
+
+// ===== MAIN RENDER =====
+var EX_INFO=[
+  {grp:'Showing and Character',type:'Tell vs Show',title:'Let the reader see the feeling'},
+  {grp:'Showing and Character',type:'What Does It Show?',title:'Read the feeling from the clues'},
+  {grp:'Showing and Character',type:'Show It',title:'Rewrite telling into showing'},
+  {grp:'Showing and Character',type:'Inside the Character',title:'Hear the character think'},
+  {grp:'Showing and Character',type:'Show the Change',title:'A character grows by the end'},
+  {grp:'Dialogue Mechanics',type:'Punctuate the Quote',title:'Quotes, commas, and capitals'},
+  {grp:'Dialogue Mechanics',type:'Tag or Action Beat',title:'Comma or period?'},
+  {grp:'Dialogue Mechanics',type:'New Speaker, New Line',title:'Break for each speaker'},
+  {grp:'Dialogue Mechanics',type:'Fix the Dialogue',title:'Punctuate it yourself'},
+  {grp:'Word and Sentence Power',type:'Vivid Verbs',title:'Swap a weak verb for a strong one'},
+  {grp:'Word and Sentence Power',type:'Precise Nouns',title:'Trade a general noun for a specific one'},
+  {grp:'Word and Sentence Power',type:'Sentence Combining',title:'Smooth the choppy, split the run-on'}
+];
+var WRITE_ACTS=[2,8,11];
+function render(){
+  buildTabs();
+  el('sec-tag').textContent=GROUP[cur];
+  var ex=EX_INFO[cur];
+  var card=ce('div','card');
+  var hd=ce('div','card-hd');
+  hd.appendChild(ce('div','card-grp')).textContent=ex.grp;
+  hd.appendChild(ce('div','card-ttl')).textContent=ex.title;
+  card.appendChild(hd);
+  var bd=ce('div','card-bd');
+  var content;
+  if(cur===0)content=renderPick(0,'Telling names a feeling: "I was scared." Showing lets the reader see it through action, body language, and sensory detail: "My hands shook." Read each pair and choose the version that shows.','You can tell showing from telling.','THINK ABOUT IT');
+  else if(cur===1)content=renderFeelings();
+  else if(cur===2)content=makeWrEx(2,2,[
+    {t:'Show it: "I was nervous before the test." Do not use the word nervous. Use what your body did and what you noticed.',tall:true},
+    {t:'Show it: "My little brother was excited about the trip."',tall:true},
+    {t:'Show it: "The kitchen was a mess." Use specific details a reader could picture.',tall:true}
+  ],'Turn each telling sentence into showing. Use action, body language, and sensory detail instead of naming the feeling.');
+  else if(cur===3)content=renderPick(3,'Letting the reader hear a character\u2019s thoughts brings the character to life. This inner voice is called internal monologue. Choose the version that lets us hear the character thinking.','You can hear when a writer opens up a character\u2019s thoughts.','THE SITUATION');
+  else if(cur===4)content=renderPick(4,'In a strong narrative, the character ends up different. They learn something, feel something new, or act in a way they could not at the start. Choose the ending that shows the character changed.','You can spot a character who actually grows.','THE STORY');
+  else if(cur===5)content=renderPick(5,'Dialogue follows a few firm rules: quotation marks wrap the spoken words, a comma sets off the tag, the first spoken word takes a capital, and the end punctuation sits inside the quotes. Choose the line that follows them.','You can spot correctly punctuated dialogue.','THINK ABOUT IT');
+  else if(cur===6)content=renderSort();
+  else if(cur===7)content=renderPick(7,'Every time a different person speaks, start a new paragraph. This simple break tells the reader who is talking without a single extra word. Choose the better approach.','You know when to break to a new line.','THINK ABOUT IT');
+  else if(cur===8)content=makeWrEx(8,8,[
+    {t:'Fix it. Add quotation marks, a comma, a capital, and end punctuation: maria said i found your keys',tall:true},
+    {t:'Fix it: where are we going asked the little boy',tall:true},
+    {t:'Write a short three-line exchange between two characters. Start a new paragraph for each speaker, punctuate every line correctly, and include one action beat.',tall:true}
+  ],'Now punctuate dialogue yourself. Each raw line below drops the marks and capitals. Rewrite it correctly.');
+  else if(cur===9)content=renderPick(9,'A strong verb does the work of a whole sentence. It shows the action and the mood at once. Read each pair and choose the more vivid verb for the moment described.','You can reach for the verb that shows the most.','THE MOMENT');
+  else if(cur===10)content=renderPick(10,'A precise noun hands the reader an exact picture. "Vehicle" stays vague; "school bus" lands at once. Choose the version with the more specific noun.','You can pick the noun that paints a picture.','THINK ABOUT IT');
+  else if(cur===11)content=makeWrEx(11,11,[
+    {t:'Combine these three short sentences into one smooth sentence: The wind was cold. It cut through my jacket. I started to shiver.',tall:true},
+    {t:'Combine these two into one: Maria opened the box. She found her grandmother\u2019s old photographs inside.',tall:true},
+    {t:'This run-on crams too much together. Break it into two or three clear sentences: We got to the park and it started raining so we ran to the car but the doors were locked and my brother had the keys.',tall:true}
+  ],'Short, choppy sentences make writing feel jumpy. Combining them smooths the rhythm. A run-on has the opposite problem and needs splitting. Practice both.');
+  if(WRITE_ACTS.indexOf(cur)===-1){
+    var navrow=ce('div','nav-row');
+    if(cur>0){var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur--;render();});navrow.appendChild(back);}else{navrow.appendChild(ce('div'));}
+    navrow.appendChild(ce('div'));
+    if(cur<N-1){var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur++;render();});navrow.appendChild(nxt);}else{navrow.appendChild(ce('div'));}
+    content.appendChild(navrow);
+  }
+  bd.appendChild(content);card.appendChild(bd);
+  el('main').innerHTML='';el('main').appendChild(card);
+  restTA();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetAll(){
+  clr();
+  done=[];for(var i=0;i<N;i++)done.push(false);
+  score=0;cur=0;correct=0;lastVid=0;
+  labAns={};
+  pickAns={0:{},3:{},4:{},5:{},7:{},9:{},10:{}};pickCount={0:0,3:0,4:0,5:0,7:0,9:0,10:0};
+  soPlaced={};soSel=null;
+  el('pf').style.width='0%';el('pt').textContent='0 / '+N;
+  render();
+}
+
+el('rst-btn').addEventListener('click',resetAll);
+el('vid-btn').addEventListener('click',showP);
+el('kg-btn').addEventListener('click',function(){el('pm').classList.remove('show');});
+
+var ptab_data=[{t:'Riddles',k:'r'},{t:'Illusions',k:'i'},{t:'Weird Science',k:'s'}];
+ptab_data.forEach(function(p,i){
+  var b=ce('button','prz-tab'+(i===0?' on':''));b.textContent=p.t;
+  b.addEventListener('click',function(){
+    el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t){t.classList.remove('on');});
+    this.classList.add('on');setPT(p.k);
+  });
+  el('prz-tabs-row').appendChild(b);
+});
+
+render();
+</script>
+</body>
+</html>
