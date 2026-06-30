@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inference and Close Reading G5-6 - Revive Tutoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#eef4f0;color:#1a1a1a}
+.hdr{background:#1a3a2a;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.hdr-t{font-size:18px;font-weight:800;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.6)}
+.rst{padding:6px 14px;font-size:12px;border:1px solid rgba(255,255,255,.4);border-radius:8px;background:transparent;cursor:pointer;color:#fff}
+.prg{background:#fff;padding:10px 20px;border-bottom:1px solid #d0e4d8;display:flex;align-items:center;gap:12px}
+.prg-bg{flex:1;background:#d0e4d8;border-radius:999px;height:12px;overflow:hidden}
+.prg-fill{height:100%;background:linear-gradient(90deg,#1a3a2a,#2d7a4f);border-radius:999px;transition:width .4s}
+.prg-txt{font-size:12px;font-weight:700;color:#555;white-space:nowrap}
+.tabs{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #d0e4d8;padding:0 8px}
+.tab{padding:10px 12px;font-size:11px;font-weight:700;border:none;background:transparent;cursor:pointer;color:#999;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.on{color:#1a3a2a;border-bottom-color:#2d7a4f}
+.tab.dn{color:#2d7a4f}
+.wrap{max-width:820px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;border:1px solid #d0e4d8;margin-bottom:16px;overflow:hidden}
+.card-hd{background:#1a3a2a;padding:14px 20px}
+.card-num{font-size:10px;font-weight:700;color:#7dcca0;letter-spacing:2px;margin-bottom:3px}
+.card-ttl{font-size:18px;font-weight:800;color:#fff}
+.card-bd{padding:20px}
+.inst{background:#f0f7f3;border-left:4px solid #2d7a4f;padding:12px 16px;font-size:13px;line-height:1.7;color:#333;margin-bottom:14px;border-radius:0 8px 8px 0}
+.passage{background:#fbfdfb;border:1px solid #cfe3d6;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.passage .ttl{font-size:15px;font-weight:800;color:#1a3a2a;margin-bottom:8px}
+.passage p{font-size:14px;line-height:1.9;color:#2a2a2a;margin-bottom:10px}
+.passage p:last-child{margin-bottom:0}
+.ex-box{background:#f6fcf8;border:2px solid #a8d8b8;border-radius:10px;padding:16px;margin-bottom:14px}
+.clue-lbl{background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;color:#5a4708;margin-bottom:10px}
+.clue-lbl .lbl{font-size:10px;font-weight:700;color:#8b6914;letter-spacing:1px;margin-bottom:4px}
+.card-txt{font-size:13.5px;line-height:1.6;color:#2a2a2a;margin-bottom:10px}
+.q{margin-bottom:14px}
+.q-lbl{font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;line-height:1.5}
+textarea{width:100%;border:2px solid #d0e4d8;border-radius:8px;padding:10px;font-size:13px;font-family:Arial,sans-serif;line-height:1.6;resize:vertical;min-height:80px;background:#fefefe}
+textarea:focus{outline:none;border-color:#2d7a4f}
+textarea.ok{border-color:#2d7a4f;background:#f6fcf8}
+.btn{padding:10px 22px;font-size:13px;font-weight:700;border-radius:10px;cursor:pointer;font-family:Arial,sans-serif;border:none}
+.btn-sub{background:#1a3a2a;color:#fff}
+.btn-sub:disabled{background:#aaa;cursor:default}
+.btn-nav{border:2px solid #1a3a2a;background:transparent;color:#1a3a2a}
+.btn-nav.nxt{background:#1a3a2a;color:#fff}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+.done{display:none;background:#e1f5ee;border:2px solid #1d9e75;border-radius:10px;padding:10px 16px;font-size:13px;color:#0f6e56;font-weight:700;text-align:center;margin-top:10px}
+.done.show{display:block}
+.vs-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.vs-opt{border:2px solid #d0e4d8;border-radius:10px;padding:12px;cursor:pointer;font-size:13px;line-height:1.6;background:#fff}
+.vs-opt:hover{border-color:#2d7a4f}
+.vs-opt.cor{border-color:#1d9e75;background:#e1f5ee}
+.vs-opt.wrg{border-color:#e24b4a;background:#fcebeb}
+.vs-opt.rev{border-color:#1d9e75;background:#e1f5ee}
+.vs-fb{font-size:12px;margin-top:6px;padding:8px 10px;border-radius:6px;display:none}
+.vs-fb.show{display:block}
+.vs-fb.cor{background:#e1f5ee;color:#0f6e56}
+.vs-fb.wrg{background:#fcebeb;color:#a32d2d}
+.cl-para{font-size:14.5px;line-height:2.3;color:#2a2a2a}
+.cl-w{cursor:pointer;border-radius:4px;padding:1px 3px;transition:background .15s}
+.cl-w:hover{background:#fff3cc}
+.cl-w.fnd{background:#e1f5ee;color:#0f6e56;font-weight:700}
+.cl-w.keep{background:#f0f0f0;color:#777}
+.lab-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lab-btn{padding:6px 12px;border-radius:14px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;font-family:Arial,sans-serif}
+.lab-res{font-size:12px;padding:8px 10px;border-radius:6px;margin-top:8px}
+.lab-res.cor{background:#e1f5ee;color:#0f6e56}
+.lab-res.wrg{background:#faeeda;color:#854f0b}
+.legend{background:#fefaf3;border:2px solid #e8d8a0;border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.legend h4{font-size:10px;font-weight:700;color:#8b6914;letter-spacing:2px;margin-bottom:8px}
+.legend .row{display:flex;flex-wrap:wrap;gap:6px}
+.legend span{color:#fff;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700}
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sw-word{padding:7px 13px;border-radius:14px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;background:#fff;cursor:pointer;user-select:none;white-space:normal;text-align:left}
+.sw-word.placed{opacity:.4;cursor:default}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bin{border:2px dashed #aaa;border-radius:10px;padding:10px;min-height:80px;cursor:pointer}
+.bin-ttl{font-size:12px;font-weight:700;color:#555;margin-bottom:6px;text-align:center}
+.bin-words{display:flex;flex-wrap:wrap;gap:6px;min-height:36px}
+.placed-tag{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:700;color:#fff}
+.frame{background:#eef4f0;border-radius:8px;padding:8px 12px;font-size:12.5px;color:#1a3a2a;margin-bottom:8px;font-style:italic}
+.ex-ttl{font-size:14px;font-weight:800;color:#1a3a2a;margin-bottom:6px}
+.prz-ov{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+.prz-ov.show{display:flex}
+.prz-bx{background:#fff;border-radius:20px;padding:28px;max-width:460px;width:92%;text-align:center}
+.prz-icon{font-size:48px;margin-bottom:8px}
+.prz-ttl{font-size:22px;font-weight:800;color:#1a3a2a;margin-bottom:6px}
+.prz-sub{font-size:14px;color:#666;margin-bottom:16px}
+.prz-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+.prz-tab{padding:7px 16px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;border-radius:18px;background:#fff;cursor:pointer;font-family:Arial,sans-serif}
+.prz-tab.on{border-color:#1a3a2a;background:#e8f4ec;color:#1a3a2a}
+.vid-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.vid-a{background:#eef4f0;border-radius:8px;padding:10px 8px;text-decoration:none;color:#1a3a2a;font-size:11px;font-weight:700;border:1px solid #a8d8b8;display:block;line-height:1.5}
+.vid-icon{font-size:18px;margin-bottom:3px}
+.kg-btn{padding:10px 28px;font-size:14px;font-weight:800;border:none;border-radius:10px;background:#1a3a2a;cursor:pointer;color:#fff;font-family:Arial,sans-serif}
+@media(max-width:600px){.vs-pair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-t">Inference and Close Reading <span style="font-size:12px;color:#7dcca0;font-weight:700">G5-6</span></div><div class="hdr-s">Revive Tutoring</div></div>
+  <div style="display:flex;gap:8px">
+    <button class="rst" id="vid-btn">Brain Break</button>
+    <button class="rst" id="rst-btn">Reset</button>
+  </div>
+</div>
+<div class="prg">
+  <div class="prg-bg"><div class="prg-fill" id="pf" style="width:0%"></div></div>
+  <div class="prg-txt" id="pt">0 / 9</div>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="wrap" id="main"></div>
+<div class="prz-ov" id="pm">
+  <div class="prz-bx">
+    <div class="prz-icon" id="pi">&#x1F4D6;</div>
+    <div class="prz-ttl">You earned a brain break!</div>
+    <div class="prz-sub">Pick a category.</div>
+    <div class="prz-tabs" id="prz-tabs-row"></div>
+    <div class="vid-grid" id="vg"></div>
+    <button class="kg-btn" id="kg-btn">Back to Reading</button>
+  </div>
+</div>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  var d = document.createElement('div');
+  d.style.cssText = 'background:red;color:white;padding:20px;font-size:16px;position:fixed;top:0;left:0;right:0;z-index:9999;';
+  d.textContent = 'JS ERROR: ' + msg + ' (line ' + line + ')';
+  document.body.appendChild(d);
+  return false;
+};
+var N=9, done=[], score=0, cur=0, pvt='r', correct=0, lastVid=0;
+for(var i=0;i<N;i++) done.push(false);
+
+var VIDS={
+  r:[{t:'Can you solve the bridge riddle?',u:'https://www.youtube.com/watch?v=7yDmGnA8Hw0'},{t:"Can you solve Einstein's riddle?",u:'https://www.youtube.com/watch?v=1rDVz_Fb6HQ'},{t:'Can you solve the prisoner hat riddle?',u:'https://www.youtube.com/watch?v=N5vJSNXPEwA'}],
+  i:[{t:'How optical illusions trick your brain',u:'https://www.youtube.com/watch?v=rfdJyDfIHIc'},{t:'The McGurk Effect (an audio illusion)',u:'https://www.youtube.com/watch?v=jtsfidRq2tw'},{t:'The moon illusion',u:'https://www.youtube.com/watch?v=RXkYjL_7jME'}],
+  s:[{t:"Turbulence: physics' great unsolved mystery",u:'https://www.youtube.com/watch?v=S3i6tJ4XNqA'},{t:"What would happen if you didn't sleep?",u:'https://www.youtube.com/watch?v=dqONk48l5vY'},{t:'Why do we dream?',u:'https://www.youtube.com/watch?v=2W85Dwxx218'}]
+};
+
+function sv(k,v){try{localStorage.setItem('inf56_'+k,v);}catch(e){}}
+function ld(k){try{return localStorage.getItem('inf56_'+k)||'';}catch(e){return '';}}
+function clr(){try{for(var k in localStorage){if(k.indexOf('inf56_')===0)localStorage.removeItem(k);}}catch(e){}}
+function el(id){return document.getElementById(id);}
+function ce(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e;}
+function restTA(){
+  setTimeout(function(){
+    var ts=document.querySelectorAll('textarea[id]');
+    for(var i=0;i<ts.length;i++){var s=ld(ts[i].id);if(s&&!ts[i].disabled){ts[i].value=s;if(s.trim().length>8)ts[i].classList.add('ok');}}
+  },120);
+}
+function mark(i){if(done[i])return;done[i]=true;score++;el('pf').style.width=Math.round(score/N*100)+'%';el('pt').textContent=score+' / '+N;buildTabs();}
+function addCorrect(){correct++;var v=Math.floor(correct/5);if(v>lastVid){lastVid=v;setTimeout(showP,400);}}
+function setPT(t){pvt=t;showVids();}
+function showVids(){
+  var vg=el('vg');if(!vg)return;
+  var pool=VIDS[pvt],pick=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,4);
+  vg.innerHTML='';
+  pick.forEach(function(v){var a=ce('a','vid-a');a.href=v.u;a.target='_blank';var icon=ce('div','vid-icon');icon.textContent='▶';a.appendChild(icon);a.appendChild(document.createTextNode(v.t));vg.appendChild(a);});
+}
+function showP(){pvt='r';el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t,i){t.classList.toggle('on',i===0);});el('pi').textContent='📖';showVids();el('pm').classList.add('show');}
+
+var TLBL=['Everyday','Clue Hunt','What It Shows','It Says','Support?','Infer','Unsaid','Watch','Together'];
+function buildTabs(){
+  var w=el('tabs');w.innerHTML='';
+  for(var i=0;i<N;i++){
+    var b=ce('button','tab'+(i===cur?' on':'')+(done[i]?' dn':''));
+    b.textContent=(done[i]?'+ ':'')+TLBL[i];b.setAttribute('data-i',String(i));
+    b.addEventListener('click',function(){cur=parseInt(this.getAttribute('data-i'));render();});
+    w.appendChild(b);
+  }
+}
+
+// ===== PASSAGE =====
+var PASSAGE=[
+  'When I got home from practice, three cars I knew sat in our driveway. Aunt Renu\u2019s red hatchback. My cousin\u2019s truck. Mr. Alvarez from two doors down. Nobody had told me anyone was coming over.',
+  'Mom met me at the door before I could open it. \u201CGo shoot some hoops for twenty minutes,\u201D she said, smiling too wide. \u201CWe are, um, cleaning.\u201D Behind her, somebody laughed and then went quiet fast.',
+  'On the porch, the recycling bin gave it away. A flattened box from Sweet Street Bakery. A tangle of curled ribbon. The big plastic bag that balloons come in.',
+  'Through the front window I caught the corner of the good tablecloth, the one we only use on holidays. Dad crossed the room carrying a stack of paper plates with cartoon dinosaurs on them. My favorite.',
+  'I bounced the ball in the driveway and counted to a hundred, slow. I did not knock. Some surprises feel better if you let the people who love you think you never guessed.'
+];
+function buildPassage(){
+  var box=ce('div','passage');
+  box.appendChild(ce('div','ttl')).textContent='The Surprise';
+  PASSAGE.forEach(function(t){var p=ce('p');p.textContent=t;box.appendChild(p);});
+  return box;
+}
+
+// ===== PICKERS (0 Everyday, 3 It Says I Say And So) =====
+var PICK={
+  0:[
+    {clue:'Your little brother walks in from outside soaked head to toe, holding an umbrella turned inside out.',a:'It is raining hard and windy outside.',b:'He spilled one glass of water on himself.',c:'a',f:'The soaked clothes and the umbrella flipped inside out both point to heavy rain and wind. The strongest inference fits every clue.'},
+    {clue:'A dog runs to the front door, spins in a circle, and grabs its leash in its mouth.',a:'The dog wants to go for a walk.',b:'The dog is sleepy.',c:'a',f:'Running to the door and grabbing the leash both point to one thing: the dog wants a walk. A sleepy dog would not race to the door.'},
+    {clue:'Your friend keeps yawning, rubbing her eyes, and resting her head on her desk.',a:'She is tired.',b:'She is hungry.',c:'a',f:'Yawning, eye-rubbing, and a head on the desk all point to tiredness. Read the body for the clue the words leave out.'},
+    {clue:'At the end of the game, one team jumps and cheers while the other team drops their heads.',a:'The cheering team won.',b:'The game has not started yet.',c:'a',f:'One team celebrates and the other slumps. Their reactions tell you the result, even though no one says the score.'}
+  ],
+  3:[
+    {clue:'It Says: A flattened cake box and an empty balloon bag sit in the recycling.',a:'Someone is planning a party.',b:'The family is just taking out the trash.',c:'a',f:'A cake box plus a balloon bag points to a party. The two clues together tell you more than the trash alone.'},
+    {clue:'It Says: Mom blocks the door, tells the narrator to go play, and smiles too wide.',a:'Mom wants to keep the narrator outside so they will not see something.',b:'Mom is angry at the narrator.',c:'a',f:'Blocking the door and the too-wide smile point to hiding a surprise, not anger. Match the conclusion to the clues.'},
+    {clue:'It Says: Dad carries paper plates with dinosaurs, the narrator\u2019s favorite.',a:'The party is for the narrator.',b:'Dad really likes dinosaurs.',c:'a',f:'The plates show the narrator\u2019s favorite, so the party points to the narrator. The clue connects the party to one person.'},
+    {clue:'It Says: The narrator counts to a hundred outside and does not knock.',a:'The narrator figured out the surprise and chose to play along.',b:'The narrator forgot how to open the door.',c:'a',f:'Waiting outside on purpose shows the narrator guessed the surprise and protects it. The action reveals what the narrator will not say.'}
+  ]
+};
+var pickAns={0:{},3:{}}, pickCount={0:0,3:0};
+function pickClick(act,pi,ch){
+  if(pickAns[act][pi])return;pickAns[act][pi]=true;pickCount[act]++;
+  var p=PICK[act][pi],ok=ch===p.c;
+  var ae=el('p'+act+'a'+pi),be=el('p'+act+'b'+pi),fb=el('p'+act+'f'+pi);
+  var cor=p.c==='a'?ae:be,wrg=p.c==='a'?be:ae;
+  if(ok){cor.classList.add('cor');wrg.style.opacity='.5';fb.textContent='Nice work. '+p.f;fb.className='vs-fb show cor';addCorrect();}
+  else{wrg.classList.add('wrg');cor.classList.add('rev');fb.textContent='Look again. '+p.f;fb.className='vs-fb show wrg';}
+  if(pickCount[act]>=PICK[act].length){var d=el('pk'+act+'_done');if(d)d.classList.add('show');mark(act);}
+}
+function renderPick(act,instTxt,doneTxt,lblTxt,withPassage){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=instTxt;
+  if(withPassage)wrap.appendChild(buildPassage());
+  PICK[act].forEach(function(p,i){
+    var box=ce('div','ex-box');
+    var cl=ce('div','clue-lbl');var cll=ce('div','lbl');cll.textContent=lblTxt;cl.appendChild(cll);
+    cl.appendChild(document.createTextNode(p.clue));box.appendChild(cl);
+    var pair=ce('div','vs-pair');
+    var oa=ce('div','vs-opt');oa.id='p'+act+'a'+i;oa.textContent=p.a;oa.addEventListener('click',function(){pickClick(act,i,'a');});
+    var ob=ce('div','vs-opt');ob.id='p'+act+'b'+i;ob.textContent=p.b;ob.addEventListener('click',function(){pickClick(act,i,'b');});
+    pair.appendChild(oa);pair.appendChild(ob);box.appendChild(pair);
+    var fb=ce('div','vs-fb');fb.id='p'+act+'f'+i;box.appendChild(fb);
+    wrap.appendChild(box);
+  });
+  var dn=ce('div','done'+(done[act]?' show':''));dn.id='pk'+act+'_done';dn.textContent=doneTxt;wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== CLUE HUNT (act 1) =====
+var CLUE_DATA=[
+  {word:'I had just come home from basketball practice.',clue:false},
+  {word:'Three cars I knew sat in our driveway, and nobody had told me anyone was coming.',clue:true},
+  {word:'A bird sat on the mailbox by the gate.',clue:false},
+  {word:'Mom met me at the door and told me to go shoot hoops, smiling too wide.',clue:true},
+  {word:'Behind her, somebody laughed and then went quiet fast.',clue:true},
+  {word:'A flattened cake box from the bakery sat in the recycling bin.',clue:true},
+  {word:'My sneakers squeaked on the porch steps.',clue:false},
+  {word:'A tangle of curled ribbon and the big plastic bag that balloons come in lay on top.',clue:true},
+  {word:'Through the window I saw the good tablecloth, the one we only use on holidays.',clue:true},
+  {word:'The driveway had a crack near the basketball hoop.',clue:false},
+  {word:'Dad carried a stack of paper plates with dinosaurs on them, my favorite.',clue:true}
+];
+var clFound=0;
+function clickCL(el2){
+  if(el2.classList.contains('fnd')||el2.classList.contains('keep'))return;
+  var cnt=el('cl_cnt'),fb=el('cl_fb');
+  if(el2.getAttribute('data-clue')!=='1'){
+    el2.classList.add('keep');
+    if(fb){fb.textContent='That line sets the scene, but it does not hint at the surprise. Hunt for the details that tell you something the story never says.';fb.style.color='#777';}
+    return;
+  }
+  el2.classList.add('fnd');clFound++;addCorrect();
+  if(fb){fb.textContent='You found a clue. Ask yourself what it makes you think, even though the story never says it.';fb.style.color='#0f6e56';}
+  if(clFound<5){if(cnt)cnt.textContent='Clues found: '+clFound+' / 5 needed';}
+  else{if(cnt)cnt.textContent='Clues found: '+clFound+'. You pieced the surprise together.';var d=el('cl_done');if(d)d.classList.add('show');mark(1);}
+}
+function renderCL(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A writer plants clues on purpose. Read the story closely. Click each sentence that works as a clue, a detail that hints at something the story never says straight out. Leave the lines that only set the scene. Find at least five clues to finish.';
+  var box=ce('div','passage');
+  box.appendChild(ce('div','ttl')).textContent='The Surprise';
+  var para=ce('div','cl-para');
+  CLUE_DATA.forEach(function(d){
+    var sp=ce('span','cl-w');sp.textContent=d.word;sp.setAttribute('data-clue',d.clue?'1':'0');sp.addEventListener('click',function(){clickCL(this);});para.appendChild(sp);
+    para.appendChild(document.createTextNode(' '));
+  });
+  box.appendChild(para);wrap.appendChild(box);
+  var cnt=ce('div');cnt.id='cl_cnt';cnt.style.cssText='font-size:12px;color:#555;margin-bottom:4px;font-weight:700;';
+  cnt.textContent=clFound<5?('Clues found: '+clFound+' / 5 needed'):('Clues found: '+clFound+'. You pieced the surprise together.');wrap.appendChild(cnt);
+  var fb=ce('div');fb.id='cl_fb';fb.style.cssText='font-size:12px;margin-bottom:10px;min-height:16px;';wrap.appendChild(fb);
+  var dn=ce('div','done'+(done[1]?' show':''));dn.id='cl_done';dn.textContent='You found the clues the writer planted.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== WHAT IT SHOWS (label cards, act 2) =====
+var THREADS=['a party is coming','they are keeping it secret','the party is for me'];
+var THREAD_COLORS={'a party is coming':'#2d7a4f','they are keeping it secret':'#185fa5','the party is for me':'#a3582d'};
+var LABEL=[
+  {t:'A flattened cake box sits in the recycling bin.',l:'a party is coming',w:'A used cake box means a cake. That points to a party on the way.'},
+  {t:'Curled ribbon and an empty balloon bag lie on top of the bin.',l:'a party is coming',w:'Ribbon and balloons are party supplies. They point to a party on the way.'},
+  {t:'Mom blocks the door and tells the narrator to go play, smiling too wide.',l:'they are keeping it secret',w:'Mom keeps the narrator outside on purpose. That points to a secret she does not want spoiled.'},
+  {t:'Someone laughs, then goes quiet fast.',l:'they are keeping it secret',w:'The sudden hush shows people hiding something. That points to keeping the secret.'},
+  {t:'The good holiday tablecloth is already out on the table.',l:'a party is coming',w:'The holiday tablecloth comes out for special days. That points to a party on the way.'},
+  {t:'Dad carries paper plates with dinosaurs, the narrator\u2019s favorite.',l:'the party is for me',w:'The narrator\u2019s favorite plates show who the party is for. That points to the narrator.'}
+];
+var labAns={};
+function labPick(i,choice,box){
+  if(labAns[i])return;labAns[i]=true;
+  var item=LABEL[i],ok=choice===item.l;
+  if(ok)addCorrect();
+  box.querySelectorAll('.lab-btn').forEach(function(b){b.disabled=true;if(b.getAttribute('data-c')===item.l){b.style.background=THREAD_COLORS[item.l];b.style.color='#fff';}});
+  var res=ce('div','lab-res '+(ok?'cor':'wrg'));res.innerHTML=(ok?'Yes. ':'Reconsider. ')+'<strong>'+item.l+'</strong>: '+item.w;box.appendChild(res);
+  var all=true;for(var k=0;k<LABEL.length;k++){if(!labAns[k])all=false;}
+  if(all){var d=el('lab_done');if(d)d.classList.add('show');mark(2);}
+}
+function renderThreads(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='Each clue in this story points to one of three things: a party is coming, the family is keeping it secret, or the party is for the narrator. Read each clue and choose what it shows.';
+  var legend=ce('div','legend');legend.appendChild(ce('h4',null,'WHAT A CLUE CAN SHOW'));
+  var row=ce('div','row');THREADS.forEach(function(s){var sp=ce('span');sp.style.background=THREAD_COLORS[s];sp.textContent=s;row.appendChild(sp);});
+  legend.appendChild(row);wrap.appendChild(legend);
+  LABEL.forEach(function(item,i){
+    var box=ce('div','ex-box');
+    box.appendChild(ce('div','card-txt')).textContent=item.t;
+    var choices=ce('div','lab-choices');
+    THREADS.forEach(function(s){var col=THREAD_COLORS[s];var btn=ce('button','lab-btn');btn.style.cssText='background:'+col+'22;color:'+col+';border-color:'+col+';';btn.textContent=s;btn.setAttribute('data-c',s);btn.addEventListener('click',function(){labPick(i,s,box);});choices.appendChild(btn);});
+    box.appendChild(choices);wrap.appendChild(box);
+  });
+  var dn=ce('div','done'+(done[2]?' show':''));dn.id='lab_done';dn.textContent='You showed what each clue points to.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== SORTER (act 4 Supported / Overreach) =====
+var SO_ITEMS=[
+  {w:'The family is planning a party.',s:'sup'},
+  {w:'They want to surprise the narrator.',s:'sup'},
+  {w:'The party is for the narrator.',s:'sup'},
+  {w:'The party has exactly fifty guests.',s:'over'},
+  {w:'The narrator is turning twelve years old.',s:'over'},
+  {w:'Aunt Renu baked the cake herself.',s:'over'}
+];
+var soPlaced={},soSel=null;
+function selSO(i){if(soPlaced[i])return;document.querySelectorAll('.sw-word').forEach(function(e){e.style.outline='';});soSel=i;var e=el('so'+i);if(e)e.style.outline='3px solid #2d7a4f';}
+function dropSO(bn){
+  if(soSel===null)return;var item=SO_ITEMS[soSel],we=el('so'+soSel);if(!item||!we)return;
+  if(bn!==item.s){we.style.outline='3px solid #e24b4a';var si=soSel;soSel=null;setTimeout(function(){var e=el('so'+si);if(e)e.style.outline='';},700);return;}
+  var bw=el('sob'+bn);if(bw){var t=ce('div','placed-tag');t.style.background=bn==='sup'?'#2d7a4f':'#a32d2d';t.textContent=item.w;bw.appendChild(t);}
+  we.classList.add('placed');we.style.outline='';soPlaced[soSel]=true;soSel=null;addCorrect();
+  var cnt=Object.keys(soPlaced).length;var sc=el('so_sc');if(sc)sc.textContent='Sorted: '+cnt+' / 6';
+  if(cnt===6){var d=el('so_done');if(d)d.classList.add('show');mark(4);}
+}
+function renderSort(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A supported inference stays close to the clues. An overreach guesses way past what the story shows, like an exact number or a name the story never gives. Click a statement, then click its bin.';
+  var sw=ce('div','sw');
+  SO_ITEMS.forEach(function(item,i){var w=ce('div','sw-word'+(soPlaced[i]?' placed':''));w.id='so'+i;w.textContent=item.w;w.style.maxWidth='100%';w.addEventListener('click',function(){selSO(i);});sw.appendChild(w);});
+  wrap.appendChild(sw);
+  var bins=ce('div','bins');
+  [['sup','SUPPORTED BY THE STORY'],['over','OVERREACH']].forEach(function(b){var bx=ce('div','bin');var bt=ce('div','bin-ttl');bt.textContent=b[1];bx.appendChild(bt);var bw=ce('div','bin-words');bw.id='sob'+b[0];bx.appendChild(bw);bx.addEventListener('click',function(){dropSO(b[0]);});bins.appendChild(bx);});
+  wrap.appendChild(bins);
+  var sc=ce('div');sc.id='so_sc';sc.style.cssText='font-size:12px;color:#555;margin-top:6px;';sc.textContent='Sorted: '+Object.keys(soPlaced).length+' / 6';wrap.appendChild(sc);
+  var dn=ce('div','done'+(done[4]?' show':''));dn.id='so_done';dn.textContent='You can tell a supported guess from a wild one.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== VIDEO (act 7) =====
+function buildVideo(){
+  var box=ce('div','ex-box');
+  box.appendChild(ce('div','ex-ttl')).textContent='Watch: "Snack Attack" (about 4 minutes, no words)';
+  var note=ce('div');note.style.cssText='font-size:12px;color:#555;line-height:1.6;margin-bottom:10px;';note.textContent='The film has no talking, so you read faces, actions, and reactions to follow the story. Watch it once all the way through before you answer.';box.appendChild(note);
+  var a=ce('a');a.href='https://www.youtube.com/watch?v=reRcVxAWT1g';a.target='_blank';a.textContent='\u25B6  Watch "Snack Attack" on YouTube (opens in a new tab)';a.style.cssText='display:inline-block;padding:11px 20px;background:#1a3a2a;color:#fff;font-size:13px;font-weight:700;border-radius:10px;text-decoration:none;';box.appendChild(a);
+  return box;
+}
+
+// ===== WRITING (5,6,7,8) =====
+function makeQ(lbl,ta,frame){var q=ce('div','q');var ql=ce('div','q-lbl');ql.textContent=lbl;q.appendChild(ql);if(frame){var fr=ce('div','frame');fr.textContent=frame;q.appendChild(fr);}q.appendChild(ta);return q;}
+function makeWrEx(exIdx,mapIdx,qs,intro,topNode){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=intro;
+  if(topNode)wrap.appendChild(topNode);
+  qs.forEach(function(q,i){
+    var ta=ce('textarea');ta.id='wr'+exIdx+'_'+i;ta.placeholder='Write here...';if(q.tall)ta.style.minHeight='110px';
+    var saved=ld(ta.id);if(saved){ta.value=saved;if(saved.trim().length>8)ta.classList.add('ok');}
+    ta.addEventListener('input',function(){sv(this.id,this.value);if(this.value.trim().length>8)this.classList.add('ok');chkWrEx(exIdx,mapIdx);});
+    wrap.appendChild(makeQ(q.t,ta,q.frame));
+  });
+  var dn=ce('div','done'+(done[mapIdx]?' show':''));dn.id='wd'+exIdx;dn.textContent='Activity complete.';wrap.appendChild(dn);
+  var navrow=ce('div','nav-row');
+  var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur=mapIdx-1;render();});if(mapIdx===0)back.style.visibility='hidden';
+  var sub=ce('button','btn btn-sub');sub.id='wsub'+exIdx;sub.disabled=true;sub.textContent=done[mapIdx]?'Done':'Mark Complete';sub.addEventListener('click',function(){subWrEx(exIdx,mapIdx);});
+  var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur=mapIdx+1;render();});if(mapIdx===N-1)nxt.style.visibility='hidden';
+  navrow.appendChild(back);navrow.appendChild(sub);navrow.appendChild(nxt);wrap.appendChild(navrow);
+  setTimeout(function(){chkWrEx(exIdx,mapIdx);},50);
+  return wrap;
+}
+function chkWrEx(exIdx,mapIdx){var ts=document.querySelectorAll('[id^="wr'+exIdx+'_"]');var ok=true;ts.forEach(function(ta){if(ta.value.trim().length<8)ok=false;});var btn=el('wsub'+exIdx);if(btn)btn.disabled=!ok;}
+function subWrEx(exIdx,mapIdx){if(done[mapIdx])return;var d=el('wd'+exIdx);if(d)d.classList.add('show');mark(mapIdx);if(mapIdx<N-1)setTimeout(function(){cur=mapIdx+1;render();},700);}
+
+// ===== RENDER =====
+var EX_INFO=[
+  {num:'Part 1',type:'Everyday Inference',title:'What can you figure out?'},
+  {num:'Part 2',type:'Clue Hunt',title:'Find the clues in the story'},
+  {num:'Part 3',type:'What the Clue Shows',title:'Party, secret, or for me?'},
+  {num:'Part 4',type:'It Says, I Say, And So',title:'Match the clue to the conclusion'},
+  {num:'Part 5',type:'Supported or Overreach',title:'A safe guess or a wild one?'},
+  {num:'Ex 1',type:'Infer a Feeling',title:'Read what the narrator feels'},
+  {num:'Ex 2',type:'Reading the Unsaid',title:'Infer from everyday scenes'},
+  {num:'Ex 3',type:'Watch and Infer',title:'Infer from a short film'},
+  {num:'Ex 4',type:'Put It Together',title:'Make one full inference'}
+];
+var WRITE_ACTS=[5,6,7,8];
+function render(){
+  buildTabs();
+  var ex=EX_INFO[cur];
+  var card=ce('div','card');var hd=ce('div','card-hd');
+  hd.appendChild(ce('div','card-num')).textContent=ex.num+' - '+ex.type;
+  hd.appendChild(ce('div','card-ttl')).textContent=ex.title;card.appendChild(hd);
+  var bd=ce('div','card-bd');var content;
+  if(cur===0)content=renderPick(0,'You make inferences all the time. You notice a clue, add what you already know, and figure out something no one says out loud. Read each clue. Pick the inference that fits best.','You inferred from clues, the same skill strong readers use on every page.','THE CLUE',false);
+  else if(cur===1)content=renderCL();
+  else if(cur===2)content=renderThreads();
+  else if(cur===3)content=renderPick(3,'Reading teachers call this move It Says, I Say, And So. The story gives you a clue (It Says), you add your thinking (I Say), and the two make a conclusion (And So). Read each clue. Pick the conclusion it supports best.','You matched each clue to the conclusion it supports.','IT SAYS',true);
+  else if(cur===4)content=renderSort();
+  else if(cur===5)content=makeWrEx(5,5,[
+    {t:'Find one detail near the end that shows how the narrator feels. Copy it here.'},
+    {t:'What feeling does that detail show? Finish the sentence.',frame:'The narrator feels ______ because ______.'},
+    {t:'Write one or two sentences. Tell what the narrator figured out, and name the clue that helped you know.',tall:true}
+  ],'A writer can show a feeling without naming it. Use the clues to infer how the narrator feels, and back it up with the text.',buildPassage());
+  else if(cur===6)content=makeWrEx(6,6,[
+    {t:'Scene 1: Your friend keeps checking the clock and packs up her bag before the bell rings. What do you infer, and what is your clue?',frame:'I can tell ______ because ______.'},
+    {t:'Scene 2: A boy hides a wrapped present behind his back and grins at his sister. What do you infer, and what is your clue?',frame:'I can tell ______ because ______.'},
+    {t:'Scene 3: The kitchen smells like cookies, the oven light glows, and a timer ticks. What do you infer, and what is your clue?',frame:'I can tell ______ because ______.'}
+  ],'Read each little scene. Write what you infer, then name the exact clue that led you there. Remember: a clue plus what you know equals an inference.');
+  else if(cur===7)content=makeWrEx(7,7,[
+    {t:'I Notice: At the start, the woman thinks the boy is doing something wrong. What does she think he is doing?'},
+    {t:'I Think: What does the woman do because she believes that? Name one action.'},
+    {t:'And So: At the end, she finds her own snack still in her bag. What did she get wrong about the boy?'},
+    {t:'Write three or four sentences about the woman\u2019s mistake. Tell what she believed, what made her believe it, and what was really true.',tall:true}
+  ],'Inference works on film too. A movie with no talking gives you no narrator, so you read faces, actions, and reactions to follow the story. Watch the short film, then answer with details from what you saw.',buildVideo());
+  else if(cur===8)content=makeWrEx(8,8,[
+    {t:'Write one thing you figured out in "The Surprise" that the story never says straight out.'},
+    {t:'List two clues from the story that helped you know.'},
+    {t:'Write two or three sentences. Use the frame to put it together.',frame:'The story never says ______, but I can tell because ______ and ______.',tall:true}
+  ],'Put every skill together. Make one inference about the story, then back it up with clues and your own thinking.',buildPassage());
+  if(WRITE_ACTS.indexOf(cur)===-1){
+    var navrow=ce('div','nav-row');
+    if(cur>0){var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur--;render();});navrow.appendChild(back);}else{navrow.appendChild(ce('div'));}
+    navrow.appendChild(ce('div'));
+    if(cur<N-1){var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur++;render();});navrow.appendChild(nxt);}else{navrow.appendChild(ce('div'));}
+    content.appendChild(navrow);
+  }
+  bd.appendChild(content);card.appendChild(bd);
+  el('main').innerHTML='';el('main').appendChild(card);
+  restTA();window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetAll(){
+  clr();done=[];for(var i=0;i<N;i++)done.push(false);
+  score=0;cur=0;correct=0;lastVid=0;clFound=0;labAns={};
+  pickAns={0:{},3:{}};pickCount={0:0,3:0};soPlaced={};soSel=null;
+  el('pf').style.width='0%';el('pt').textContent='0 / '+N;render();
+}
+el('rst-btn').addEventListener('click',resetAll);
+el('vid-btn').addEventListener('click',showP);
+el('kg-btn').addEventListener('click',function(){el('pm').classList.remove('show');});
+var ptab_data=[{t:'Riddles',k:'r'},{t:'Illusions',k:'i'},{t:'Weird Science',k:'s'}];
+ptab_data.forEach(function(p,i){var b=ce('button','prz-tab'+(i===0?' on':''));b.textContent=p.t;b.addEventListener('click',function(){el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t){t.classList.remove('on');});this.classList.add('on');setPT(p.k);});el('prz-tabs-row').appendChild(b);});
+render();
+</script>
+</body>
+</html>
