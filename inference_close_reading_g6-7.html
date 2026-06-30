@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inference and Close Reading G6-7 - Revive Tutoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#eef4f0;color:#1a1a1a}
+.hdr{background:#1a3a2a;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.hdr-t{font-size:18px;font-weight:800;color:#fff}
+.hdr-s{font-size:11px;color:rgba(255,255,255,.6)}
+.rst{padding:6px 14px;font-size:12px;border:1px solid rgba(255,255,255,.4);border-radius:8px;background:transparent;cursor:pointer;color:#fff}
+.prg{background:#fff;padding:10px 20px;border-bottom:1px solid #d0e4d8;display:flex;align-items:center;gap:12px}
+.prg-bg{flex:1;background:#d0e4d8;border-radius:999px;height:12px;overflow:hidden}
+.prg-fill{height:100%;background:linear-gradient(90deg,#1a3a2a,#2d7a4f);border-radius:999px;transition:width .4s}
+.prg-txt{font-size:12px;font-weight:700;color:#555;white-space:nowrap}
+.tabs{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid #d0e4d8;padding:0 8px}
+.tab{padding:10px 12px;font-size:11px;font-weight:700;border:none;background:transparent;cursor:pointer;color:#999;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.on{color:#1a3a2a;border-bottom-color:#2d7a4f}
+.tab.dn{color:#2d7a4f}
+.wrap{max-width:800px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;border:1px solid #d0e4d8;margin-bottom:16px;overflow:hidden}
+.card-hd{background:#1a3a2a;padding:14px 20px}
+.card-num{font-size:10px;font-weight:700;color:#7dcca0;letter-spacing:2px;margin-bottom:3px}
+.card-ttl{font-size:18px;font-weight:800;color:#fff}
+.card-bd{padding:20px}
+.inst{background:#f0f7f3;border-left:4px solid #2d7a4f;padding:12px 16px;font-size:13px;line-height:1.7;color:#333;margin-bottom:14px;border-radius:0 8px 8px 0}
+.formula{background:#1a3a2a;border-radius:10px;padding:14px 16px;color:#fff;font-size:14px;font-weight:700;text-align:center;line-height:1.8;margin-bottom:14px}
+.formula span{color:#7dcca0}
+.ex-box{background:#f6fcf8;border:2px solid #a8d8b8;border-radius:10px;padding:16px;margin-bottom:14px}
+.ex-ttl{font-size:14px;font-weight:800;color:#1a3a2a;margin-bottom:10px}
+.clue-lbl{background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;color:#5a4708;margin-bottom:10px}
+.clue-lbl .lbl{font-size:10px;font-weight:700;color:#8b6914;letter-spacing:1px;margin-bottom:4px}
+.q{margin-bottom:14px}
+.q-lbl{font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;line-height:1.5}
+textarea{width:100%;border:2px solid #d0e4d8;border-radius:8px;padding:10px;font-size:13px;font-family:Arial,sans-serif;line-height:1.6;resize:vertical;min-height:90px;background:#fefefe}
+textarea:focus{outline:none;border-color:#2d7a4f}
+textarea.ok{border-color:#2d7a4f;background:#f6fcf8}
+textarea:disabled{background:#f5f5f5;cursor:not-allowed}
+.btn{padding:10px 22px;font-size:13px;font-weight:700;border-radius:10px;cursor:pointer;font-family:Arial,sans-serif;border:none}
+.btn-sub{background:#1a3a2a;color:#fff}
+.btn-sub:disabled{background:#aaa;cursor:default}
+.btn-nav{border:2px solid #1a3a2a;background:transparent;color:#1a3a2a}
+.btn-nav.nxt{background:#1a3a2a;color:#fff}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+.done{display:none;background:#e1f5ee;border:2px solid #1d9e75;border-radius:10px;padding:10px 16px;font-size:13px;color:#0f6e56;font-weight:700;text-align:center;margin-top:10px}
+.done.show{display:block}
+.vs-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.vs-opt{border:2px solid #d0e4d8;border-radius:10px;padding:12px;cursor:pointer;font-size:13px;line-height:1.6;background:#fff}
+.vs-opt:hover{border-color:#2d7a4f}
+.vs-opt.cor{border-color:#1d9e75;background:#e1f5ee}
+.vs-opt.wrg{border-color:#e24b4a;background:#fcebeb}
+.vs-opt.rev{border-color:#1d9e75;background:#e1f5ee}
+.vs-fb{font-size:12px;margin-top:6px;padding:8px 10px;border-radius:6px;display:none}
+.vs-fb.show{display:block}
+.vs-fb.cor{background:#e1f5ee;color:#0f6e56}
+.vs-fb.wrg{background:#fcebeb;color:#a32d2d}
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sw-word{padding:7px 13px;border-radius:20px;font-size:13px;font-weight:700;border:2px solid #d0e4d8;background:#fff;cursor:pointer;user-select:none}
+.sw-word.placed{opacity:.4;cursor:default}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bin{border:2px dashed #aaa;border-radius:10px;padding:10px;min-height:80px;cursor:pointer}
+.bin-ttl{font-size:12px;font-weight:700;color:#555;margin-bottom:6px;text-align:center}
+.bin-words{display:flex;flex-wrap:wrap;gap:6px;min-height:36px}
+.placed-tag{padding:5px 10px;border-radius:14px;font-size:12px;font-weight:700;color:#fff}
+.cl-para{font-size:14px;line-height:2.4;color:#333;margin-bottom:12px}
+.cl-w{cursor:pointer;border-radius:4px;padding:1px 3px;transition:background .15s}
+.cl-w:hover{background:#fff3cc}
+.cl-w.fnd{background:#e1f5ee;color:#0f6e56;font-weight:700}
+.cl-w.keep{background:#f0f0f0;color:#777}
+.ann-ph{background:#fff8e1;border-bottom:2px solid #f0c040;cursor:pointer;border-radius:3px;padding:1px 3px}
+.ann-ph:hover{background:#fff0a0}
+.ann-ph.a-feel{background:#fcebeb;border-bottom-color:#a32d2d}
+.ann-ph.a-rel{background:#e6f1fb;border-bottom-color:#185fa5}
+.ann-ph.a-back{background:#faeeda;border-bottom-color:#854f0b}
+.ann-ph.a-set{background:#e1f5ee;border-bottom-color:#2d7a4f}
+.ann-pop{background:#fff;border:2px solid #d0e4d8;border-radius:10px;padding:12px;margin:6px 0}
+.ann-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ann-btn{padding:5px 12px;border-radius:14px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;font-family:Arial,sans-serif}
+.ann-res{font-size:12px;padding:8px 10px;border-radius:6px;margin-top:6px}
+.ann-res.cor{background:#e1f5ee;color:#0f6e56}
+.ann-res.wrg{background:#faeeda;color:#854f0b}
+.teach-box{background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;font-size:13px;line-height:1.7;border:1px solid #d0e4d8}
+.passage{background:#fffdf7;border:2px solid #e8d8a0;border-radius:10px;padding:16px 18px;margin-bottom:14px;font-size:14px;line-height:2;color:#2a2a2a}
+.passage p{margin-bottom:10px}
+.prz-ov{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+.prz-ov.show{display:flex}
+.prz-bx{background:#fff;border-radius:20px;padding:28px;max-width:460px;width:92%;text-align:center}
+.prz-icon{font-size:48px;margin-bottom:8px}
+.prz-ttl{font-size:22px;font-weight:800;color:#1a3a2a;margin-bottom:6px}
+.prz-sub{font-size:14px;color:#666;margin-bottom:16px}
+.prz-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+.prz-tab{padding:7px 16px;font-size:12px;font-weight:700;border:2px solid #d0e4d8;border-radius:18px;background:#fff;cursor:pointer;font-family:Arial,sans-serif}
+.prz-tab.on{border-color:#1a3a2a;background:#e8f4ec;color:#1a3a2a}
+.vid-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.vid-a{background:#eef4f0;border-radius:8px;padding:10px 8px;text-decoration:none;color:#1a3a2a;font-size:11px;font-weight:700;border:1px solid #a8d8b8;display:block;line-height:1.5}
+.vid-icon{font-size:18px;margin-bottom:3px}
+.kg-btn{padding:10px 28px;font-size:14px;font-weight:800;border:none;border-radius:10px;background:#1a3a2a;cursor:pointer;color:#fff;font-family:Arial,sans-serif}
+@media(max-width:600px){.vs-pair{grid-template-columns:1fr}.bins{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-t">Inference and Close Reading <span style="font-size:12px;color:#7dcca0;font-weight:700">G6-7</span></div><div class="hdr-s">Revive Tutoring</div></div>
+  <div style="display:flex;gap:8px">
+    <button class="rst" id="vid-btn">Watch a Video</button>
+    <button class="rst" id="rst-btn">Reset</button>
+  </div>
+</div>
+<div class="prg">
+  <div class="prg-bg"><div class="prg-fill" id="pf" style="width:0%"></div></div>
+  <div class="prg-txt" id="pt">0 / 9</div>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="wrap" id="main"></div>
+<div class="prz-ov" id="pm">
+  <div class="prz-bx">
+    <div class="prz-icon" id="pi">&#x1F50D;</div>
+    <div class="prz-ttl">You earned a video!</div>
+    <div class="prz-sub">Pick a category.</div>
+    <div class="prz-tabs" id="prz-tabs-row"></div>
+    <div class="vid-grid" id="vg"></div>
+    <button class="kg-btn" id="kg-btn">Keep Reading</button>
+  </div>
+</div>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  var d = document.createElement('div');
+  d.style.cssText = 'background:red;color:white;padding:20px;font-size:16px;position:fixed;top:0;left:0;right:0;z-index:9999;';
+  d.textContent = 'JS ERROR: ' + msg + ' (line ' + line + ')';
+  document.body.appendChild(d);
+  return false;
+};
+// ===== SETUP =====
+var N=9, done=[], score=0, cur=0, pvt='r', correct=0, lastVid=0;
+for(var i=0;i<N;i++) done.push(false);
+
+var VIDS={
+  r:[{t:'Can you solve the bridge riddle?',u:'https://www.youtube.com/watch?v=7yDmGnA8Hw0'},{t:"Can you solve Einstein's riddle?",u:'https://www.youtube.com/watch?v=1rDVz_Fb6HQ'},{t:'Can you solve the prisoner hat riddle?',u:'https://www.youtube.com/watch?v=N5vJSNXPEwA'}],
+  i:[{t:'How optical illusions trick your brain',u:'https://www.youtube.com/watch?v=rfdJyDfIHIc'},{t:'The McGurk Effect (an audio illusion)',u:'https://www.youtube.com/watch?v=jtsfidRq2tw'},{t:'The moon illusion',u:'https://www.youtube.com/watch?v=RXkYjL_7jME'}],
+  s:[{t:"Turbulence: physics' great unsolved mystery",u:'https://www.youtube.com/watch?v=S3i6tJ4XNqA'},{t:"What would happen if you didn't sleep?",u:'https://www.youtube.com/watch?v=dqONk48l5vY'},{t:'Why do we dream?',u:'https://www.youtube.com/watch?v=2W85Dwxx218'}]
+};
+
+// ===== UTILS =====
+function sv(k,v){try{localStorage.setItem('inf_'+k,v);}catch(e){}}
+function ld(k){try{return localStorage.getItem('inf_'+k)||'';}catch(e){return '';}}
+function clr(){try{for(var k in localStorage){if(k.indexOf('inf_')===0)localStorage.removeItem(k);}}catch(e){}}
+function el(id){return document.getElementById(id);}
+function ce(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e;}
+function restTA(){
+  setTimeout(function(){
+    var ts=document.querySelectorAll('textarea[id]');
+    for(var i=0;i<ts.length;i++){
+      var s=ld(ts[i].id);
+      if(s&&!ts[i].disabled){ts[i].value=s;if(s.trim().length>10)ts[i].classList.add('ok');}
+    }
+  },120);
+}
+
+// ===== PROGRESS =====
+function mark(i){
+  if(done[i])return;
+  done[i]=true;score++;
+  el('pf').style.width=Math.round(score/N*100)+'%';
+  el('pt').textContent=score+' / '+N;
+  buildTabs();
+}
+function addCorrect(){
+  correct++;
+  var v=Math.floor(correct/5);
+  if(v>lastVid){lastVid=v;setTimeout(showP,400);}
+}
+
+// ===== PRIZE =====
+function setPT(t){pvt=t;showVids();}
+function showVids(){
+  var vg=el('vg');if(!vg)return;
+  var pool=VIDS[pvt],pick=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,4);
+  vg.innerHTML='';
+  pick.forEach(function(v){
+    var a=ce('a','vid-a');a.href=v.u;a.target='_blank';
+    var icon=ce('div','vid-icon');icon.textContent='▶';a.appendChild(icon);
+    a.appendChild(document.createTextNode(v.t));
+    vg.appendChild(a);
+  });
+}
+function showP(){
+  pvt='r';
+  el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t,i){t.classList.toggle('on',i===0);});
+  el('pi').textContent='🔍';
+  showVids();
+  el('pm').classList.add('show');
+}
+
+// ===== TABS =====
+var TLBL=['Everyday','Clue Hunt','Label It','It Says','Support?','Infer','Read','Watch','Together'];
+function buildTabs(){
+  var w=el('tabs');w.innerHTML='';
+  for(var i=0;i<N;i++){
+    var b=ce('button','tab'+(i===cur?' on':'')+(done[i]?' dn':''));
+    b.textContent=(done[i]?'+ ':'')+TLBL[i];
+    b.setAttribute('data-i',String(i));
+    b.addEventListener('click',function(){cur=parseInt(this.getAttribute('data-i'));render();});
+    w.appendChild(b);
+  }
+}
+
+// ===== THE PASSAGE (shared text) =====
+var PASSAGE=[
+  'Mara lingered on the porch a long time before she knocked. Someone had flipped the welcome mat bristles-up, the way you leave a place for good. Through the window, she glimpsed the kitchen table, bare except for a single coffee mug and a roll of packing tape.',
+  'Her aunt opened the door. "You came," she said, and she smiled a second too late, as if she no longer remembered how.',
+  'Inside, the house smelled the same, lemon and old paper, but nothing hung on the walls. Boxes crowded the hallway, each one labeled in Mara\'s mother\'s handwriting. KITCHEN. BOOKS. KEEP. Mara walked these three blocks since she was six years old, and she barely recognized the silence.',
+  'On the counter sat a blue ceramic bowl, chipped along one edge. Every summer it held lemons from the tree out back. Mara picked it up, turned it in her hands, and set it down again without a word.',
+  '"Your grandmother wanted you to have that," her aunt said. She filled the kettle, then took down two mugs instead of one. For a moment neither of them spoke. The kettle ticked as it heated. Outside, a sprinkler hissed to life, the same sound Mara remembered from every visit, running on as if nothing ever changed.'
+];
+function buildPassage(){
+  var box=ce('div','passage');
+  PASSAGE.forEach(function(t){var p=ce('p');p.textContent=t;box.appendChild(p);});
+  return box;
+}
+
+// ===== ACT 1 (idx 0): EVERYDAY INFERENCE (picker) =====
+// ===== ACT 4 (idx 3): IT SAYS, I SAY, AND SO (picker) =====
+var PICK={
+  0:[
+    {clue:'During the movie, your friend laughs at every joke, but in the last ten minutes she checks the time twice.',a:'She is enjoying the movie but may need to leave soon.',b:'She is bored and wants the movie to end.',c:'a',f:'The best inference explains every clue, not just one. She laughs, so "bored" ignores half the evidence. "Enjoying it but watching the clock" accounts for both the laughing and the time-checking.'},
+    {clue:'A new student answers every question correctly but never raises a hand, and eats lunch alone all first week.',a:'The student is unfriendly and wants to be left alone.',b:'The student is shy and still new to the school.',c:'b',f:'"Unfriendly" assumes a choice to push people away. The evidence, capable but quiet and new, points to shyness. Choose the inference that judges the least and still fits the clues.'},
+    {clue:'A coach benches her strongest player for the first ten minutes of the championship, then sends her in.',a:'The coach is punishing the player for something.',b:'Something happened here, but this clue alone cannot tell you what.',c:'b',f:'A careful reader knows when the evidence runs out. The benching could mean discipline, an injury, or strategy. "Cannot tell yet" respects the limit of a single clue instead of guessing a cause.'},
+    {clue:'At dinner, your uncle praises the meal loudly three times, but his plate stays almost full.',a:'He loves the food and cannot get enough of it.',b:'He is being polite, and likely enjoys it less than he says.',c:'b',f:'When words and actions clash, the actions usually carry the truer signal. The full plate undercuts the loud praise, so "being polite" fits the gap between what he says and what he does.'}
+  ],
+  3:[
+    {clue:'It Says: A single mug and a roll of packing tape sit on the bare table, and boxes fill the hallway.',a:'The family is clearing the grandmother\'s belongings out of the house.',b:'Mara\'s aunt keeps a messy home.',c:'a',f:'The packing tape, the labeled boxes, and the bare room all point to a family emptying the house, not to one person\'s habits.'},
+    {clue:'It Says: Mara\'s mother labeled the boxes by hand, and the grandmother never appears in the scene.',a:'The grandmother left on a trip.',b:'The grandmother has died, and the family is clearing her house.',c:'b',f:'A trip would not require packing the whole house into labeled boxes. The grandmother\'s absence and the packing together support the larger conclusion.'},
+    {clue:'It Says: The aunt smiled "a second too late, as if she no longer remembered how."',a:'Mara and her aunt have grown distant.',b:'The aunt dislikes Mara.',c:'a',f:'A late smile does not equal dislike. Choose the smaller, safer inference that the evidence actually supports.'},
+    {clue:'It Says: Mara picks up the chipped blue bowl, turns it in her hands, and sets it down "without a word."',a:'Mara does not care about the bowl.',b:'The bowl matters to Mara, and she is holding something back.',c:'b',f:'People do not carefully turn over objects they do not care about. Mara\'s silence reveals the feeling she will not say out loud.'}
+  ]
+};
+var pickAns={0:{},3:{}}, pickCount={0:0,3:0};
+function pickClick(act,pi,ch){
+  if(pickAns[act][pi])return;pickAns[act][pi]=true;pickCount[act]++;
+  var p=PICK[act][pi],ok=ch===p.c;
+  var ae=el('p'+act+'a'+pi),be=el('p'+act+'b'+pi),fb=el('p'+act+'f'+pi);
+  var cor=p.c==='a'?ae:be,wrg=p.c==='a'?be:ae;
+  if(ok){cor.classList.add('cor');wrg.style.opacity='.5';fb.textContent='Strong choice. '+p.f;fb.className='vs-fb show cor';addCorrect();}
+  else{wrg.classList.add('wrg');cor.classList.add('rev');fb.textContent='Look again. '+p.f;fb.className='vs-fb show wrg';}
+  if(pickCount[act]>=PICK[act].length){var d=el('pk'+act+'_done');if(d)d.classList.add('show');mark(act);}
+}
+function renderPick(act,instTxt,doneTxt,withPassage){
+  var wrap=ce('div');
+  if(act===0){
+    var fm=ce('div','formula');fm.innerHTML='<span>Clues</span> + <span>What You Know</span> = <span>Inference</span>';wrap.appendChild(fm);
+  }
+  wrap.appendChild(ce('div','inst')).textContent=instTxt;
+  if(withPassage)wrap.appendChild(buildPassage());
+  PICK[act].forEach(function(p,i){
+    var box=ce('div','ex-box');
+    var cl=ce('div','clue-lbl');
+    var cll=ce('div','lbl');cll.textContent=act===0?'THE CLUE':'THE EVIDENCE';cl.appendChild(cll);
+    cl.appendChild(document.createTextNode(p.clue));box.appendChild(cl);
+    var pair=ce('div','vs-pair');
+    var oa=ce('div','vs-opt');oa.id='p'+act+'a'+i;oa.textContent=p.a;oa.addEventListener('click',function(){pickClick(act,i,'a');});
+    var ob=ce('div','vs-opt');ob.id='p'+act+'b'+i;ob.textContent=p.b;ob.addEventListener('click',function(){pickClick(act,i,'b');});
+    pair.appendChild(oa);pair.appendChild(ob);box.appendChild(pair);
+    var fb=ce('div','vs-fb');fb.id='p'+act+'f'+i;box.appendChild(fb);
+    wrap.appendChild(box);
+  });
+  var dn=ce('div','done'+(done[act]?' show':''));dn.id='pk'+act+'_done';dn.textContent=doneTxt;wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== ACT 2 (idx 1): CLUE HUNT =====
+var clFound=0;
+var CLUE_DATA=[
+  {word:'Mara lingered on the porch a long time before she knocked.',clue:false},
+  {word:'Someone had flipped the welcome mat bristles-up, the way you leave a place for good.',clue:true},
+  {word:'Through the window, she glimpsed the kitchen table, bare except for a single coffee mug and a roll of packing tape.',clue:true},
+  {word:'Her aunt opened the door.',clue:false},
+  {word:'She smiled a second too late, as if she no longer remembered how.',clue:true},
+  {word:'The house smelled the same, lemon and old paper.',clue:false},
+  {word:'Nothing hung on the walls.',clue:true},
+  {word:'Boxes crowded the hallway, each one labeled in Mara\'s mother\'s handwriting.',clue:true},
+  {word:'Mara walked these three blocks since she was six years old.',clue:true},
+  {word:'On the counter sat a blue ceramic bowl, chipped along one edge.',clue:false},
+  {word:'Mara picked it up, turned it in her hands, and set it down again without a word.',clue:true},
+  {word:'Her aunt filled the kettle, then took down two mugs instead of one.',clue:true},
+  {word:'The kettle ticked as it heated.',clue:false}
+];
+function clickCL(el2){
+  if(el2.classList.contains('fnd')||el2.classList.contains('keep'))return;
+  var cnt=el('cl_cnt'),fb=el('cl_fb');
+  if(el2.getAttribute('data-clue')!=='1'){
+    el2.classList.add('keep');
+    if(fb){fb.textContent='That detail sets the scene, but it hides nothing. Hunt for clues that reveal a feeling, a relationship, or what is happening in the scene.';fb.style.color='#777';}
+    return;
+  }
+  el2.classList.add('fnd');clFound++;addCorrect();
+  if(fb){fb.textContent='You found a clue. Ask yourself what it makes you think, even though the text never says it directly.';fb.style.color='#0f6e56';}
+  if(clFound<5){if(cnt)cnt.textContent='Clues found: '+clFound+' / 5 needed';}
+  else{if(cnt)cnt.textContent='Clues found: '+clFound+'. You uncovered what the text leaves unsaid.';var d=el('cl_done');if(d)d.classList.add('show');mark(1);}
+}
+function renderCL(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A writer plants clues on purpose. Read the passage closely. Click each sentence you judge to be a clue, a detail that hints at something the text never states outright. Leave the lines that only set the scene. Find at least five clues to finish.';
+  var box=ce('div','passage');
+  var para=ce('div');para.style.cssText='font-size:14px;line-height:2.4;color:#2a2a2a;';
+  CLUE_DATA.forEach(function(d){
+    var sp=ce('span','cl-w');sp.textContent=d.word;sp.setAttribute('data-clue',d.clue?'1':'0');sp.addEventListener('click',function(){clickCL(this);});para.appendChild(sp);
+    para.appendChild(document.createTextNode(' '));
+  });
+  box.appendChild(para);wrap.appendChild(box);
+  var cnt=ce('div');cnt.id='cl_cnt';cnt.style.cssText='font-size:12px;color:#555;margin-bottom:4px;font-weight:700;';
+  cnt.textContent=clFound<5?('Clues found: '+clFound+' / 5 needed'):('Clues found: '+clFound+'. You uncovered what the text leaves unsaid.');wrap.appendChild(cnt);
+  var fb=ce('div');fb.id='cl_fb';fb.style.cssText='font-size:12px;margin-bottom:10px;min-height:16px;';wrap.appendChild(fb);
+  var dn=ce('div','done'+(done[1]?' show':''));dn.id='cl_done';dn.textContent='You found the clues the writer planted on purpose.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== ACT 3 (idx 2): LABEL THE CLUE (annotate) =====
+var ANN_DATA={
+  0:{id:'ap0',txt:'picked it up, turned it in her hands, and set it down again without a word',l:'feeling',c:'a-feel',w:'The text names no emotion, yet Mara handles the bowl in silence. Her quiet handling reveals the grief she holds in, so this clue points to a feeling.'},
+  1:{id:'ap1',txt:'took down two mugs instead of one',l:'relationship',c:'a-rel',w:'The aunt reaches for a second mug and quietly includes Mara. That small gesture reveals how the two get along, so this clue points to their relationship.'},
+  2:{id:'ap2',txt:'walked these three blocks since she was six years old',l:'past',c:'a-back',w:'Mara has come here since she was six. The line points to when she was a child, so this clue points to the past.'},
+  3:{id:'ap3',txt:'the kitchen table, bare except for a single coffee mug and a roll of packing tape',l:'situation',c:'a-set',w:'A bare table holds only a mug and packing tape. The detail shows what is happening in the scene right now, so this clue points to the situation: the family is packing up the house.'},
+  4:{id:'ap4',txt:'Someone had flipped the welcome mat bristles-up',l:'situation',c:'a-set',w:'People flip a mat bristles up when they close a house for good. The detail shows what is happening right now, so this clue points to the situation.'}
+};
+var CH4=['feeling','relationship','past','situation'];
+var ANN_COLORS={'feeling':'#a32d2d','relationship':'#185fa5','past':'#854f0b','situation':'#2d7a4f'};
+var annAns={};
+function makeAnnotatable(el2,idx){el2.classList.add('ann-ph');el2.addEventListener('click',function(){doAnnotate(idx);});}
+function doAnnotate(idx){
+  if(annAns[idx])return;
+  if(el('af'+idx))return;
+  var ph=el('ap'+idx);if(!ph)return;
+  var data=ANN_DATA[idx];if(!data)return;
+  var rd=el('ar0');if(!rd)return;
+  var pop=ce('div','ann-pop');
+  var pv=ce('div');pv.style.cssText='font-size:12px;color:#555;font-style:italic;margin-bottom:6px;';
+  pv.textContent='"'+ph.textContent.trim().substring(0,80)+'"';pop.appendChild(pv);
+  var lbl=ce('div');lbl.style.cssText='font-size:12px;font-weight:700;color:#1a3a2a;margin-bottom:4px;';lbl.textContent='What does this clue reveal?';pop.appendChild(lbl);
+  var choices=ce('div','ann-choices');
+  CH4.forEach(function(c){
+    var col=ANN_COLORS[c]||'#888';
+    var btn=ce('button','ann-btn');btn.style.cssText='background:'+col+'22;color:'+col+';border-color:'+col+';';btn.textContent=c;
+    btn.addEventListener('click',function(){doPickAnn(idx,c,pop);});
+    choices.appendChild(btn);
+  });
+  pop.appendChild(choices);
+  var fb=ce('div');fb.id='af'+idx;pop.appendChild(fb);
+  rd.appendChild(pop);
+}
+function doPickAnn(idx,ch,pop){
+  if(annAns[idx])return;annAns[idx]=true;
+  var data=ANN_DATA[idx];var ph=el('ap'+idx);var fb=el('af'+idx);
+  var ok=ch===data.l;
+  if(ok)addCorrect();
+  if(ph)ph.className='ann-ph '+data.c;
+  if(fb){var r=ce('div','ann-res '+(ok?'cor':'wrg'));r.innerHTML=(ok?'Correct. ':'Not quite. ')+'<strong>'+data.l+'</strong>: '+data.w;fb.appendChild(r);}
+  if(pop)pop.querySelectorAll('.ann-btn').forEach(function(b){b.disabled=true;});
+  var allDone=true;for(var k in ANN_DATA){if(!annAns[k])allDone=false;}
+  if(allDone){var d=el('ann_done');if(d)d.classList.add('show');mark(2);}
+}
+function renderLabel(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A single clue can reveal more than one layer of meaning. It might show how a character feels, how two characters get along, something from the past, or what is happening in the scene right now. Click each highlighted phrase. Choose what it reveals.';
+  var legend=ce('div','ex-box');legend.style.cssText='background:#fefaf3;border-color:#e8d8a0;';
+  var lh=ce('div');lh.style.cssText='font-size:10px;font-weight:700;color:#8b6914;letter-spacing:2px;margin-bottom:8px;';lh.textContent='WHAT A CLUE CAN REVEAL';legend.appendChild(lh);
+  var lr=ce('div');lr.style.cssText='display:flex;flex-wrap:wrap;gap:6px;';
+  CH4.forEach(function(l){var sp=ce('span');sp.style.cssText='background:'+ANN_COLORS[l]+';color:#fff;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;';sp.textContent=l;lr.appendChild(sp);});
+  legend.appendChild(lr);wrap.appendChild(legend);
+  var box=ce('div','passage');
+  var p1=ce('p');p1.appendChild(document.createTextNode('Mara lingered on the porch a long time before she knocked. '));
+  var s4=ce('span');s4.id='ap4';s4.textContent=ANN_DATA[4].txt;makeAnnotatable(s4,4);p1.appendChild(s4);
+  p1.appendChild(document.createTextNode(', the way you leave a place for good. Through the window, she glimpsed '));
+  var s3=ce('span');s3.id='ap3';s3.textContent=ANN_DATA[3].txt;makeAnnotatable(s3,3);p1.appendChild(s3);
+  p1.appendChild(document.createTextNode('.'));box.appendChild(p1);
+  var p2=ce('p');p2.appendChild(document.createTextNode('Inside, nothing hung on the walls. Mara '));
+  var s2=ce('span');s2.id='ap2';s2.textContent=ANN_DATA[2].txt;makeAnnotatable(s2,2);p2.appendChild(s2);
+  p2.appendChild(document.createTextNode(', and she barely recognized the silence. On the counter sat the chipped blue bowl. Mara '));
+  var s0=ce('span');s0.id='ap0';s0.textContent=ANN_DATA[0].txt;makeAnnotatable(s0,0);p2.appendChild(s0);
+  p2.appendChild(document.createTextNode('.'));box.appendChild(p2);
+  var p3=ce('p');p3.appendChild(document.createTextNode('"Your grandmother wanted you to have that," her aunt said. She filled the kettle, then '));
+  var s1=ce('span');s1.id='ap1';s1.textContent=ANN_DATA[1].txt;makeAnnotatable(s1,1);p3.appendChild(s1);
+  p3.appendChild(document.createTextNode('.'));box.appendChild(p3);
+  wrap.appendChild(box);
+  var ar=ce('div');ar.id='ar0';ar.style.marginBottom='12px';wrap.appendChild(ar);
+  var dn=ce('div','done'+(done[2]?' show':''));dn.id='ann_done';dn.textContent='You named what each clue reveals. That work is close reading.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== ACT 5 (idx 4): SUPPORTED OR OVERREACH (sorter) =====
+var SO_ITEMS=[
+  {w:'The grandmother has recently died.',s:'sup'},
+  {w:'The family is clearing out the grandmother\'s house.',s:'sup'},
+  {w:'Mara has visited this house since she was young.',s:'sup'},
+  {w:'Mara and her aunt are not close.',s:'sup'},
+  {w:'The grandmother died exactly one week ago.',s:'over'},
+  {w:'Mara is angry at her aunt.',s:'over'},
+  {w:'Mara will inherit the house herself.',s:'over'},
+  {w:'The aunt feels relieved the grandmother is gone.',s:'over'}
+];
+var soPlaced={},soSel=null;
+function selSO(i){
+  if(soPlaced[i])return;
+  document.querySelectorAll('.sw-word').forEach(function(e){e.style.outline='';});
+  soSel=i;var e=el('so'+i);if(e)e.style.outline='3px solid #2d7a4f';
+}
+function dropSO(bn){
+  if(soSel===null)return;
+  var item=SO_ITEMS[soSel],we=el('so'+soSel);
+  if(!item||!we)return;
+  if(bn!==item.s){
+    we.style.outline='3px solid #e24b4a';
+    var si=soSel;soSel=null;
+    setTimeout(function(){var e=el('so'+si);if(e)e.style.outline='';},700);
+    return;
+  }
+  var bw=el('sob'+bn);
+  if(bw){var t=ce('div','placed-tag');t.style.background=bn==='sup'?'#2d7a4f':'#a32d2d';t.textContent=item.w;bw.appendChild(t);}
+  we.classList.add('placed');we.style.outline='';soPlaced[soSel]=true;soSel=null;addCorrect();
+  var cnt=Object.keys(soPlaced).length;
+  var sc=el('so_sc');if(sc)sc.textContent='Sorted: '+cnt+' / 8';
+  if(cnt===8){var d=el('so_done');if(d)d.classList.add('show');mark(4);}
+}
+function renderSort(){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent='A strong inference stays close to the evidence. An overreach guesses past what the text can prove. Click a statement, then click its bin: Supported by the Text or Overreach.';
+  wrap.appendChild(buildPassage());
+  var sw=ce('div','sw');
+  SO_ITEMS.forEach(function(item,i){
+    var w=ce('div','sw-word'+(soPlaced[i]?' placed':''));w.id='so'+i;w.textContent=item.w;w.style.cssText+='white-space:normal;max-width:100%;text-align:left;';
+    w.addEventListener('click',function(){selSO(i);});
+    sw.appendChild(w);
+  });
+  wrap.appendChild(sw);
+  var bins=ce('div','bins');
+  [['sup','SUPPORTED BY THE TEXT'],['over','OVERREACH']].forEach(function(b){
+    var bx=ce('div','bin');
+    var bt=ce('div','bin-ttl');bt.textContent=b[1];bx.appendChild(bt);
+    var bw=ce('div','bin-words');bw.id='sob'+b[0];bx.appendChild(bw);
+    bx.addEventListener('click',function(){dropSO(b[0]);});
+    bins.appendChild(bx);
+  });
+  wrap.appendChild(bins);
+  var sc=ce('div');sc.id='so_sc';sc.style.cssText='font-size:12px;color:#555;margin-top:6px;';
+  sc.textContent='Sorted: '+Object.keys(soPlaced).length+' / 8';wrap.appendChild(sc);
+  var dn=ce('div','done'+(done[4]?' show':''));dn.id='so_done';dn.textContent='You can tell a supported inference from a guess.';wrap.appendChild(dn);
+  return wrap;
+}
+
+// ===== WRITING EXERCISES (idx 5,6,7,8) =====
+function makeQ(lbl,ta){var q=ce('div','q');var ql=ce('div','q-lbl');ql.textContent=lbl;q.appendChild(ql);q.appendChild(ta);return q;}
+function buildVideo(){
+  var box=ce('div','ex-box');
+  var ttl=ce('div','ex-ttl');ttl.textContent='Watch: "Snack Attack" (about 4 minutes, no words)';box.appendChild(ttl);
+  var note=ce('div');note.style.cssText='font-size:12px;color:#555;line-height:1.6;margin-bottom:10px;';note.textContent='The film has no dialogue, so you read faces, actions, and reactions to follow the story. Watch it once all the way through before you answer.';box.appendChild(note);
+  var a=ce('a');a.href='https://www.youtube.com/watch?v=reRcVxAWT1g';a.target='_blank';a.textContent='\u25B6  Watch "Snack Attack" on YouTube (opens in a new tab)';a.style.cssText='display:inline-block;padding:11px 20px;background:#1a3a2a;color:#fff;font-size:13px;font-weight:700;border-radius:10px;text-decoration:none;';box.appendChild(a);
+  return box;
+}
+function makeWrEx(exIdx,mapIdx,qs,intro,withPassage,topNode){
+  var wrap=ce('div');
+  wrap.appendChild(ce('div','inst')).textContent=intro||'Answer each question with specific detail, and use the text as your evidence.';
+  if(topNode)wrap.appendChild(topNode);
+  if(withPassage)wrap.appendChild(buildPassage());
+  qs.forEach(function(q,i){
+    var ta=ce('textarea');ta.id='wr'+exIdx+'_'+i;ta.placeholder='Your answer...';if(q.tall)ta.style.minHeight='120px';
+    var saved=ld(ta.id);if(saved){ta.value=saved;if(saved.trim().length>10)ta.classList.add('ok');}
+    ta.addEventListener('input',function(){sv(this.id,this.value);if(this.value.trim().length>10)this.classList.add('ok');chkWrEx(exIdx,mapIdx);});
+    wrap.appendChild(makeQ(q.t,ta));
+  });
+  var dn=ce('div','done'+(done[mapIdx]?' show':''));dn.id='wd'+exIdx;dn.textContent='Activity complete.';wrap.appendChild(dn);
+  var navrow=ce('div','nav-row');
+  var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur=mapIdx-1;render();});
+  if(mapIdx===0)back.style.visibility='hidden';
+  var sub=ce('button','btn btn-sub');sub.id='wsub'+exIdx;sub.disabled=true;sub.textContent=done[mapIdx]?'Done':'Mark Complete';
+  sub.addEventListener('click',function(){subWrEx(exIdx,mapIdx);});
+  var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur=mapIdx+1;render();});
+  if(mapIdx===N-1)nxt.style.visibility='hidden';
+  navrow.appendChild(back);navrow.appendChild(sub);navrow.appendChild(nxt);
+  wrap.appendChild(navrow);
+  setTimeout(function(){chkWrEx(exIdx,mapIdx);},50);
+  return wrap;
+}
+function chkWrEx(exIdx,mapIdx){
+  var ts=document.querySelectorAll('[id^="wr'+exIdx+'_"]');
+  var ok=true;ts.forEach(function(ta){if(ta.value.trim().length<10)ok=false;});
+  var btn=el('wsub'+exIdx);if(btn)btn.disabled=!ok;
+}
+function subWrEx(exIdx,mapIdx){if(done[mapIdx])return;var d=el('wd'+exIdx);if(d)d.classList.add('show');mark(mapIdx);if(mapIdx<N-1)setTimeout(function(){cur=mapIdx+1;render();},700);}
+
+// ===== MAIN RENDER =====
+var EX_INFO=[
+  {num:'Act 1',type:'Everyday Inference',title:'What can you figure out?'},
+  {num:'Act 2',type:'Clue Hunt',title:'Find the clues in the text'},
+  {num:'Act 3',type:'Label the Clue',title:'What does each clue reveal?'},
+  {num:'Act 4',type:'It Says, I Say, And So',title:'Which inference fits the evidence?'},
+  {num:'Act 5',type:'Supported or Overreach',title:'How far can the clues take you?'},
+  {num:'Ex 1',type:'Infer a Trait',title:'It Says, I Say, And So'},
+  {num:'Ex 2',type:'Reading the Unsaid',title:'Infer from everyday scenes'},
+  {num:'Ex 3',type:'Watch and Infer',title:'Infer from a short film'},
+  {num:'Ex 4',type:'Put It Together',title:'Build a full inference'}
+];
+function render(){
+  buildTabs();
+  var ex=EX_INFO[cur];
+  var card=ce('div','card');
+  var hd=ce('div','card-hd');
+  hd.appendChild(ce('div','card-num')).textContent=ex.num+' - '+ex.type;
+  hd.appendChild(ce('div','card-ttl')).textContent=ex.title;
+  card.appendChild(hd);
+  var bd=ce('div','card-bd');
+  var content;
+  if(cur===0)content=renderPick(0,'You make inferences all the time. You notice a clue, combine it with what you already know, and reach a conclusion the writer never states outright. Often more than one inference looks possible. Choose the one that explains every clue and assumes the least.','You inferred from clues. Strong readers use that exact skill on every page.',false);
+  else if(cur===1)content=renderCL();
+  else if(cur===2)content=renderLabel();
+  else if(cur===3)content=renderPick(3,'Reading teachers call this move It Says, I Say, And So. The text gives you evidence (It Says), you add your thinking (I Say), and the two combine into a conclusion (And So). Read each piece of evidence. Choose the conclusion it supports best.','You matched each conclusion to its evidence without overreaching.',true);
+  else if(cur===4)content=renderSort();
+  else if(cur===5)content=makeWrEx(5,5,[
+    {t:'It Says: Find one line that shows how Mara feels without naming the feeling. Copy the line here.'},
+    {t:'I Say: Explain what that line reveals about Mara. Name the feeling or thought she holds back.'},
+    {t:'And So: Combine the two in one sentence. State what a reader can conclude about Mara, and show how the clue supports it.',tall:true},
+    {t:'Push back on yourself: A reader could argue Mara feels almost nothing and is simply being quiet and polite. Give the single strongest piece of evidence against that reading, and explain why it outweighs the other reading.',tall:true}
+  ],'Use the It Says, I Say, And So frame to infer one feeling or trait, then defend it against a competing reading. Stay close to the evidence.',true);
+  else if(cur===6)content=makeWrEx(6,6,[
+    {t:'Scene 1: A boy walks in, drops his backpack by the door, and heads straight to his room without a word. What do you infer, and which detail is your clue?'},
+    {t:'Scene 2: At dinner, your sister keeps checking her phone under the table and answers every question with one word. What do you infer, and which detail is your clue?'},
+    {t:'Scene 3: A teacher returns a test face down and says quietly, "See me after class." What do you infer, and which detail is your clue?'}
+  ],'Read each scene. Write what you infer, then name the exact clue that led you there. Remember: clues plus what you know equal an inference.',false);
+  else if(cur===7)content=makeWrEx(7,7,[
+    {t:'I Notice: Early in the film, the woman decides the teenager is doing something wrong. What does she conclude about him, and which of his actions makes her think it?'},
+    {t:'I Think: List two clues the woman leans on as she watches the teenager. Explain what she believes each clue proves.'},
+    {t:'And So: At the end, the woman finds her own unopened cookies in her bag. What does that discovery reveal, and what should she have concluded about the teenager all along?'},
+    {t:'Writing task: Write a paragraph of four or five sentences about the woman\'s mistake. Name the wrong inference she made, walk through the clues she trusted, and explain what a careful watcher would have concluded instead. Use the frame: I notice (what you see), I think (what it means), and so (your conclusion).',tall:true}
+  ],'Inference works on film too. A wordless movie hands you no narration, so you read faces, actions, and reactions to figure out the story. The frame from earlier still works: It Says becomes I Notice, I Say becomes I Think, and the two lead to And So. Watch the short film, then answer each question with specific details from what you saw.',false,buildVideo());
+  else if(cur===8)content=makeWrEx(8,8,[
+    {t:'State one inference you trust from "The Last Box" in a single clear sentence.'},
+    {t:'List two clues from the passage that support your inference.'},
+    {t:'Write a short paragraph of four or five sentences. State your inference, walk through your two clues, and explain your reasoning. Follow the frame: It Says (the evidence), I Say (your thinking), And So (your conclusion).',tall:true},
+    {t:'Craft question: The writer never states outright that the grandmother has died. Why might a writer leave the most important fact unsaid, and what does that silence make the reader do?',tall:true}
+  ],'Combine every skill. Build one complete inference about the passage, back it with clues and clear reasoning, then judge why the author withholds the key fact.',true);
+  if(cur<=4){
+    var navrow=ce('div','nav-row');
+    if(cur>0){var back=ce('button','btn btn-nav');back.textContent='Back';back.addEventListener('click',function(){cur--;render();});navrow.appendChild(back);}else{navrow.appendChild(ce('div'));}
+    navrow.appendChild(ce('div'));
+    if(cur<N-1){var nxt=ce('button','btn btn-nav nxt');nxt.textContent='Next';nxt.addEventListener('click',function(){cur++;render();});navrow.appendChild(nxt);}else{navrow.appendChild(ce('div'));}
+    content.appendChild(navrow);
+  }
+  bd.appendChild(content);card.appendChild(bd);
+  el('main').innerHTML='';el('main').appendChild(card);
+  restTA();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetAll(){
+  clr();
+  done=[];for(var i=0;i<N;i++)done.push(false);
+  score=0;cur=0;correct=0;lastVid=0;
+  pickAns={0:{},3:{}};pickCount={0:0,3:0};
+  clFound=0;
+  annAns={};
+  soPlaced={};soSel=null;
+  el('pf').style.width='0%';el('pt').textContent='0 / '+N;
+  render();
+}
+
+// ===== WIRE UP STATIC BUTTONS =====
+el('rst-btn').addEventListener('click',resetAll);
+el('vid-btn').addEventListener('click',showP);
+el('kg-btn').addEventListener('click',function(){el('pm').classList.remove('show');});
+
+// Prize tabs
+var ptab_data=[{t:'Riddles',k:'r'},{t:'Illusions',k:'i'},{t:'Weird Science',k:'s'}];
+ptab_data.forEach(function(p,i){
+  var b=ce('button','prz-tab'+(i===0?' on':''));b.textContent=p.t;
+  b.addEventListener('click',function(){
+    el('prz-tabs-row').querySelectorAll('.prz-tab').forEach(function(t){t.classList.remove('on');});
+    this.classList.add('on');setPT(p.k);
+  });
+  el('prz-tabs-row').appendChild(b);
+});
+
+render();
+</script>
+</body>
+</html>
