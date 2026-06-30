@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mechanics Drills — Revive Tutoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1f4733;
+    --green: #2f6b4a;
+    --green-bright: #3c8a5f;
+    --green-soft: #e8f1ea;
+    --green-line: #c7ddcd;
+    --cream: #f7f5ef;
+    --paper: #ffffff;
+    --ink: #1c2620;
+    --ink-soft: #51615a;
+    --gold: #c9a24b;
+    --rose: #b5485a;
+    --shadow: 0 1px 3px rgba(31,71,51,.08), 0 8px 24px rgba(31,71,51,.06);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Masthead ---------- */
+  header.masthead {
+    background: var(--green-deep);
+    color: #fff;
+    padding: 2.4rem 1.5rem 2.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 2; }
+  .brand {
+    font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+    color: #9fc8ac; font-weight: 600; margin-bottom: 1rem;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.05;
+    margin: 0 0 .6rem;
+    letter-spacing: -.01em;
+  }
+  .masthead p.lede {
+    margin: 0; max-width: 56ch; color: #cfe3d5; font-size: 1.02rem;
+  }
+  .masthead .leaf {
+    position: absolute; right: -40px; top: -30px; width: 280px; height: 280px;
+    opacity: .12; z-index: 1; transform: rotate(12deg);
+  }
+
+  /* ---------- Progress bar ---------- */
+  .progress-wrap {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247,245,239,.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--green-line);
+  }
+  .progress-inner {
+    max-width: 760px; margin: 0 auto; padding: .7rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .progress-track {
+    flex: 1; height: 7px; background: var(--green-soft);
+    border-radius: 99px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--green), var(--green-bright));
+    border-radius: 99px; transition: width .45s ease;
+  }
+  .progress-count {
+    font-size: 13px; font-weight: 600; color: var(--green); white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  main { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+
+  /* ---------- Section nav ---------- */
+  nav.toc {
+    display: flex; flex-wrap: wrap; gap: .5rem;
+    margin: .5rem 0 2rem;
+  }
+  nav.toc a {
+    font-size: 13px; font-weight: 500; text-decoration: none;
+    color: var(--green); background: var(--paper);
+    border: 1px solid var(--green-line); border-radius: 99px;
+    padding: .4rem .85rem; transition: all .15s ease;
+  }
+  nav.toc a:hover { background: var(--green); color: #fff; border-color: var(--green); }
+
+  /* ---------- Section ---------- */
+  section.unit {
+    background: var(--paper); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 1.8rem 1.6rem; margin-bottom: 1.8rem;
+    border: 1px solid #ece8df;
+    scroll-margin-top: 70px;
+  }
+  .unit-head { display: flex; align-items: baseline; gap: .8rem; margin-bottom: .4rem; }
+  .unit-num {
+    font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--gold);
+    font-weight: 600; line-height: 1;
+  }
+  .unit-head h2 {
+    font-family: 'Fraunces', serif; font-weight: 500;
+    font-size: 1.5rem; margin: 0; color: var(--green-deep);
+  }
+  .unit-rule { color: var(--ink-soft); font-size: .95rem; margin: .2rem 0 1.4rem; }
+  .unit-rule strong { color: var(--green); font-weight: 600; }
+
+  .watch-first {
+    display: inline-flex; align-items: center; gap: .55rem;
+    text-decoration: none; margin: 0 0 1.4rem;
+    background: var(--green-soft); border: 1px solid var(--green-line);
+    border-radius: 99px; padding: .45rem .9rem .45rem .55rem;
+    transition: all .15s ease;
+  }
+  .watch-first:hover { background: var(--green); border-color: var(--green); }
+  .watch-first:hover .wf-text, .watch-first:hover .wf-text b { color: #fff; }
+  .watch-first .wf-icon {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--green); color: #fff; display: grid; place-items: center;
+    font-size: 9px; padding-left: 1px;
+  }
+  .watch-first .wf-text { font-size: .82rem; color: var(--ink-soft); }
+  .watch-first .wf-text b { color: var(--green-deep); font-weight: 600; }
+
+  /* ---------- Drill item ---------- */
+  .item { border-top: 1px solid #eee9df; padding: 1.3rem 0; }
+  .item:first-of-type { border-top: none; padding-top: .2rem; }
+  .item-tag {
+    display: inline-block; font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--green-bright); margin-bottom: .55rem;
+  }
+  .prompt { font-size: 1rem; margin: 0 0 .85rem; }
+  .given {
+    font-family: 'JetBrains Mono', monospace; font-size: .92rem;
+    background: var(--cream); border-left: 3px solid var(--green-line);
+    padding: .7rem .9rem; border-radius: 0 8px 8px 0; color: #38463f;
+    margin: 0 0 .9rem;
+  }
+  textarea.answer {
+    width: 100%; min-height: 64px; resize: vertical;
+    font-family: 'Inter', sans-serif; font-size: .95rem;
+    padding: .65rem .8rem; border: 1.5px solid var(--green-line);
+    border-radius: 10px; background: #fdfdfb; color: var(--ink);
+    transition: border-color .15s ease;
+  }
+  textarea.answer:focus { outline: none; border-color: var(--green-bright); }
+
+  /* choice items */
+  .choices { display: flex; flex-direction: column; gap: .5rem; }
+  .choice {
+    display: flex; align-items: flex-start; gap: .6rem;
+    border: 1.5px solid var(--green-line); border-radius: 10px;
+    padding: .65rem .8rem; cursor: pointer; background: #fdfdfb;
+    font-size: .95rem; transition: all .12s ease;
+  }
+  .choice:hover { border-color: var(--green-bright); background: var(--green-soft); }
+  .choice .marker {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid var(--green-line); display: grid; place-items: center;
+    font-size: 12px; font-weight: 600; color: var(--green);
+  }
+  .choice.correct { border-color: var(--green-bright); background: var(--green-soft); }
+  .choice.correct .marker { background: var(--green-bright); border-color: var(--green-bright); color: #fff; }
+  .choice.wrong { border-color: var(--rose); background: #fbeef0; }
+  .choice.wrong .marker { background: var(--rose); border-color: var(--rose); color: #fff; }
+  .choice .mono { font-family: 'JetBrains Mono', monospace; font-size: .88rem; }
+
+  .btn-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; align-items: center; }
+  button.act {
+    font-family: 'Inter', sans-serif; font-size: .85rem; font-weight: 600;
+    border: none; border-radius: 99px; padding: .5rem 1rem; cursor: pointer;
+    transition: all .15s ease;
+  }
+  button.reveal { background: var(--green); color: #fff; }
+  button.reveal:hover { background: var(--green-deep); }
+  button.mark-got { background: var(--green-soft); color: var(--green); border: 1px solid var(--green-line); }
+  button.mark-got:hover { background: var(--green-bright); color: #fff; border-color: var(--green-bright); }
+  button.mark-review { background: #fff; color: var(--rose); border: 1px solid #e6c2c8; }
+  button.mark-review:hover { background: var(--rose); color: #fff; }
+  button.act.done { opacity: .55; cursor: default; }
+
+  .feedback {
+    margin-top: .9rem; padding: .85rem 1rem; border-radius: 10px;
+    background: var(--green-soft); border: 1px solid var(--green-line);
+    font-size: .92rem; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback .answer-line {
+    font-family: 'JetBrains Mono', monospace; font-size: .9rem;
+    color: var(--green-deep); font-weight: 500; margin-bottom: .4rem;
+  }
+  .feedback .why { color: #3c4b43; }
+  .feedback .why b { color: var(--green-deep); }
+
+  .item-status {
+    font-size: 12px; font-weight: 600; margin-left: auto;
+  }
+  .status-got { color: var(--green-bright); }
+  .status-review { color: var(--rose); }
+
+  /* ---------- Footer ---------- */
+  footer {
+    text-align: center; padding: 2.5rem 1.5rem 3rem; color: var(--ink-soft);
+    font-size: .85rem;
+  }
+  .reset-btn {
+    background: none; border: 1px solid var(--green-line); color: var(--green);
+    border-radius: 99px; padding: .45rem 1.1rem; font-size: .82rem; font-weight: 500;
+    cursor: pointer; margin-top: .8rem;
+  }
+  .reset-btn:hover { background: var(--green-soft); }
+
+  .done-banner {
+    display: none; text-align: center; background: var(--green-deep); color: #fff;
+    border-radius: 16px; padding: 1.6rem; margin-bottom: 1.8rem;
+  }
+  .done-banner.show { display: block; }
+  .done-banner h3 { font-family: 'Fraunces', serif; font-weight: 500; margin: 0 0 .3rem; font-size: 1.4rem; }
+  .done-banner p { margin: 0; color: #cfe3d5; font-size: .95rem; }
+
+  @media (max-width: 520px) {
+    section.unit { padding: 1.4rem 1.1rem; }
+    .masthead .leaf { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <svg class="leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 5C50 5 20 25 20 55C20 75 35 90 50 90C65 90 80 75 80 55C80 25 50 5 50 5Z" fill="#9fc8ac"/>
+    <path d="M50 12V88" stroke="#1f4733" stroke-width="1.5"/>
+  </svg>
+  <div class="masthead-inner">
+    <div class="brand">Revive Tutoring · Teaching with Kindness</div>
+    <h1>Mechanics Drills</h1>
+    <p class="lede">Five sections of editing reps. Fix the sentence in your own words first, then check the model answer and the reason behind it. Master these, and a reader moves through your draft without a single stumble.</p>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+    <div class="progress-count" id="count">0 / 28</div>
+  </div>
+</div>
+
+<main>
+  <nav class="toc">
+    <a href="#s1">Dialogue Punctuation</a>
+    <a href="#s2">Commas</a>
+    <a href="#s3">Run-ons &amp; Fragments</a>
+    <a href="#s4">Apostrophes</a>
+    <a href="#s5">Homophones</a>
+  </nav>
+
+  <div class="done-banner" id="doneBanner">
+    <h3>You worked every drill.</h3>
+    <p>Go back to anything you marked for review and run it a second time.</p>
+  </div>
+
+  <!-- container; items injected by script -->
+  <div id="sections"></div>
+</main>
+
+<footer>
+  <div>Revive Tutoring · rachna@revivetutoring.com</div>
+  <button class="reset-btn" id="resetBtn">Clear my progress</button>
+</footer>
+
+<script>
+/* ----------------------------------------------------------
+   DATA
+   type: "edit"   -> student types a fix, reveals model answer + why
+   type: "choice" -> auto-graded multiple choice
+---------------------------------------------------------- */
+const DATA = [
+  {
+    id: "s1", num: "1", title: "Dialogue Punctuation",
+    video: { label: "Commas in dialogue · Khan Academy", url: "https://www.youtube.com/watch?v=uYoX_Qyknao" },
+    rule: "When a character speaks, keep the punctuation <strong>inside</strong> the quotation marks, and place a comma between the quote and the speaker tag.",
+    items: [
+      { type:"edit", tag:"Edit",
+        prompt:"Add the missing punctuation and capital letter.",
+        given:`He said meet me at the dock at noon`,
+        answer:`He said, "Meet me at the dock at noon."`,
+        why:`A comma follows the tag <b>said</b>, the quotation opens with a capital <b>M</b>, and the period sits <b>inside</b> the closing quotes.` },
+      { type:"edit", tag:"Edit",
+        prompt:"Fix the punctuation where the quote meets the tag.",
+        given:`"I found the fossil" she whispered.`,
+        answer:`"I found the fossil," she whispered.`,
+        why:`When a tag follows the quote, the period becomes a <b>comma</b> and stays inside the quotes. The tag <b>she</b> stays lowercase.` },
+      { type:"edit", tag:"Edit",
+        prompt:"A question ends this quote. Punctuate it correctly.",
+        given:`"Did you see Claude" asked Rehaan`,
+        answer:`"Did you see Claude?" asked Rehaan.`,
+        why:`The question mark replaces the comma and stays inside the quotes. No extra comma joins it to the tag. The full sentence still needs an end <b>period</b>.` },
+      { type:"choice", tag:"Choose",
+        prompt:"Which sentence punctuates the shout correctly?",
+        options:[
+          { t:`"Run!" she shouted.`, correct:true },
+          { t:`"Run," she shouted!` },
+          { t:`"Run"! she shouted.` }
+        ],
+        why:`The exclamation point belongs to the quoted word and stays inside the quotes. The tag <b>she shouted</b> closes with a calm period.` },
+      { type:"edit", tag:"Edit",
+        prompt:"One tag interrupts the sentence. Place both commas.",
+        given:`"When the tide drops" he explained "the seahorses hide."`,
+        answer:`"When the tide drops," he explained, "the seahorses hide."`,
+        why:`An interrupting tag takes a comma on <b>each side</b>. The first comma sits inside the quotes, the second comma sits after the tag, and the sentence continues with a lowercase <b>the</b>.` },
+      { type:"edit", tag:"Edit · harder",
+        prompt:"Two speakers share one line. Rewrite so each speaker starts a new paragraph.",
+        given:`"Where did he go?" Rehaan asked. "Nobody knows," his dad answered.`,
+        answer:`"Where did he go?" Rehaan asked.\n\n"Nobody knows," his dad answered.`,
+        why:`Every time the speaker changes, the writer starts a <b>new paragraph</b>. The reader tracks the back-and-forth without losing the thread.` }
+    ]
+  },
+  {
+    id: "s2", num: "2", title: "Commas",
+    video: { label: "Meet the comma · Khan Academy", url: "https://www.youtube.com/watch?v=Wk0k2FLjM1c" },
+    rule: "Use a comma to mark a short pause: between items in a series, after an opening element, and before the joining word in a compound sentence.",
+    items: [
+      { type:"edit", tag:"Edit · series",
+        prompt:"Add the commas. Keep the Oxford comma before <em>and</em>.",
+        given:`We packed sandwiches water and a map.`,
+        answer:`We packed sandwiches, water, and a map.`,
+        why:`Each item in the series takes a comma, including the one before <b>and</b>. The Oxford comma keeps the last two items from blurring together.` },
+      { type:"edit", tag:"Edit · intro",
+        prompt:"Add the comma after the opening element.",
+        given:`After the storm passed the trail reopened.`,
+        answer:`After the storm passed, the trail reopened.`,
+        why:`An introductory clause closes with a comma before the main sentence begins. The pause tells the reader the setup just ended.` },
+      { type:"edit", tag:"Edit · compound",
+        prompt:"Two complete sentences join here. Add the comma.",
+        given:`The alligator surfaced and the crowd cheered.`,
+        answer:`The alligator surfaced, and the crowd cheered.`,
+        why:`Both halves stand alone as sentences, so a comma sits before <b>and</b>. The comma separates the two complete thoughts.` },
+      { type:"choice", tag:"Choose · trap",
+        prompt:"Which sentence is punctuated correctly?",
+        options:[
+          { t:`The alligator surfaced and turned its head.`, correct:true },
+          { t:`The alligator surfaced, and turned its head.` }
+        ],
+        why:`The second half here, <b>turned its head</b>, has no subject. It cannot stand alone, so it takes <b>no comma</b>. A comma before <b>and</b> belongs only between two full sentences.` },
+      { type:"edit", tag:"Edit · address",
+        prompt:"Add the comma for direct address.",
+        given:`Come here Rehaan.`,
+        answer:`Come here, Rehaan.`,
+        why:`A comma sets off the name of the person spoken to. The pause separates the command from who receives it.` },
+      { type:"edit", tag:"Edit · appositive",
+        prompt:"Set off the extra description with commas.",
+        given:`My dog a greyhound shot past.`,
+        answer:`My dog, a greyhound, shot past.`,
+        why:`The phrase <b>a greyhound</b> renames the dog and adds detail, so commas fence it on both sides. Lift it out and the sentence still works.` }
+    ]
+  },
+  {
+    id: "s3", num: "3", title: "Run-ons & Fragments",
+    video: { label: "Run-ons and comma splices · Khan Academy", url: "https://www.youtube.com/watch?v=Fh45mhVsZrU" },
+    rule: "A complete sentence needs one subject, one verb, and a finished thought. Two sentences need a real boundary between them.",
+    items: [
+      { type:"edit", tag:"Edit · comma splice",
+        prompt:"A comma cannot join two sentences. Fix it.",
+        given:`The museum closed early, we missed the exhibit.`,
+        answer:`The museum closed early, so we missed the exhibit.`,
+        why:`Two complete sentences need more than a comma. Add a joining word like <b>so</b>, or split them into two sentences with a period.` },
+      { type:"edit", tag:"Edit · fused",
+        prompt:"Two sentences run together with nothing between them. Separate them.",
+        given:`He studied paleontology he wanted to dig for fossils.`,
+        answer:`He studied paleontology. He wanted to dig for fossils.`,
+        why:`A fused run-on jams two thoughts together. A <b>period</b> gives each one its own space. A comma plus <b>because</b> also works.` },
+      { type:"edit", tag:"Edit · fragment",
+        prompt:"This piece cannot stand alone. Attach it to a complete thought.",
+        given:`Because the tide came in.`,
+        answer:`We left the beach because the tide came in.`,
+        why:`<b>Because</b> opens a dependent clause that needs a main sentence to lean on. On its own it leaves the reader waiting.` },
+      { type:"choice", tag:"Choose",
+        prompt:"Which one is a complete sentence?",
+        options:[
+          { t:`The seahorse drifted toward the glass.`, correct:true },
+          { t:`Drifting slowly toward the cold glass.` },
+          { t:`When the seahorse drifted toward the glass.` }
+        ],
+        why:`Only the first includes a subject (<b>seahorse</b>) and a finished verb (<b>drifted</b>), so the reader reaches a complete thought. The others leave the reader hanging.` },
+      { type:"edit", tag:"Edit · harder",
+        prompt:"Break this run-on into two clean sentences.",
+        given:`Claude turned his scaly head ninety degrees the whole crowd leaned in to watch.`,
+        answer:`Claude turned his scaly head ninety degrees. The whole crowd leaned in to watch.`,
+        why:`Each half holds a full thought, so each earns its own sentence. The period gives the reader a clean beat between the two images.` }
+    ]
+  },
+  {
+    id: "s4", num: "4", title: "Apostrophes & Possessives",
+    video: { label: "Introduction to the possessive · Khan Academy", url: "https://www.youtube.com/watch?v=2M4EDrD3aBQ" },
+    rule: "Use an apostrophe for two reasons: to replace missing letters in a contraction, and to show ownership.",
+    items: [
+      { type:"edit", tag:"Edit · its / it's",
+        prompt:"Fix the apostrophe error.",
+        given:`The alligator turned it's head.`,
+        answer:`The alligator turned its head.`,
+        why:`<b>It's</b> means <b>it is</b>. Ownership uses <b>its</b> with no apostrophe. The head belongs to the alligator, so <b>its</b> is correct.` },
+      { type:"edit", tag:"Edit · plural owner",
+        prompt:"The work belongs to all the students. Place the apostrophe.",
+        given:`The students projects lined the hall.`,
+        answer:`The students' projects lined the hall.`,
+        why:`A plural noun that already ends in <b>s</b> takes the apostrophe <b>after</b> the s. The projects belong to many students, so <b>students'</b>.` },
+      { type:"edit", tag:"Edit · singular owner",
+        prompt:"The fossil belongs to James. Show possession.",
+        given:`James fossil sat on the shelf.`,
+        answer:`James's fossil sat on the shelf.`,
+        why:`A singular name still adds <b>'s</b>, even when it ends in s. <b>James's</b> shows the fossil belongs to one person named James.` },
+      { type:"choice", tag:"Choose",
+        prompt:"Which sentence uses the apostrophe correctly?",
+        options:[
+          { t:`The dogs' leashes hung by the door.`, correct:true },
+          { t:`The dog's leashes hung by the door, all six of them.` },
+          { t:`The dogs leashes hung by the door.` }
+        ],
+        why:`Several dogs own the leashes, so the apostrophe lands after the plural: <b>dogs'</b>. <b>Dog's</b> would mean a single dog, and <b>dogs</b> shows no ownership at all.` },
+      { type:"edit", tag:"Edit · who's / whose",
+        prompt:"Pick the right form and rewrite the sentence.",
+        given:`Whos backpack is this?`,
+        answer:`Whose backpack is this?`,
+        why:`<b>Who's</b> means <b>who is</b>. Ownership uses <b>whose</b>. The backpack belongs to someone, so <b>whose</b>.` }
+    ]
+  },
+  {
+    id: "s5", num: "5", title: "Homophones",
+    video: { label: "Choosing between its and it's · Khan Academy", url: "https://www.youtube.com/watch?v=Yhaa214UKvA" },
+    rule: "Homophones sound alike and spell differently. Pick the spelling that fits the word's role in the sentence.",
+    items: [
+      { type:"edit", tag:"Edit · there / their / they're",
+        prompt:"Fill all three blanks with the correct spelling.",
+        given:`___ going to leave ___ gear over ___ by the door.`,
+        answer:`They're going to leave their gear over there by the door.`,
+        why:`<b>They're</b> means <b>they are</b>. <b>Their</b> shows ownership of the gear. <b>There</b> points to a place.` },
+      { type:"edit", tag:"Edit · your / you're",
+        prompt:"Fix the homophone error.",
+        given:`Your going to love the fossil exhibit.`,
+        answer:`You're going to love the fossil exhibit.`,
+        why:`<b>You're</b> means <b>you are</b>. <b>Your</b> shows ownership. The sentence needs <b>you are</b>, so <b>you're</b>.` },
+      { type:"edit", tag:"Edit · to / too / two",
+        prompt:"Fix both homophone errors.",
+        given:`I want too go, two.`,
+        answer:`I want to go, too.`,
+        why:`<b>To</b> pairs with the verb <b>go</b>. <b>Too</b> means <b>also</b>. <b>Two</b> is the number, and it does not belong here.` },
+      { type:"choice", tag:"Choose · then / than",
+        prompt:"Which sentence is correct?",
+        options:[
+          { t:`The mosasaur was longer than the shark.`, correct:true },
+          { t:`The mosasaur was longer then the shark.` }
+        ],
+        why:`<b>Than</b> compares two things. <b>Then</b> marks time or sequence. A comparison needs <b>than</b>.` },
+      { type:"edit", tag:"Edit · hear / here",
+        prompt:"Fix the homophone error.",
+        given:`Stand over hear so you can here the guide.`,
+        answer:`Stand over here so you can hear the guide.`,
+        why:`<b>Here</b> points to a place. <b>Hear</b> describes what your ears do. The sentence swapped them.` },
+      { type:"choice", tag:"Choose · its / it's",
+        prompt:"Which sentence is correct?",
+        options:[
+          { t:`It's been six years since I last visited.`, correct:true },
+          { t:`Its been six years since I last visited.` }
+        ],
+        why:`<b>It's</b> means <b>it has</b> here. Ownership uses <b>its</b> with no apostrophe. This sentence needs the contraction.` }
+    ]
+  }
+];
+
+/* ----------------------------------------------------------
+   RENDER
+---------------------------------------------------------- */
+const STORE_KEY = "revive_mechanics_v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch(e){ state = {}; }
+
+let TOTAL = 0;
+DATA.forEach(sec => TOTAL += sec.items.length);
+
+const container = document.getElementById("sections");
+
+DATA.forEach((sec) => {
+  const secEl = document.createElement("section");
+  secEl.className = "unit";
+  secEl.id = sec.id;
+
+  const head = document.createElement("div");
+  head.className = "unit-head";
+  head.innerHTML = `<span class="unit-num">${sec.num}</span><h2>${sec.title}</h2>`;
+  secEl.appendChild(head);
+
+  const rule = document.createElement("p");
+  rule.className = "unit-rule";
+  rule.innerHTML = sec.rule;
+  secEl.appendChild(rule);
+
+  if (sec.video) {
+    const v = document.createElement("a");
+    v.className = "watch-first";
+    v.href = sec.video.url;
+    v.target = "_blank";
+    v.rel = "noopener";
+    v.innerHTML = `<span class="wf-icon">▶</span><span class="wf-text"><b>Watch first</b> ${sec.video.label}</span>`;
+    secEl.appendChild(v);
+  }
+
+  sec.items.forEach((it, i) => {
+    const key = `${sec.id}_${i}`;
+    const wrap = document.createElement("div");
+    wrap.className = "item";
+    wrap.dataset.key = key;
+
+    let inner = `<span class="item-tag">${it.tag}</span><p class="prompt">${it.prompt}</p>`;
+    if (it.given) inner += `<div class="given">${it.given.replace(/\n/g,"<br>")}</div>`;
+
+    if (it.type === "edit") {
+      inner += `<textarea class="answer" placeholder="Type your fix here..."></textarea>`;
+      inner += `<div class="btn-row">
+        <button class="act reveal" data-act="reveal">Show model answer</button>
+        <span class="item-status"></span>
+      </div>`;
+      inner += `<div class="feedback">
+        <div class="answer-line">${it.answer.replace(/\n/g,"<br>")}</div>
+        <div class="why">${it.why}</div>
+        <div class="btn-row">
+          <button class="act mark-got" data-act="got">I got it</button>
+          <button class="act mark-review" data-act="review">Mark for review</button>
+        </div>
+      </div>`;
+    } else {
+      inner += `<div class="choices">`;
+      it.options.forEach((o, oi) => {
+        const letter = String.fromCharCode(65+oi);
+        inner += `<div class="choice" data-correct="${o.correct?1:0}" data-oi="${oi}">
+          <span class="marker">${letter}</span>
+          <span class="mono">${o.t}</span>
+        </div>`;
+      });
+      inner += `</div>`;
+      inner += `<div class="btn-row"><span class="item-status"></span></div>`;
+      inner += `<div class="feedback"><div class="why">${it.why}</div></div>`;
+    }
+
+    wrap.innerHTML = inner;
+    secEl.appendChild(wrap);
+
+    // restore saved state
+    if (state[key]) {
+      const fb = wrap.querySelector(".feedback");
+      fb.classList.add("show");
+      const status = wrap.querySelector(".item-status");
+      if (it.type === "edit") {
+        wrap.querySelector('[data-act="reveal"]').classList.add("done");
+        if (state[key] === "got") { status.textContent = "Got it ✓"; status.className = "item-status status-got"; }
+        if (state[key] === "review") { status.textContent = "Review ↺"; status.className = "item-status status-review"; }
+      } else {
+        wrap.querySelectorAll(".choice").forEach(c => {
+          if (c.dataset.correct === "1") c.classList.add("correct");
+          c.style.pointerEvents = "none";
+        });
+        if (state[key] === "got") { status.textContent = "Correct ✓"; status.className = "item-status status-got"; }
+        if (state[key] === "review") { status.textContent = "Try again ↺"; status.className = "item-status status-review"; }
+      }
+    }
+  });
+
+  container.appendChild(secEl);
+});
+
+/* ----------------------------------------------------------
+   INTERACTION
+---------------------------------------------------------- */
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); updateProgress(); }
+
+function updateProgress(){
+  const done = Object.keys(state).length;
+  const pct = Math.round((done/TOTAL)*100);
+  document.getElementById("bar").style.width = pct + "%";
+  document.getElementById("count").textContent = `${done} / ${TOTAL}`;
+  document.getElementById("doneBanner").classList.toggle("show", done >= TOTAL);
+}
+
+container.addEventListener("click", (e) => {
+  const item = e.target.closest(".item");
+  if (!item) return;
+  const key = item.dataset.key;
+
+  // edit reveal
+  if (e.target.dataset.act === "reveal") {
+    item.querySelector(".feedback").classList.add("show");
+    e.target.classList.add("done");
+    return;
+  }
+  // edit self-mark
+  if (e.target.dataset.act === "got" || e.target.dataset.act === "review") {
+    const status = item.querySelector(".item-status");
+    if (e.target.dataset.act === "got") {
+      state[key] = "got"; status.textContent = "Got it ✓"; status.className = "item-status status-got";
+    } else {
+      state[key] = "review"; status.textContent = "Review ↺"; status.className = "item-status status-review";
+    }
+    save();
+    return;
+  }
+  // choice click
+  const choice = e.target.closest(".choice");
+  if (choice) {
+    const isCorrect = choice.dataset.correct === "1";
+    item.querySelectorAll(".choice").forEach(c => {
+      c.style.pointerEvents = "none";
+      if (c.dataset.correct === "1") c.classList.add("correct");
+    });
+    if (!isCorrect) choice.classList.add("wrong");
+    item.querySelector(".feedback").classList.add("show");
+    const status = item.querySelector(".item-status");
+    if (isCorrect) { state[key] = "got"; status.textContent = "Correct ✓"; status.className = "item-status status-got"; }
+    else { state[key] = "review"; status.textContent = "Try again ↺"; status.className = "item-status status-review"; }
+    save();
+  }
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (confirm("Clear all progress on this lesson?")) {
+    state = {}; localStorage.removeItem(STORE_KEY); location.reload();
+  }
+});
+
+updateProgress();
+</script>
+</body>
+</html>
